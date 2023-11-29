@@ -1,12 +1,33 @@
-"use client";
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import "react-toastify/dist/ReactToastify.css";
+"use"
+import { WalletNotConnectedError } from "@demox-labs/aleo-wallet-adapter-base";
+import { useWallet } from "@demox-labs/aleo-wallet-adapter-react";
+import { LeoWalletAdapter } from "@demox-labs/aleo-wallet-adapter-leo";
+import React, { FC, useCallback } from "react";
+import "@demox-labs/aleo-wallet-adapter-reactui/styles.css"
 
-const WalletsProvider = () => {
+const WalletProvider: FC = () => {
+    const { wallet, publicKey } = useWallet();
 
-    return(
-        <div><ConnectButton accountStatus="address" showBalance={false} chainStatus="icon"/></div>
-    )
+    console.log("pk", publicKey)
+
+    const onClick = useCallback(async () => {
+        if (!publicKey) throw new WalletNotConnectedError();
+
+        const message = "a message to sign";
+
+        const bytes = new TextEncoder().encode(message);
+        const signatureBytes = await (
+            wallet?.adapter as LeoWalletAdapter
+        ).signMessage(bytes);
+        const signature = new TextDecoder().decode(signatureBytes);
+        alert("Signed message: " + signature);
+    }, [wallet, publicKey]);
+
+    return (
+        <button onClick={onClick} disabled={!publicKey}>
+            Sign message
+        </button>
+    );
 };
 
-export default WalletsProvider;
+export default WalletProvider;

@@ -1,6 +1,6 @@
 "use client"
 import "./globals.css";
-import "@rainbow-me/rainbowkit/styles.css";
+import "@demox-labs/aleo-wallet-adapter-reactui/styles.css"
 import { Providers } from "./provider";
 // import { Inter } from "next/font/google";
 // import WalletContext from "@/components/WalletContextProvider";

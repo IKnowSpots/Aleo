@@ -9,6 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@demox-labs/aleo-wallet-adapter-base": "^0.0.20",
+    "@demox-labs/aleo-wallet-adapter-leo": "^0.0.19",
+    "@demox-labs/aleo-wallet-adapter-react": "^0.0.19",
+    "@demox-labs/aleo-wallet-adapter-reactui": "^0.0.31",
     "@rainbow-me/rainbowkit": "^1.1.2",
     "@splinetool/react-spline": "^2.2.6",
     "@types/node": "20.6.3",
