@@ -3,13 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 // import { useWallet } from "@solana/wallet-adapter-react";
-
-const WalletsProvider = dynamic(
-    () => import("../wallets"),
-    {
-        ssr: false,
-    }
-);
+import WalletProvider from "../wallets";
+// const WalletsProvider = dynamic(
+//     () => import("../wallets"),
+//     {
+//         ssr: false,
+//     }
+// );
 
 const Navbar = () => {
     // const { wallets } = useWallet();
@@ -67,7 +67,7 @@ const Navbar = () => {
 
             <p className=" text-center w-[12%] text-black   rounded-[1.5rem] ">
                 {/* Connect Wallet */}
-                <WalletsProvider />
+                <WalletProvider />
             </p>
         </nav>
     );

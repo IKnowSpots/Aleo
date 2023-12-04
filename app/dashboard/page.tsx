@@ -4,6 +4,8 @@ import { fetchIfDeployed, deploy } from "@/utils";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { WalletMultiButton } from '@demox-labs/aleo-wallet-adapter-reactui';
+
 import LoadingModal from "@/components/LoadingModal";
 
 const Dashboard = () => {
@@ -34,11 +36,11 @@ const Dashboard = () => {
         setLoading(false);
     }
 
-    // if (loading == true) return <LoadingModal visible={true}/>;
+    // if (loading == true) return // <LoadingModal visible={true}/>;
 
     return (
         <div>
-            <LoadingModal visible={loading?true:false}/>
+            {/* // <LoadingModal visible={loading?true:false}/> */}
             <RenderSetUsername />
         </div>
     );
@@ -64,6 +66,7 @@ const Dashboard = () => {
                 <div className="bg-[#624c9ba6] border-white border-opacity-60 rounded-lg">
                     <div className="w-[45vw] h-[100%] flex rounded-xl justify-center items-center">
                         {/* <div className="grad2 blur-[220px] absolute w-full h-[700px]"></div> */}
+
                         <div className="bg-createEvent blur-[150px] absolute w-full h-[80vh]" />
 
                         <img
@@ -90,45 +93,45 @@ const Dashboard = () => {
                         </Link>
                     </div>
                     <div className="flex items-center justify-center">
-                    <div className="flex flex-col items-center gap-2">
-                        <div className="flex flex-row items-center w-3/4 gap-2">
-                            <h3 className="text-3xl mb-4 ">Welcome</h3>
-                            <h1 className="text-4xl mb-4 animate-wave ">👋🏻</h1>
+                        <div className="flex flex-col items-center gap-2">
+                            <div className="flex flex-row items-center w-3/4 gap-2">
+                                <h3 className="text-3xl mb-4 ">Welcome</h3>
+                                <h1 className="text-4xl mb-4 animate-wave ">👋🏻</h1>
+                            </div>
+                            <p className="w-3/4 text-[rgba(255,255,255,0.65)] font-light">
+                                Today is a new day. It&apos;s your day. You shape
+                                it. Your username, your entry ticket.{" "}
+                            </p>
+                            <div className="flex flex-col w-3/4 pb-8">
+                                <label htmlFor="username" className={`font-lg py-2 ${isDeployed ? "hidden" : ""}`}>
+                                    Username
+                                </label>
+                                <input
+                                    type="text"
+                                    id="username"
+                                    placeholder="iknowspots"
+                                    className={`px-4 py-2 rounded-xl my-2 text-black ${isDeployed ? "hidden" : ""}`}
+                                    onChange={(e) =>
+                                        setUsernameHook(e.target.value)
+                                    }
+                                />
+                                {isDeployed ? (
+                                    <button
+                                        className="get-started-btn py-3 rounded-xl bg-[#162D3A] my-2"
+                                        onClick={pushPage}
+                                    >
+                                        Move Forward
+                                    </button>
+                                ) : (
+                                    <button
+                                        className="get-started-btn py-3 rounded-xl bg-[#162D3A] my-2"
+                                        onClick={setUsernameCall}
+                                    >
+                                        Set Username
+                                    </button>
+                                )}
+                            </div>
                         </div>
-                        <p className="w-3/4 text-[rgba(255,255,255,0.65)] font-light">
-                            Today is a new day. It&apos;s your day. You shape
-                            it. Your username, your entry ticket.{" "}
-                        </p>
-                        <div className="flex flex-col w-3/4 pb-8">
-                            <label htmlFor="username" className={`font-lg py-2 ${isDeployed ? "hidden" : ""}`}>
-                                Username
-                            </label>
-                            <input
-                                type="text"
-                                id="username"
-                                placeholder="iknowspots"
-                                className={`px-4 py-2 rounded-xl my-2 text-black ${isDeployed ? "hidden" : ""}`}
-                                onChange={(e) =>
-                                    setUsernameHook(e.target.value)
-                                }
-                            />
-                            {isDeployed ? (
-                                <button
-                                    className="get-started-btn py-3 rounded-xl bg-[#162D3A] my-2"
-                                    onClick={pushPage}
-                                >
-                                    Move Forward
-                                </button>
-                            ) : (
-                                <button
-                                    className="get-started-btn py-3 rounded-xl bg-[#162D3A] my-2"
-                                    onClick={setUsernameCall}
-                                >
-                                    Set Username
-                                </button>
-                            )}
-                        </div>
-                    </div>
                     </div>
                     <div className="mb-4">
                         <p className="text-[rgba(255,255,255,0.65)] text-sm">

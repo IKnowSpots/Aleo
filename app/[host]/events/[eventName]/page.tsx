@@ -77,7 +77,7 @@ const Event = () => {
 
     return (
         <div className="bg-[#25143a] text-white pb-8 px-8 w-full h-full">
-            <LoadingModal visible={loading}/>
+            {/* // <LoadingModal visible={loading}/> */}
             <div>
                 <div className="grad1 blur-[220px] w-[80%] h-[100vh] absolute z-[1]"></div>
             </div>

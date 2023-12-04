@@ -54,7 +54,8 @@ const EventsByHost = () => {
 
     if (loading == true)
         return (
-            <LoadingModal visible={true}/>
+            // <LoadingModal visible={true}/>
+            null
         );
 
     if (loading == false && isUsernameValid == false)

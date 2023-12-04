@@ -1,0 +1,24 @@
+// The program input for zk_dapp_sanction/src/main.leo
+[main]
+public a: field = 1field;
+b: field = 2field;
+
+[mint]
+reciever: address = aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut;
+amount: u64 = 1000u64;
+
+[add_sanctioned_country]
+countryHash: field = 1field;
+
+[remove_sanctioned_country]
+countryHash: field = 1field;
+
+[transfer]
+token: Token = Token{
+    owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut,
+    amount: 1000u64
+};
+to: address = aleo17sv2qntg7duvr3h6fturqrf0qc7srgekcnvdu3nuuwqvtlnpyugsn965t9;
+amount: u64 = 100u64;
+countryHash: field = 1field;
+

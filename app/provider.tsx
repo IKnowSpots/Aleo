@@ -27,9 +27,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
     return (
         <WalletProvider
             wallets={wallets}
-            decryptPermission={DecryptPermission.UponRequest}
-            network={WalletAdapterNetwork.Testnet}
-            autoConnect
+            decryptPermission={DecryptPermission.AutoDecrypt}
+        // network={WalletAdapterNetwork.Testnet}
+        // autoConnect
         >
             <WalletModalProvider>{mounted && children}</WalletModalProvider>
         </WalletProvider>

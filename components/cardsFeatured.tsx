@@ -15,7 +15,7 @@ const CardsFeatured = ({ image, name, price, date }: { image: any; name: string,
 
     return (
         <>
-        <LoadingModal visible={loading}/>
+        // visible={loading}/>
         <div className="flex flex-col gap-4">
             <Image
                 src={`/events/${image}`}

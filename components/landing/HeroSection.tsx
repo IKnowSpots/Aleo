@@ -53,7 +53,7 @@ const HeroSection = () => {
           <Link className="" target="_blank" href="https://www.loom.com/share/5cee5fd7ee6d477e976f246fbda9ac21?sid=666d8812-f4a4-4d07-ab34-4310cdd08c4b">
             <button className="cta-button w-48 px-4 py-1 text-[0.8rem] sm:text-[1rem]">Demo Video</button>
           </Link>
-          <Link className="" href={isDeployed ? "/dashboard/active" : "/dashboard"}>
+          <Link className="" href={true ? "/dashboard/active" : "/dashboard"}>
             <button className="btn-bg w-48 flex justify-center items-center gap-2 px-4 py-1 text-[0.8rem] sm:text-[1rem]">
               Launch dApp
               <Image
@@ -77,7 +77,7 @@ const HeroSection = () => {
           />
         </div>
       </div>
-      
+
       <div id="parent-div" className="relative hidden sm:flex w-full p-6 justify-center items-center">
         <Image
           src="/circles.png"

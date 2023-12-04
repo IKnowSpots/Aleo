@@ -34,7 +34,7 @@ const CardsActive = ({ image, name, price, date, tokenId, remaining, supply, set
 
     return (
         <>
-        <LoadingModal visible={loading}/>
+        // visible={loading}/>
         <div className="text-white w-[23%] px-4 box-background pt-4 pb-5 rounded-xl">
             <div className="flex flex-col gap-6">
                 <img
@@ -61,7 +61,7 @@ const CardsActive = ({ image, name, price, date, tokenId, remaining, supply, set
                             Pause
                         </button>
                     </div>
-                    
+
                 </div>
                 {/* <hr />
                 <div className="flex justify-between my-6">

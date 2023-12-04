@@ -17,7 +17,7 @@ const CardsInactive = ({ image, name, tokenId,setInactiveEvents }: { image: any,
 
     return (
         <>
-        <LoadingModal visible={loading}/>
+        // visible={loading}/>
         <div className="text-white w-[23%] px-4 box-background pt-4 pb-5 rounded-xl">
             <div className="flex flex-col gap-4">
                 <img

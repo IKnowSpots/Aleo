@@ -2,15 +2,19 @@
 import { WalletNotConnectedError } from "@demox-labs/aleo-wallet-adapter-base";
 import { useWallet } from "@demox-labs/aleo-wallet-adapter-react";
 import { LeoWalletAdapter } from "@demox-labs/aleo-wallet-adapter-leo";
-import React, { FC, useCallback } from "react";
+import React, { FC, useCallback, useEffect } from "react";
 import "@demox-labs/aleo-wallet-adapter-reactui/styles.css"
 
 const WalletProvider: FC = () => {
     const { wallet, publicKey } = useWallet();
 
-    console.log("pk", publicKey)
+    useEffect(() => {
+        console.log("pk", publicKey, wallet)
+
+    },[publicKey, wallet]);
 
     const onClick = useCallback(async () => {
+        console.log("pk", publicKey)
         if (!publicKey) throw new WalletNotConnectedError();
 
         const message = "a message to sign";
@@ -23,8 +27,9 @@ const WalletProvider: FC = () => {
         alert("Signed message: " + signature);
     }, [wallet, publicKey]);
 
+
     return (
-        <button onClick={onClick} disabled={!publicKey}>
+        <button onClick={ () => {console.log("something clicked"); onClick()}}  disabled={!publicKey}>
             Sign message
         </button>
     );

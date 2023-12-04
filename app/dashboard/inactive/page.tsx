@@ -48,7 +48,7 @@ const InactiveEvents = () => {
         return (
             <Layout>
                 {/* <div className="text-white">Fetching..</div> */}
-                <LoadingModal visible={true}/>
+                {/* // <LoadingModal visible={true}/> */}
             </Layout>
             );
         }
