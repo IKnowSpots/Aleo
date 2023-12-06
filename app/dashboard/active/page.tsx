@@ -18,7 +18,7 @@ const ActiveEvents = () => {
     }, []);
 
     async function fetchActiveEventsData() {
-        console.log("This has been called");
+        console.log(" fetchActiveEventsData has been called");
         try {
             setLoading(true);
             let data: any = await fetchActiveEvents();
@@ -54,7 +54,7 @@ const ActiveEvents = () => {
                 {/* // <LoadingModal visible={true}/> */}
             </Layout>
         );
-    console.log("activeEvents => ", activeEvents ? "YES" : "NO");
+    // console.log("activeEvents => ", activeEvents ? "YES" : "NO");
     if (loading == false && (activeEvents == undefined || activeEvents.length == 0))
         return (
             <Layout>

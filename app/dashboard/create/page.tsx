@@ -36,10 +36,10 @@ const Create = (props: any) => {
 
 	const [formInput, setFormInput] = useState({
 		event_id: "",
-		status: "0u8",
+		status: "1u8",
 		supply: "",
 		isShortlistEnabled: true,
-		shortlisted_accounts: [],
+		shortlisted_accounts: ["aleo13lt3j3hs74ll0d3u8tlul7lgptr9dglp57kmskacgg2v4y748cxs2h45mp", "aleo1wvdfek6yr6djgr4vu2e85xq9lgly0v6vmxche6crrk99yma86c9q4sra7c", "aleo17sv2qntg7duvr3h6fturqrf0qc7srgekcnvdu3nuuwqvtlnpyugsn965t9", "aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut"],
 		cover: "",
 		uri: "",
 		claim_code: "",
@@ -50,6 +50,7 @@ const Create = (props: any) => {
 		isStakingEnabled: false,
 		stakePrice: "0",
 		eventPrice: "0",
+		username: "consentsam"
 	});
 	// const { wallet, publicKey, decrypt } = useWallet();
 	// console.log("Wallet => ", wallet);
@@ -140,28 +141,7 @@ const Create = (props: any) => {
 
 
 
-	async function fetchDataUntilAvailable(url: any, maxAttempts = 6, delay = 8000) {
-		try {
-			const response = await fetch(url);
-			if (response.ok) {
-				const data = await response.json();
-				// You can adjust this condition as needed, based on the expected data format
-				if (data && !data.error) {
-					return data;
-				}
-			}
-		} catch (error) {
-			console.error("Error fetching data:", error);
-		}
 
-		if (maxAttempts <= 1) {
-			throw new Error("Couldn't fetch data - something went wrong");
-		}
-
-		await new Promise(resolve => setTimeout(resolve, delay));
-
-		return fetchDataUntilAvailable(url, maxAttempts - 1, delay);
-	}
 
 	/* // does not return anything - undefined
 	const addRecord = (address: any, dataStr: any, setFunction: any) => {
@@ -244,6 +224,28 @@ const Create = (props: any) => {
 			return searched_event;
 		}
 	} */
+	async function fetchDataUntilAvailable(url: any, maxAttempts = 6, delay = 8000) {
+		try {
+			const response = await fetch(url);
+			if (response.ok) {
+				const data = await response.json();
+				// You can adjust this condition as needed, based on the expected data format
+				if (data && !data.error) {
+					return data;
+				}
+			}
+		} catch (error) {
+			console.error("Error fetching data:", error);
+		}
+
+		if (maxAttempts <= 1) {
+			throw new Error("Couldn't fetch data - something went wrong");
+		}
+
+		await new Promise(resolve => setTimeout(resolve, delay));
+
+		return fetchDataUntilAvailable(url, maxAttempts - 1, delay);
+	}
 
 	function getValueOfField(recordString: string, fieldName: string) {
 		try {
@@ -268,10 +270,10 @@ const Create = (props: any) => {
 	// }, {
 	// 	"address"
 	// }]
-	const addRecord = (address: any, dataStr: any) => {
-		const records = JSON.parse(localStorage.getItem('privateRecords') || "{}");
+	const addRecord = (local_storage_name: any, address: any, dataStr: any) => {
+		const records = JSON.parse(localStorage.getItem(local_storage_name) || "{}");
 		records[address] = records[address] ? [...records[address], dataStr] : [dataStr];
-		localStorage.setItem('privateRecords', JSON.stringify(records));
+		localStorage.setItem(local_storage_name, JSON.stringify(records));
 	};
 
 	/* const addRecord = (address: any, dataStr: any) => {
@@ -320,8 +322,8 @@ const Create = (props: any) => {
 	}
 
 
-	function getARecordCorrespondingToAnEventCreation(event_id: any) {
-		const records = JSON.parse(localStorage.getItem('privateRecords') || "") || {};
+	function getARecordCorrespondingToAnEventCreation(local_storage_name: any, event_id: any) {
+		const records = JSON.parse(localStorage.getItem(local_storage_name) || "") || {};
 		const modifiedEventId = event_id + "field";
 		const searchedEvent = searchRecordByEventId(records, modifiedEventId);
 
@@ -329,7 +331,7 @@ const Create = (props: any) => {
 			throw new Error('Record with that event_id not found');
 		} else {
 			deleteRecordByEventId(records, modifiedEventId);
-			localStorage.setItem('privateRecords', JSON.stringify(records));
+			localStorage.setItem(local_storage_name, JSON.stringify(records));
 			return searchedEvent;
 		}
 	}
@@ -408,7 +410,6 @@ const Create = (props: any) => {
 			console.log("event_id_field ", event_id_field);
 			console.log("max_supply_u32 ", max_supply_u32);
 
-
 			const transaction_id = await aleoWorker.execute(program_name, function_name, [event_id_field, max_supply_u32]);
 
 			const transactionUrl = "http://localhost:3030/testnet3/transaction/" + transaction_id;
@@ -427,33 +428,24 @@ const Create = (props: any) => {
 			const decryptedRecord = await aleoWorker.decrypt_record(record);
 			console.log("decryptedRecord => ", decryptedRecord);
 			// console.log("haha");
-			let address = getValueOfField(decryptedRecord, "owner");
 
-			// let dummy_variable = addRecord(address, decryptedRecord, setAddressToEventCreationRecords);
-			// console.log("dummy variable =>", dummy_variable);
-			const statusField = getValueOfField(decryptedRecord, "status");
-			if (statusField) {
-				const _status = parseInt(statusField.split('u8')[0]);
-				console.log("_status => ", _status)
-				// setEventStatuses({ ...eventStatuses, [formInput.event_id]: { status: _status } });
-			} else {
-				console.error("Status field is null");
-			}
+
+
 			let new_local_storage = [];
-			if (!localStorage.getItem("privateEvents")) {
+			if (!localStorage.getItem("eventsDetail")) {
 				new_local_storage = [{ ...formInput }]
 			} else {
-				new_local_storage = [formInput, ...JSON.parse(localStorage.getItem("privateEvents") || "[]")]
+				new_local_storage = [formInput, ...JSON.parse(localStorage.getItem("eventsDetail") || "[]")]
 			}
-			localStorage.setItem("privateEvents", JSON.stringify(new_local_storage))
-
+			localStorage.setItem("eventsDetail", JSON.stringify(new_local_storage))
+			let address = getValueOfField(decryptedRecord, "owner");
 			/* let new_local_storage_for_records = [];
 			if (!localStorage.getItem("privateRecords")) {
 				new_local_storage_for_records = [{ ...decryptedRecord }]
 			} else {
 				new_local_storage_for_records = [decryptedRecord, ...JSON.parse(localStorage.getItem("privateRecords"))]
 			} */
-			addRecord(address, decryptedRecord);
+			addRecord("privateRecords", address, decryptedRecord);
 			// localStorage.setItem("privateRecords", ))
 
 			toast.success("Private Event Created!", {
@@ -532,6 +524,16 @@ const Create = (props: any) => {
 			const decryptedRecord = await aleoWorker.decrypt_record(record);
 			console.log("decryptedRecord => ", decryptedRecord);
 			console.log("haha"); */
+			// addRecord("eventsDetail", address,)
+
+			let new_local_storage = [];
+			if (!localStorage.getItem("eventsDetail")) {
+				new_local_storage = [{ ...formInput }]
+			} else {
+				new_local_storage = [formInput, ...JSON.parse(localStorage.getItem("eventsDetail") || "[]")]
+			}
+
+			localStorage.setItem("eventsDetail", JSON.stringify(new_local_storage))
 			toast.success("Public Event Created!", {
 				position: "bottom-left",
 				autoClose: 5000,

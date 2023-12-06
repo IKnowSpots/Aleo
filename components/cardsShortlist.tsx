@@ -30,9 +30,9 @@ const CardsShortlist = ({ image, name, date, event_id, supply }: { image: any; n
                     {/* <div className="flex justify-between items-center">
                         <p>{name}</p>
                         <p>{price} {currency}</p>
-                    </div> */}
+                    </div>
                     <div className="h-[2px] rounded-full bg-white"></div>
-                    {/* <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center">
                         <p>Bought: {supply - remaining}</p>
                         <p>{date}</p>
                     </div> */}

@@ -149,20 +149,20 @@ export async function fetchIfDeployed() {
 }
 
 export async function fetchCurrentUsername() {
-    const contract = await getFactoryContract();
+    /* const contract = await getFactoryContract();
     const address = await getUserAddress();
     const check = await fetchIfDeployed();
     if (check == true) {
         const data = await contract.addressToUsername(address.toString());
         // return data;
-    }
+    } */
     return "consentsam"
 }
 
 export async function fetchAddressFromUsername(username) {
     const contract = await getFactoryContract();
     const data = await contract.usernameToAddress(username.toString());
-    return data;
+    return "aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut";
 }
 
 export async function fetchUsernameFromAddress(address) {
@@ -178,9 +178,7 @@ export async function fetchUsernameValidity(username) {
 }
 
 export async function fetchUsernameValidityInfura(username) {
-    const contract = await getFactoryContractWithInfura();
-    const data = await contract.usernameExist(username);
-    return data;
+    return true;
 }
 
 // --contract-fetching-userData functions
@@ -222,7 +220,7 @@ export async function fetchAllEvents() {
     /* const contract = await getIKSContract(username);
 
     const data = await contract.fetchAllEvents(); */
-    const data = JSON.parse(localStorage.getItem("privateEvents") || "[]");
+    const data = JSON.parse(localStorage.getItem("eventsDetail") || "[]");
     // console.log("data", data)
     const items = await Promise.all(
         data.map(async (i) => {
@@ -257,7 +255,7 @@ export async function fetchAllEvents() {
     return items;
 }
 
-export async function fetchAllEventsWithUsername(username) {
+/* export async function fetchAllEventsWithUsername(username) {
     const contract = await getIKSContractWithInfura(username);
 
     const data = await contract.fetchAllEvents();
@@ -293,6 +291,42 @@ export async function fetchAllEventsWithUsername(username) {
     console.log("all infura", items);
     return items;
 }
+ */
+
+export async function fetchAllEventsWithUsername(username){
+    let all_events = JSON.parse(localStorage.getItem("eventsDetail") || "[]");
+    if (allEvents.length>0) {
+        const filteredArray = allEvents.filter(
+            (subarray) =>
+                // subarray.status =="1u8" &&
+                subarray.username == username
+        );
+        return filteredArray;
+    }
+    return null;
+}
+
+/*
+export async function fetchInactiveEvents() {
+    let allEvents = JSON.parse(localStorage.getItem("eventsDetail") || "[]");
+    if (allEvents.length>0) {
+        const filteredArray = allEvents.filter(
+            (subarray) =>
+                subarray.status =="0u8"
+        );
+        return filteredArray;
+    }
+    /* else {
+        const data = await fetchAllEvents();
+        const filteredArray = data.filter(
+            (subarray) =>
+                subarray.remaining > 0 &&
+                subarray.isActive == false &&
+                subarray.isPublished == true
+        );
+        return filteredArray;
+    }
+} */
 
 export async function fetchMintedCollection() {
     if (allEvents.length > 0) {
@@ -341,7 +375,7 @@ export async function fetchInactiveEvents() {
 
 
 export async function fetchInactiveEvents() {
-    let allEvents = JSON.parse(localStorage.getItem("privateEvents") || "[]");
+    let allEvents = JSON.parse(localStorage.getItem("eventsDetail") || "[]");
     if (allEvents.length>0) {
         const filteredArray = allEvents.filter(
             (subarray) =>
@@ -362,7 +396,7 @@ export async function fetchInactiveEvents() {
 }
 
 export async function fetchActiveEvents() {
-    let allEvents = JSON.parse(localStorage.getItem('privateEvents') || "{}");
+    let allEvents = JSON.parse(localStorage.getItem('eventsDetail') || "{}");
     console.log("allEvents => ",allEvents);
     if (allEvents.length > 0) {
         const filteredArray = allEvents.filter(
@@ -375,41 +409,44 @@ export async function fetchActiveEvents() {
     return allEvents;
 }
 
-export async function fetchShortlistEvents() {
-    let allEvents = JSON.parse(localStorage.getItem('privateEvents') || "{}");
+export async function fetchShortlistedEvents() {
+    let allEvents = JSON.parse(localStorage.getItem('eventsDetail') || "{}");
     if (allEvents.length > 0) {
         const filteredArray = allEvents.filter(
             (subarray) =>
-                subarray.isShortlistEnabled == true &&
-                subarray.status == "1u8"
+                subarray.isShortlistEnabled == true
         );
         return filteredArray;
     } return null;
 }
 
-export async function fetchActiveEventsWithUsername(username) {
-    // console.log("length", activeEventsInfura.length)
-    if (allEventsInfura.length > 0) {
-        const filteredArray = allEventsInfura.filter(
+/*
+
+export async function fetchShortlistForAEvent(event_id) {
+    let allEvents = JSON.parse(localStorage.getItem('eventsDetail') || "{}");
+    if (allEvents.length > 0) {
+        const filteredArray = allEvents.filter(
             (subarray) =>
-                subarray.remaining > 0 &&
-                subarray.isActive == true &&
-                subarray.isPublished == true
+                subarray.isShortlistEnabled == true &&
+                subarray.event_id == event_id
         );
-        console.log("Active Events", filteredArray);
         return filteredArray;
-    } else {
-        const fetchedAllEvents = await fetchAllEventsWithUsername(username);
-        const filteredArray = fetchedAllEvents.filter(
+    } return null;
+}
+*/
+export async function fetchActiveEventsWithUsername(username) {
+    let allEvents = JSON.parse(localStorage.getItem('eventsDetail') || "{}");
+    // console.log("length", activeEventsInfura.length)
+    if (allEvents.length > 0) {
+        const filteredArray = allEvents.filter(
             (subarray) =>
-                subarray.remaining > 0 &&
-                subarray.isActive == true &&
-                subarray.isPublished == true
+                subarray.username == username &&
+                subarray.status == "1u8"
         );
-        allEventsInfura = filteredArray;
         console.log("Active Events", filteredArray);
         return filteredArray;
     }
+    return null;
 }
 
 export async function fetchCommonInventory() {
@@ -635,10 +672,10 @@ export async function mint(_price, _supply, _isShortlist, _isStaking, NftURI) {
 
 export async function updateShortlist(ticketId, shortlistArray) {
     const username = await fetchCurrentUsername();
-    const contract = await getIKSContract(username, true);
+    /* const contract = await getIKSContract(username, true);
 
     const tx = await contract.updateShortlist(ticketId, shortlistArray);
-    await tx.wait();
+    await tx.wait(); */
     console.log("Shortlist uploaded");
 }
 
@@ -680,7 +717,7 @@ export async function raiseFeaturedEvents(ticketId) {
     await tx.wait();
     console.log("Featured Request Sent");
 }
-
+/*
 export async function buyTicket(username, ticketId, price) {
     const contract = await getFactoryContract(true);
 
@@ -691,7 +728,11 @@ export async function buyTicket(username, ticketId, price) {
     });
     await tx.wait();
     console.log("Purchased successfully");
-}
+} */
+
+/* export async function claimEventNFT(event_id){
+
+} */
 
 export async function whitelistUser(address) {
     const contract = await getFactoryContract(true);

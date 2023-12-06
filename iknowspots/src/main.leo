@@ -71,7 +71,7 @@ program iknowspots_2.aleo {
         return Event{
             owner:self.caller,
             event_id:event_id,
-            status: 0u8,
+            status: 1u8,
             max_supply:max_supply,
             shortlisted: defaultShortlistedAddresses
         }then finalize(event_id,hash_of_event_id_hash_and_owner_public_address_hash);
@@ -86,7 +86,7 @@ program iknowspots_2.aleo {
             is_private:true,
             event_owner: hash_of_event_id_hash_and_owner_public_address_hash, // Need to check again - what should I enter
             event_id: event_id,
-            status: 3u8, // Private event's status shouldn't be visible,
+            status: 1u8, // Private event's status shouldn't be visible,
             max_supply: 0u32, // Private event's max_supply won't be revealed
             claim_code_hash: 0field  // keeping both the max_supply and claim_code_hash same in case of private_events
         };
@@ -100,7 +100,7 @@ program iknowspots_2.aleo {
             is_private:false,
             event_owner: self.caller,
             event_id: event_id,
-            status: 0u8,
+            status: 1u8,
             max_supply: max_supply,
             claim_code_hash: claim_code_hash
         };
@@ -216,10 +216,10 @@ program iknowspots_2.aleo {
         };
     }
 
-    transition claim_public_event(event_id_hash: field,claim_code: field)-> bool{
-        let hash_of_hash_of_event_id_hash_self_caller : address = hash_of_two_into_address(event_id_hash,self.caller);
+    transition claim_public_event(event_id: field,claim_code: field)-> bool{
+        let hash_of_hash_of_event_id_hash_self_caller : address = hash_of_two_into_address(event_id,self.caller);
         let claim_code_hash : field = BHP256::hash_to_field(claim_code);
-        return true then finalize(event_id_hash,hash_of_hash_of_event_id_hash_self_caller,claim_code_hash);
+        return true then finalize(event_id,hash_of_hash_of_event_id_hash_self_caller,claim_code_hash);
     }
 
     finalize claim_public_event (event_id: field, hash_of_hash_of_event_id_hash_self_caller:address,claim_code_hash:field) {

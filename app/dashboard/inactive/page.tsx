@@ -89,7 +89,7 @@ const InactiveEvents = () => {
                         />
                     );
                 })}
-                {/* {JSON.parse(localStorage.getItem("privateEvents") || "hygy")} */}
+                {/* {JSON.parse(localStorage.getItem("eventsDetail") || "hygy")} */}
                 {/* <CardsMinted tokenId="01" image={"3.png"} name="Lorem Ipsum" />
                         <CardsInactive tokenId="01" image={"3.png"} name="Lorem Ipsum" />
                         <CardsInactive tokenId="01" image={"3.png"} name="Lorem Ipsum" />

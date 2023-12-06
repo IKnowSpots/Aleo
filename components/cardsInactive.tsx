@@ -26,9 +26,9 @@ const CardsInactive = ({ image, name, event_id, setInactiveEvents }: { image: an
     }
 
     const addRecordToEventRecords = (address: any, dataStr: any) => {
-        const records = JSON.parse(localStorage.getItem('privateEvents') || "{}");
+        const records = JSON.parse(localStorage.getItem('eventsDetail') || "{}");
         records[address] = records[address] ? [...records[address], dataStr] : [dataStr];
-        localStorage.setItem('privateEvents', JSON.stringify(records));
+        localStorage.setItem('eventsDetail', JSON.stringify(records));
     };
     const addRecordToPrivateRecords = (address: any, dataStr: any) => {
         const records = JSON.parse(localStorage.getItem('privateRecords') || "{}");
@@ -76,7 +76,7 @@ const CardsInactive = ({ image, name, event_id, setInactiveEvents }: { image: an
     /* function replaceStringBy(original_string: any, fromReplace: any, toReplace: any) {
         return original_string.replace(fromReplace, toReplace);
     } */
-    function updateRecordWhileResuming(event_id: any, old_state: any, new_state: any) {
+    function updateRecordWhileResuming(event_id: any, new_state: any) {
         /* let old_event_record = getARecordCorrespondingToAnEventCreation(event_id);
         console.log("old_event_record => ", old_event_record);
         const old_event_record_with_status = "status: " + old_state;
@@ -84,8 +84,8 @@ const CardsInactive = ({ image, name, event_id, setInactiveEvents }: { image: an
         const updated_event_record = old_event_record.replace(old_event_record_with_status, record_updated_with_status);
         console.log("New updated record => ", updated_event_record);
         addRecordToEventRecords(old_event_record.owner, updated_event_record); */
-        const events = JSON.parse(localStorage.getItem('privateEvents') || "{}") || {};
-        const modifiedEventId = event_id;
+        const events = JSON.parse(localStorage.getItem('eventsDetail') || "{}") || {};
+        // const modifiedEventId = event_id;
 
         // Find and update the specific event
         const updatedEvents = events.map((event: any) => {
@@ -96,7 +96,7 @@ const CardsInactive = ({ image, name, event_id, setInactiveEvents }: { image: an
         });
 
         // Save the updated array back to local storage
-        localStorage.setItem('privateEvents', JSON.stringify(updatedEvents));
+        localStorage.setItem('eventsDetail', JSON.stringify(updatedEvents));
 
     }
 
@@ -200,12 +200,11 @@ const CardsInactive = ({ image, name, event_id, setInactiveEvents }: { image: an
             console.log("decryptedRecord => ", decryptedRecord);
 
 
-            let current_status = getValueOfField(decryptedRecord, "status");
             console.log("address in executeToggle ", ownerAddress);
-            addRecordToPrivateRecords(ownerAddress, decryptedRecord);
-            updateRecordWhileResuming(event_id, current_status, "1u8");
-            setInactiveEvents((events: any) => events.filter((event: any) => event.event_id !== event_id));
 
+            updateRecordWhileResuming(event_id, "1u8");
+            setInactiveEvents((events: any) => events.filter((event: any) => event.event_id !== event_id));
+            addRecordToPrivateRecords(ownerAddress, decryptedRecord);
             // const statusField = getValueOfField(decryptedRecord, "status");
             // if (statusField) {
             //     const _status = parseInt(statusField.split('u8')[0]);

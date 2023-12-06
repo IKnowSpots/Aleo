@@ -9,24 +9,21 @@ import { currency } from "@/config";
 const CardsHostee = ({
     image,
     name,
-    price,
     date,
     username,
-    tokenId,
+    event_id,
     supply,
-    remaining,
 }: {
     image: any;
     name: string;
-    price: any;
     date: any;
     username: string;
-    tokenId: any;
+    event_id: any;
     supply: any;
-    remaining: any;
+
 }) => {
     function pushPage() {
-        redirect(`/${username}/events/${tokenId}`);
+        redirect(`/${username}/events/${event_id}`);
     }
 
     // console.log("tok", tokenId)
@@ -43,22 +40,22 @@ const CardsHostee = ({
                 />
 
                 <div className="flex gap-2 text-[0.85rem] flex-col">
-                    <div className="flex justify-between items-center">
+                    {/*  <div className="flex justify-between items-center">
                         <p>{name}</p>
                         <p>
                             {price} {currency}
                         </p>
-                    </div>
+                    </div> */}
                     <div className="h-[2px] rounded-full bg-white"></div>
-                    <div className="flex justify-between items-center">
+                    {/* <div className="flex justify-between items-center">
                         <p>
                             Supply: {remaining} / {supply}
                         </p>
                         <p>{date}</p>
-                    </div>
+                    </div> */}
                     <div className="flex justify-center items-center">
                         <Link
-                            href={`/${username}/events/${tokenId}`}
+                            href={`/${username}/events/${event_id}`}
                             className="view-btn px-4 py-1 outline rounded-lg"
                             onClick={pushPage}
                         >

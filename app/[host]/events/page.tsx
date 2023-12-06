@@ -16,8 +16,9 @@ const EventsByHost = () => {
 
     const pathName = usePathname();
     const id = pathName?.split("/")[1];
+    console.log("id => ", id);
 
-    const [isUsernameValid, setIsUsernameValid] = useState(false);
+    const [isUsernameValid, setIsUsernameValid] = useState(true);
     const [activeEvents, setActiveEvents] = useState([]);
     const [loading, setLoading] = useState(false);
     const [username, setUsername] = useState(`${id}`);
@@ -47,7 +48,9 @@ const EventsByHost = () => {
         if (data == true) {
             let data: any = await fetchActiveEventsWithUsername(id);
             setActiveEvents(data);
+            console.log("data inside if condition => ", data);
         }
+        console.log("data outside if condition => ", data);
         setIsUsernameValid(data)
         setLoading(false);
     }
@@ -65,7 +68,7 @@ const EventsByHost = () => {
             </div>
         );
 
-    if (loading == false && isUsernameValid == true && activeEvents.length == 0)
+    if (loading == false && isUsernameValid == true && activeEvents != undefined && (activeEvents.length) == 0)
         return (
             <Layout>
                 <div className="text-white">
@@ -76,86 +79,28 @@ const EventsByHost = () => {
 
     return (
         <Layout>
-            {activeEvents.map((nft: any, i: any) => {
+            {Array.isArray(activeEvents) && activeEvents.map((nft: any, i: any) => {
                 return (
                     <CardsHostee
                         key={i}
-                        tokenId={nft.tokenId}
+                        event_id={nft.event_id}
                         image={nft.cover}
                         name={nft.name}
-                        price={nft.price}
                         date={nft.date}
                         username={id}
                         supply={nft.supply}
-                        remaining={nft.remaining}
                     />
                 );
             })}
             {/* <CardsHostee
-                        image={"1.png"}
-                        name="Lorem Ipsum"
-                        price="1.20"
-                        date="01.34.45"
-                        username={id}
-                        tokenId="01"
-                    />
-                    <CardsHostee
-                        image={"2.png"}
-                        name="Lorem Ipsum"
-                        price="1.20"
-                        date="01.34.45"
-                        username={id}
-                        tokenId="01"
-                    />
-                    <CardsHostee
-                        image={"3.png"}
-                        name="Lorem Ipsum"
-                        price="1.20"
-                        date="01.34.45"
-                        username={id}
-                        tokenId="01"
-                    />
-                    <CardsHostee
-                        image={"4.png"}
-                        name="Lorem Ipsum"
-                        price="1.20"
-                        date="01.34.45"
-                        username={id}
-                        tokenId="01"
-                    />
+                image={"1.png"}
+                name="Lorem Ipsum"
+                date="01.12.23"
+                username="consentsam"
+                event_id="01"
+                supply="1000"
+            /> */}
 
-                    <CardsHostee
-                        image={"1.png"}
-                        name="Lorem Ipsum"
-                        price="1.20"
-                        date="01.34.45"
-                        username={id}
-                        tokenId="01"
-                    />
-                    <CardsHostee
-                        image={"2.png"}
-                        name="Lorem Ipsum"
-                        price="1.20"
-                        date="01.34.45"
-                        username={id}
-                        tokenId="01"
-                    />
-                    <CardsHostee
-                        image={"3.png"}
-                        name="Lorem Ipsum"
-                        price="1.20"
-                        date="01.34.45"
-                        username={id}
-                        tokenId="01"
-                    />
-                    <CardsHostee
-                        image={"4.png"}
-                        name="Lorem Ipsum"
-                        price="1.20"
-                        date="01.34.45"
-                        username={id}
-                        tokenId="01"
-                    />  */}
         </Layout>
     );
 

@@ -1,10 +1,10 @@
 "use client";
 import Sidebar from "@/components/dashboard/Sidebar";
 import Image from "next/image";
-import CardsActive from "@/components/cardsShortlist";
+import CardsActive from "@/components/cardsActive";
 import DashNav from "@/components/dashboard/Navbar";
 import { useEffect, useState } from "react";
-import { fetchShortlistEvents } from "../../../utils";
+import { fetchShortlistedEvents } from "../../../utils";
 import CardsShortlist from "@/components/cardsShortlist";
 import { usePathname } from "next/navigation";
 import LoadingModal from "@/components/LoadingModal";
@@ -18,10 +18,24 @@ const Shortlist = () => {
         fetchShortlistEventsData();
     }, []);
 
+    async function fetchShortlistEvents(event_id: any) {
+        let all_shortlists = JSON.parse(localStorage.getItem("eventIdToShortlistArray") || "[]");
+        if (all_shortlists.length > 0) {
+            const filteredArray = all_shortlists.filter(
+                (subarray: any) =>
+                    subarray.event_id == event_id
+            );
+            return filteredArray;
+        }
+        return null;
+    }
+
     async function fetchShortlistEventsData() {
+        console.log(" fetchShortlistEventsData has been called");
         try {
             setLoading(true);
-            let data: any = await fetchShortlistEvents();
+            let data: any = await fetchShortlistedEvents();
+            console.log("data => ", data);
             setActiveEvents(data);
             setLoading(false);
         } catch (error) {
@@ -54,7 +68,7 @@ const Shortlist = () => {
             </Layout>
         );
 
-    if (loading == false && activeEvents.length == 0)
+    if (loading == false && Array.isArray(activeEvents) && activeEvents.length == 0)
         return (
             <Layout>
                 {/* <div className="text-white p-4">No Events</div> */}
@@ -76,16 +90,14 @@ const Shortlist = () => {
     return (
         <Layout>
             <div className="flex gap-x-6 gap-y-5 flex-wrap pt-4 px-6 ">
-                {activeEvents.map((nft: any, i: any) => {
+                {Array.isArray(activeEvents) && activeEvents.map((nft: any, i: any) => {
                     return (
                         <CardsShortlist
                             key={i}
-                            tokenId={nft?.tokenId}
+                            event_id={nft?.event_id}
                             image={nft?.cover}
                             name={nft?.name}
-                            price={nft?.price}
                             date={nft?.date}
-                            remaining={nft?.remaining}
                             supply={nft?.supply}
                         />
                     );

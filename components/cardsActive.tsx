@@ -29,9 +29,9 @@ const CardsActive = ({ image, name, event_id, supply, setActiveEvents }: { image
     }
 
     const addRecordToEventRecords = (address: any, dataStr: any) => {
-        const records = JSON.parse(localStorage.getItem('privateEvents') || "{}");
+        const records = JSON.parse(localStorage.getItem('eventsDetail') || "{}");
         records[address] = records[address] ? [...records[address], dataStr] : [dataStr];
-        localStorage.setItem('privateEvents', JSON.stringify(records));
+        localStorage.setItem('eventsDetail', JSON.stringify(records));
     };
     const addRecordToPrivateRecords = (address: any, dataStr: any) => {
         const records = JSON.parse(localStorage.getItem('privateRecords') || "{}");
@@ -55,7 +55,7 @@ const CardsActive = ({ image, name, event_id, supply, setActiveEvents }: { image
         const updated_event_record = old_event_record.replace(old_event_record_with_status, record_updated_with_status);
         console.log("New updated record => ", updated_event_record);
         addRecordToEventRecords(old_event_record.owner, updated_event_record); */
-        const events = JSON.parse(localStorage.getItem('privateEvents') || "{}") || {};
+        const events = JSON.parse(localStorage.getItem('eventsDetail') || "{}") || {};
         const modifiedEventId = event_id;
 
         // Find and update the specific event
@@ -67,7 +67,7 @@ const CardsActive = ({ image, name, event_id, supply, setActiveEvents }: { image
         });
 
         // Save the updated array back to local storage
-        localStorage.setItem('privateEvents', JSON.stringify(updatedEvents));
+        localStorage.setItem('eventsDetail', JSON.stringify(updatedEvents));
 
     }
 
@@ -160,7 +160,7 @@ const CardsActive = ({ image, name, event_id, supply, setActiveEvents }: { image
         } catch (e) {
             console.error("Couldn't find a record corresponding to this eventID");
         }
-
+        let ownerAddress = getValueOfField(eventRecord, "owner");
         const current_status = getValueOfField(eventRecord, "status");
         console.log("current_status => ", current_status);
         // console.log(`Executing toggle with eventID =  ${param_event_id} changing status from ${current_status}to ${!current_status}`);
@@ -195,23 +195,23 @@ const CardsActive = ({ image, name, event_id, supply, setActiveEvents }: { image
             console.log("decryptedRecord => ", decryptedRecord);
 
 
-            let address = getValueOfField(decryptedRecord, "owner");
-            console.log("address in executeToggle ", address);
-            addRecordToPrivateRecords(address, decryptedRecord);
+            console.log("address in executeToggle ", ownerAddress);
 
-            const statusField = getValueOfField(decryptedRecord, "status");
-            if (statusField) {
-                const _status = parseInt(statusField.split('u8')[0]);
-                console.log("_status => ", _status)
-                // setEventStatuses({ ...eventStatuses, [formInput.event_id]: { status: _status } });
-            } else {
-                console.error("Status field is null");
-            }
             updateRecordWhilePausing(event_id, "0u8");
-            setActiveEvents((events: any) => events.filter((event: any) => event.event_id !== event_id));
+            /*  const statusField = getValueOfField(decryptedRecord, "status");
+             if (statusField) {
+                 const _status = parseInt(statusField.split('u8')[0]);
+                 console.log("_status => ", _status)
+                 // setEventStatuses({ ...eventStatuses, [formInput.event_id]: { status: _status } });
+             } else {
+                 console.error("Status field is null");
+             } */
 
+            setActiveEvents((events: any) => events.filter((event: any) => event.event_id !== event_id));
+            addRecordToPrivateRecords(ownerAddress, decryptedRecord);
 
         } catch (error) {
+            addRecordToPrivateRecords(ownerAddress, eventRecord);
             console.error("Error in createEvent function ", error);
         }
 
