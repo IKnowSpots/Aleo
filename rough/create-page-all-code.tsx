@@ -115,7 +115,7 @@ const Create = () => {
 
 
 
-    async function fetchDataUntilAvailable(aleo_api_url: string, maxAttempts = 20, delay = 5000) {
+    async function fetchDataUntilAvailable(aleo_api_url: string, maxAttempts = 10, delay = 10000) {
         try {
             const response = await fetch(aleo_api_url);
             if (response.ok) {
@@ -185,7 +185,7 @@ const Create = () => {
       // event.preventDefault();
       if (!publicKey) throw new WalletNotConnectedError();
       const program = `
-       program iknowspots_1.aleo;
+       program iknowspots_2.aleo;
 
        struct AddressStruct:
            addr0 as address;
@@ -255,7 +255,7 @@ const Create = () => {
            cast self.caller r3 0u8 r1 r2 into r5 as Event.record;
            async create_private_event r3 r4 into r6;
            output r5 as Event.record;
-           output r6 as iknowspots_1.aleo/create_private_event.future;
+           output r6 as iknowspots_2.aleo/create_private_event.future;
 
        finalize create_private_event:
            input r0 as field.public;
@@ -276,7 +276,7 @@ const Create = () => {
            cast false self.caller r3 1u8 r1 r4 into r5 as EventStruct;
            async create_public_event r5 into r6;
            output true as boolean.private;
-           output r6 as iknowspots_1.aleo/create_public_event.future;
+           output r6 as iknowspots_2.aleo/create_public_event.future;
 
        finalize create_public_event:
            input r0 as EventStruct.public;
@@ -302,7 +302,7 @@ const Create = () => {
            input r1 as u8.private;
            async toggle_public_event r0 r1 self.caller into r2;
            output true as boolean.private;
-           output r2 as iknowspots_1.aleo/toggle_public_event.future;
+           output r2 as iknowspots_2.aleo/toggle_public_event.future;
 
        finalize toggle_public_event:
            input r0 as field.public;
@@ -358,7 +358,7 @@ const Create = () => {
            hash.bhp256 r1 into r3 as field;
            async claim_public_event r0 r2 r3 into r4;
            output true as boolean.private;
-           output r4 as iknowspots_1.aleo/claim_public_event.future;
+           output r4 as iknowspots_2.aleo/claim_public_event.future;
 
        finalize claim_public_event:
            input r0 as field.public;

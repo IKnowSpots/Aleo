@@ -18,9 +18,11 @@ const ActiveEvents = () => {
     }, []);
 
     async function fetchActiveEventsData() {
+        console.log("This has been called");
         try {
             setLoading(true);
             let data: any = await fetchActiveEvents();
+            console.log("data inside fetchActiveEvents => ", data);
             setActiveEvents(data);
             setLoading(false);
         } catch (error) {
@@ -39,7 +41,7 @@ const ActiveEvents = () => {
                         alt="qr code svg"
                         className=""
                     />
-                    <p className="z-[10] text-white">Create an Event</p>
+                    <p className="z-[10] text-white">ssss</p>
                 </div>
             </a>
         );
@@ -52,11 +54,12 @@ const ActiveEvents = () => {
                 {/* // <LoadingModal visible={true}/> */}
             </Layout>
         );
-
-    if (loading == false && activeEvents.length == 0)
+    console.log("activeEvents => ", activeEvents ? "YES" : "NO");
+    if (loading == false && (activeEvents == undefined || activeEvents.length == 0))
         return (
             <Layout>
                 {/* <div className="text-white p-4">No Events</div> */}
+                {/* <p>something</p> */}
                 <div className="flex justify-center items-center mt-10 mb-10">
                     <Image
                         src={"/noactive-banner.svg"}
@@ -75,21 +78,19 @@ const ActiveEvents = () => {
     return (
         <Layout>
             <div className="flex gap-x-6 gap-y-5 flex-wrap pt-4 px-6 ">
-                {activeEvents.map((nft: any, i: any) => {
+
+                {Array.isArray(activeEvents) ? activeEvents.map((nft: any, i: any) => {
                     return (
                         <CardsActive
                             setActiveEvents={setActiveEvents}
                             key={i}
-                            tokenId={nft?.tokenId}
+                            event_id={nft?.event_id}
                             image={nft?.cover}
                             name={nft?.name}
-                            price={nft?.price}
-                            date={nft?.date}
-                            remaining={nft?.remaining}
                             supply={nft?.supply}
                         />
                     );
-                })}
+                }) : ""}
                 {/* <CardsMinted tokenId="01" image={"3.png"} name="Lorem Ipsum" />
                         <CardsActive tokenId="01" image={"3.png"} name="Lorem Ipsum" />
                         <CardsActive tokenId="01" image={"3.png"} name="Lorem Ipsum" />

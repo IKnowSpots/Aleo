@@ -1,4 +1,4 @@
-# iknowspots_1.aleo
+# iknowspots_2.aleo
 
 ## Build Guide
 

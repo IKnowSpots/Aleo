@@ -1,5 +1,5 @@
 import "./App.css";
-import iknowspots_1_program from "../iknowspots/build/main.aleo?raw";
+import iknowspots_2_program from "../iknowspots/build/main.aleo?raw";
 import { AleoWorker } from "./workers/AleoWorker.js";
 const aleoWorker = AleoWorker();
 
@@ -11,7 +11,34 @@ let PRIVATE_KEY = "APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc";
 
 function App() {
 
-	async function fetchDataUntilAvailable(url, maxAttempts = 20, delay = 5000) {
+	const addRecord = (address, dataStr,setFunction) => {
+        setFunction(prevRecords => {
+            // Check if the address already has records
+            if (prevRecords[address]) {
+                // Check if the new data string is a duplicate
+                const isDuplicate = prevRecords[address].includes(dataStr);
+
+                if (!isDuplicate) {
+                    // Add the new data string if it's not a duplicate
+                    return {
+                        ...prevRecords,
+                        [address]: [...prevRecords[address], dataStr]
+                    };
+                } else {
+                    console.log('Duplicate record not added.');
+                    return prevRecords;
+                }
+            } else {
+                // Address doesn't exist, add the new data string
+                return {
+                    ...prevRecords,
+                    [address]: [dataStr]
+                };
+            }
+        });
+    };
+
+	async function fetchDataUntilAvailable(url, maxAttempts = 10, delay = 10000) {
 
 		try {
 		const response = await fetch(url);
@@ -42,7 +69,7 @@ function App() {
 		try {
 			const event_id_u32 = event_id + "u32"
 			const max_supply_u32 = max_supply + "u32"
-			let program_name = "iknowspots_1.aleo";
+			let program_name = "iknowspots_2.aleo";
 			let function_name = "create_private_event";
 			let tx_id;
 			try{

@@ -54,7 +54,7 @@ snarkos developer execute credits.aleo transfer_private "{  owner: aleo1rhgdu77h
 
 
 // Aleo Credit transfer from node to address
-snarkos developer execute credits.aleo transfer_private_to_public "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 1000000000000u64.private,  _nonce: 7167548570416370992660419783534955522916027654549387115860521522018029780145group.public}" "aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut"  1000000000000u64 --private-key "APrivateKey1zkp8CZNn3yeCseEtxuVPbDCwSyhGW6yZKUYKfgXmcpoGPWH" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 10000000000 --record "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 989999997790u64.private,  _nonce: 6744790638552441701569553577258249364539210622324659736581621330942167599752group.public}"
+snarkos developer execute credits.aleo transfer_private_to_public "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 1000000000000u64.private,  _nonce: 2147544859188173635598614390014841094843475220987598413361363655799329122784group.public}" "aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut"  1000000000000u64 --private-key "APrivateKey1zkp8CZNn3yeCseEtxuVPbDCwSyhGW6yZKUYKfgXmcpoGPWH" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 10000000000 --record "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 1000000000000u64.private,  _nonce: 1870384227717108990812464071079401090030090200169646008180314689517851502548group.public}"
 
 
 
@@ -67,59 +67,59 @@ snarkos developer execute credits.aleo transfer_private_to_public "{  owner: ale
 
 
 // Deploy
-snarkos developer deploy iknowspots_1.aleo --private-key APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc --query "http://localhost:3030" --path "./build/" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 600000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 1000000000000u64.private,  _nonce: 6587075736472544193751800783009569695115264950097175152013211271775504943598group.public}"
+snarkos developer deploy iknowspots_2.aleo --private-key APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc --query "http://localhost:3030" --path "./build/" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 600000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 837479731000u64.private,  _nonce: 4292393654384711680071256063834865910129031443496172025756230662500356227836group.public}"
 
 
-snarkos developer deploy iknowspots_1.aleo --private-key APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc --query "http://localhost:3030" --path "./build/" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 600000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 837500000000u64.private,  _nonce: 854191043904670938802614028529982032066139015246648510615822600033695420601group.public}"
-
-
-
-
-
-snarkos developer deploy iknowspots_1.aleo --private-key APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc --query "http://localhost:3030" --path "./build/" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 600000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 817489810275u64.private,  _nonce: 725948641250041373053689787761889798567424984853305573247763705387838303239group.public}"
+snarkos developer deploy iknowspots_2.aleo --private-key APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc --query "http://localhost:3030" --path "./build/" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 600000 --record "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 1000000000000u64.private,  _nonce: 1870384227717108990812464071079401090030090200169646008180314689517851502548group.public}"
 
 
 
 
 
+snarkos developer deploy iknowspots_2.aleo --private-key APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc --query "http://localhost:3030" --path "./build/" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 600000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 817489810275u64.private,  _nonce: 725948641250041373053689787761889798567424984853305573247763705387838303239group.public}"
 
 
-snarkos developer deploy iknowspots_1.aleo --private-key APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc --query "http://localhost:3030" --path "./build/" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 600000 --record
+
+
+
+
+
+snarkos developer deploy iknowspots_2.aleo --private-key APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc --query "http://localhost:3030" --path "./build/" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 600000 --record
 
 
 
 
 // Aleo Credit transfer from node to address
-snarkos developer execute iknowspots_1.aleo create_private_event "2field" "102u32" --private-key "APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 600000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 817479754275u64.private,  _nonce: 1705475877813625548728830374195790424044069980420485320949867007637878879238group.public}"
+snarkos developer execute iknowspots_2.aleo create_private_event "1field" "101u32" --private-key "APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 600000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 837489851000u64.private,  _nonce: 4505902132629679853296356180315884374675633677224647631284890455619150414860group.public}"
 
 
 
 
 
-snarkos developer execute iknowspots_1.aleo create_private_event "2field" "102u32" --private-key "APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 600000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 817479754275u64.private,  _nonce: 1705475877813625548728830374195790424044069980420485320949867007637878879238group.public}"
+snarkos developer execute iknowspots_2.aleo create_private_event "2field" "102u32" --private-key "APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 600000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 817479754275u64.private,  _nonce: 1705475877813625548728830374195790424044069980420485320949867007637878879238group.public}"
 
 
 
 
-snarkos developer execute iknowspots_1.aleo toggle_private_event "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  event_id: 3736522601382494394255789052466017870786031735005680174691203879959757105441field.private,  status: 1u8.private,  max_supply: 102u32.private,  shortlisted: {    addr0: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,    addr1: aleo17sv2qntg7duvr3h6fturqrf0qc7srgekcnvdu3nuuwqvtlnpyugsn965t9.private,    addr2: aleo1wvdfek6yr6djgr4vu2e85xq9lgly0v6vmxche6crrk99yma86c9q4sra7c.private,    addr3: aleo13lt3j3hs74ll0d3u8tlul7lgptr9dglp57kmskacgg2v4y748cxs2h45mp.private  },  _nonce: 7187251833938982369885205570439370405696502455713593874084549037676655737296group.public}" "0u8" --private-key "APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 600000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 807479633814u64.private,  _nonce: 2780360909126258977261440195856246274234480778403762833825632996397079862546group.public}"
+snarkos developer execute iknowspots_2.aleo toggle_private_event "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  event_id: 3736522601382494394255789052466017870786031735005680174691203879959757105441field.private,  status: 1u8.private,  max_supply: 102u32.private,  shortlisted: {    addr0: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,    addr1: aleo17sv2qntg7duvr3h6fturqrf0qc7srgekcnvdu3nuuwqvtlnpyugsn965t9.private,    addr2: aleo1wvdfek6yr6djgr4vu2e85xq9lgly0v6vmxche6crrk99yma86c9q4sra7c.private,    addr3: aleo13lt3j3hs74ll0d3u8tlul7lgptr9dglp57kmskacgg2v4y748cxs2h45mp.private  },  _nonce: 7187251833938982369885205570439370405696502455713593874084549037676655737296group.public}" "0u8" --private-key "APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 600000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 807479633814u64.private,  _nonce: 2780360909126258977261440195856246274234480778403762833825632996397079862546group.public}"
 
 
-snarkos developer execute iknowspots_1.aleo claim_private_event "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  event_id: 3736522601382494394255789052466017870786031735005680174691203879959757105441field.private,  max_supply: 102u32.private,  _nonce: 7336487711873377956033941404218527952709512078935279049684427656637320808168group.public}"  --private-key "APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 10000000000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 797479027921u64.private,  _nonce: 7057998599530301525402841361860453684636326207190325559689348368880898548054group.public}"
-
-
-
-snarkos developer execute iknowspots_1.aleo create_public_event "3field" "103u32" "1003field"  --private-key "APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 10000000000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 787479025979u64.private,  _nonce: 359181505848521813513035027413087895613633411579964794871369675906482460365group.public}"
+snarkos developer execute iknowspots_2.aleo claim_private_event "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  event_id: 3736522601382494394255789052466017870786031735005680174691203879959757105441field.private,  max_supply: 102u32.private,  _nonce: 7336487711873377956033941404218527952709512078935279049684427656637320808168group.public}"  --private-key "APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 10000000000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 797479027921u64.private,  _nonce: 7057998599530301525402841361860453684636326207190325559689348368880898548054group.public}"
 
 
 
+snarkos developer execute iknowspots_2.aleo create_public_event "3field" "103u32" "1003field"  --private-key "APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 10000000000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 787479025979u64.private,  _nonce: 359181505848521813513035027413087895613633411579964794871369675906482460365group.public}"
 
-snarkos developer execute iknowspots_1.aleo toggle_public_event "3784389418964719981816894781287115017553786961964078707004764868992997308403field" "0u8"  --private-key "APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 10000000000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 777478807738u64.private,  _nonce: 1977301150367491750488040275913491619683456699390552361497153295661986763252group.public}"
+
+
+
+snarkos developer execute iknowspots_2.aleo toggle_public_event "3784389418964719981816894781287115017553786961964078707004764868992997308403field" "0u8"  --private-key "APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 10000000000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 777478807738u64.private,  _nonce: 1977301150367491750488040275913491619683456699390552361497153295661986763252group.public}"
 
 
 
 // WRONG - Passed because I didn't put the claim_hash_code match condition
 
-snarkos developer execute iknowspots_1.aleo claim_public_event "3784389418964719981816894781287115017553786961964078707004764868992997308403field" "1004field"  --private-key "APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 10000000000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 767478658717u64.private,  _nonce: 4044481921650605443316059243981448659617059632284182693482271277242134493830group.public}"
+snarkos developer execute iknowspots_2.aleo claim_public_event "3784389418964719981816894781287115017553786961964078707004764868992997308403field" "1004field"  --private-key "APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 10000000000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 767478658717u64.private,  _nonce: 4044481921650605443316059243981448659617059632284182693482271277242134493830group.public}"
 
 
 
@@ -142,7 +142,7 @@ snarkos developer scan -v AViewKey1mSnpFFC8Mj4fXbK5YiWgZ3mjiV8CxA79bYNa8ymUpTrw 
 
 
 
-snarkos developer deploy iknowspots_1.aleo --private-key APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc --query "http://localhost:3030" --path "./iknowspots/build/" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 600000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 837490921000u64.private,  _nonce: 1739902003959519510250491500627565449878277321904130176316531435176376624350group.public}"
+snarkos developer deploy iknowspots_2.aleo --private-key APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc --query "http://localhost:3030" --path "./iknowspots/build/" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 600000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 837490921000u64.private,  _nonce: 1739902003959519510250491500627565449878277321904130176316531435176376624350group.public}"
 
 
 
@@ -206,8 +206,8 @@ decrypted record {
 
 
 
-// The 'iknowspots_1' program.
-program iknowspots_1.aleo {
+// The 'iknowspots_2' program.
+program iknowspots_2.aleo {
 
     // mapping eventOwnerMapping: field => address;
 
@@ -588,8 +588,8 @@ snarkos developer execute credits.aleo transfer_private  "aleo1xykf5gvr0sjw94hze
 
 
 ```
-// The 'iknowspots_1' program.
-program iknowspots_1.aleo {
+// The 'iknowspots_2' program.
+program iknowspots_2.aleo {
 
     // mapping eventOwnerMapping: field => address;
     struct AddressStruct{
@@ -1083,3 +1083,10 @@ const handleCallFunctions = async (event: MouseEventHandler<HTMLButtonElement>) 
     // setTransactionId(txId);
     console.log("txId => ", txId);
   };
+
+
+
+----
+
+
+snarkos developer execute credits.aleo transfer_private_to_public  "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 1000000000000u64.private,  _nonce: 2147544859188173635598614390014841094843475220987598413361363655799329122784group.public}" "aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut" 1000000000000u64 --private-key "APrivateKey1zkp8CZNn3yeCseEtxuVPbDCwSyhGW6yZKUYKfgXmcpoGPWH" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 10000000000 --record "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 152499870891u64.private,  _nonce: 3458911865440047565960280220243844258824394388346634923030307356754321846564group.public}"

@@ -1,4 +1,4 @@
-program iknowspots_1.aleo;
+program iknowspots_2.aleo;
 
 struct AddressStruct:
     addr0 as address;
@@ -70,12 +70,11 @@ function create_private_event:
     input r0 as field.private;
     input r1 as u32.private;
     cast aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut aleo17sv2qntg7duvr3h6fturqrf0qc7srgekcnvdu3nuuwqvtlnpyugsn965t9 aleo1wvdfek6yr6djgr4vu2e85xq9lgly0v6vmxche6crrk99yma86c9q4sra7c aleo13lt3j3hs74ll0d3u8tlul7lgptr9dglp57kmskacgg2v4y748cxs2h45mp into r2 as AddressStruct;
-    hash.bhp256 r0 into r3 as field;
-    call hash_of_two_into_address r3 self.caller into r4;
-    cast self.caller r3 0u8 r1 r2 into r5 as Event.record;
-    async create_private_event r3 r4 into r6;
-    output r5 as Event.record;
-    output r6 as iknowspots_1.aleo/create_private_event.future;
+    call hash_of_two_into_address r0 self.caller into r3;
+    cast self.caller r0 0u8 r1 r2 into r4 as Event.record;
+    async create_private_event r0 r3 into r5;
+    output r4 as Event.record;
+    output r5 as iknowspots_2.aleo/create_private_event.future;
 
 finalize create_private_event:
     input r0 as field.public;
@@ -91,12 +90,11 @@ function create_public_event:
     input r0 as field.private;
     input r1 as u32.private;
     input r2 as field.private;
-    hash.bhp256 r0 into r3 as field;
-    hash.bhp256 r2 into r4 as field;
-    cast false self.caller r3 1u8 r1 r4 into r5 as EventStruct;
-    async create_public_event r5 into r6;
+    hash.bhp256 r2 into r3 as field;
+    cast false self.caller r0 0u8 r1 r3 into r4 as EventStruct;
+    async create_public_event r4 into r5;
     output true as boolean.private;
-    output r6 as iknowspots_1.aleo/create_public_event.future;
+    output r5 as iknowspots_2.aleo/create_public_event.future;
 
 finalize create_public_event:
     input r0 as EventStruct.public;
@@ -121,8 +119,8 @@ function toggle_public_event:
     input r0 as field.private;
     input r1 as u8.private;
     async toggle_public_event r0 r1 self.caller into r2;
-    output true as boolean.private;
-    output r2 as iknowspots_1.aleo/toggle_public_event.future;
+    output true as boolean.public;
+    output r2 as iknowspots_2.aleo/toggle_public_event.future;
 
 finalize toggle_public_event:
     input r0 as field.public;
@@ -178,7 +176,7 @@ function claim_public_event:
     hash.bhp256 r1 into r3 as field;
     async claim_public_event r0 r2 r3 into r4;
     output true as boolean.private;
-    output r4 as iknowspots_1.aleo/claim_public_event.future;
+    output r4 as iknowspots_2.aleo/claim_public_event.future;
 
 finalize claim_public_event:
     input r0 as field.public;

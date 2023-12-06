@@ -31,7 +31,7 @@ import {
     console.log("txId ",txId);
   }; */
 
-async function fetchDataUntilAvailable(url, maxAttempts = 20, delay = 5000) {
+async function fetchDataUntilAvailable(url, maxAttempts = 10, delay = 10000) {
     try {
     const response = await fetch(url);
     if (response.ok) {
@@ -72,13 +72,13 @@ export function getValueOfField(recordString, fieldName) {
 
 
 export async function create_private_event(event_id,max_supply){
-    // const aleoWorker = AleoWorker();
+    const aleoWorker = AleoWorker();
     console.log(`Create Event for ${event_id} with maxSupply ${max_supply}`);
 
     try {
         const event_id_field = event_id + "field"
         const max_supply_u32 = max_supply + "u32"
-        let program_name = "iknowspots_1.aleo";
+        let program_name = "iknowspots_2.aleo";
         let function_name = "create_private_event";
         let transaction_id;
         console.log("event_id_field ",event_id_field);
@@ -115,13 +115,13 @@ export async function create_private_event(event_id,max_supply){
 }
 
 export async function create_public_event(event_id,max_supply){
-    // const aleoWorker = AleoWorker();
+    const aleoWorker = AleoWorker();
     console.log(`Create Event for ${event_id} with maxSupply ${max_supply}`);
 
     try {
         const event_id_field = event_id + "field"
         const max_supply_u32 = max_supply + "u32"
-        let program_name = "iknowspots_1.aleo";
+        let program_name = "iknowspots_2.aleo";
         let function_name = "create_public_event";
         let transaction_id;
         console.log("event_id_field ",event_id_field);
@@ -148,7 +148,7 @@ export async function create_public_event(event_id,max_supply){
         console.log("record ",record);
         const decryptedRecord = await aleoWorker.decrypt_record(record);
         console.log("decryptedRecord => ",decryptedRecord);
-        // console.log("haha");
+        console.log("haha");
 
     } catch (error) {
     console.error("Error in createEvent function ",error);

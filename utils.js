@@ -8,7 +8,7 @@ import {
     abiFeatured,
     RPCUrl,
 } from "./config";
-import axios from "axios";
+import axios, { all } from "axios";
 import { Web3Storage } from "web3.storage";
 
 // import {
@@ -154,8 +154,9 @@ export async function fetchCurrentUsername() {
     const check = await fetchIfDeployed();
     if (check == true) {
         const data = await contract.addressToUsername(address.toString());
-        return data;
+        // return data;
     }
+    return "consentsam"
 }
 
 export async function fetchAddressFromUsername(username) {
@@ -218,13 +219,14 @@ export async function fetchFeaturedRequest() {
 
 export async function fetchAllEvents() {
     const username = await fetchCurrentUsername();
-    const contract = await getIKSContract(username);
+    /* const contract = await getIKSContract(username);
 
-    const data = await contract.fetchAllEvents();
+    const data = await contract.fetchAllEvents(); */
+    const data = JSON.parse(localStorage.getItem("privateEvents") || "[]");
     // console.log("data", data)
     const items = await Promise.all(
         data.map(async (i) => {
-            const tokenUri = await contract.uri(i.ticketId.toString());
+            const tokenUri = "Some random token URI";
             // console.log(tokenUri);
             const meta = await axios.get(tokenUri);
             let price = ethers.utils.formatEther(i.price);
@@ -311,27 +313,10 @@ export async function fetchMintedCollection() {
     }
 }
 
-export async function fetchActiveEvents() {
-    if (allEvents.length > 0) {
-        const filteredArray = allEvents.filter(
-            (subarray) =>
-                subarray.remaining > 0 &&
-                subarray.isActive == true &&
-                subarray.isPublished == true
-        );
-        return filteredArray;
-    } else {
-        const data = await fetchAllEvents();
-        const filteredArray = data.filter(
-            (subarray) =>
-                subarray.remaining > 0 &&
-                subarray.isActive == true &&
-                subarray.isPublished == true
-        );
-        return filteredArray;
-    }
-}
 
+
+
+/*
 export async function fetchInactiveEvents() {
     if (allEvents.length > 0) {
         const filteredArray = allEvents.filter(
@@ -352,30 +337,54 @@ export async function fetchInactiveEvents() {
         return filteredArray;
     }
 }
+ */
 
-export async function fetchShortlistEvents() {
-    if (allEvents.length > 0) {
+
+export async function fetchInactiveEvents() {
+    let allEvents = JSON.parse(localStorage.getItem("privateEvents") || "[]");
+    if (allEvents.length>0) {
         const filteredArray = allEvents.filter(
             (subarray) =>
-                subarray.remaining > 0 &&
-                subarray.isActive == true &&
-                subarray.isPublished == true &&
-                subarray.isExistingTicket == false &&
-                subarray.isShortlist == true
+                subarray.status =="0u8"
         );
         return filteredArray;
-    } else {
+    }
+    /* else {
         const data = await fetchAllEvents();
         const filteredArray = data.filter(
             (subarray) =>
                 subarray.remaining > 0 &&
-                subarray.isActive == true &&
-                subarray.isPublished == true &&
-                subarray.isExistingTicket == false &&
-                subarray.isShortlist == true
+                subarray.isActive == false &&
+                subarray.isPublished == true
         );
         return filteredArray;
+    } */
+}
+
+export async function fetchActiveEvents() {
+    let allEvents = JSON.parse(localStorage.getItem('privateEvents') || "{}");
+    console.log("allEvents => ",allEvents);
+    if (allEvents.length > 0) {
+        const filteredArray = allEvents.filter(
+            (subarray) =>
+                subarray.status == "1u8"
+        );
+        console.log("filteredArray => ",filteredArray);
+        return filteredArray;
     }
+    return allEvents;
+}
+
+export async function fetchShortlistEvents() {
+    let allEvents = JSON.parse(localStorage.getItem('privateEvents') || "{}");
+    if (allEvents.length > 0) {
+        const filteredArray = allEvents.filter(
+            (subarray) =>
+                subarray.isShortlistEnabled == true &&
+                subarray.status == "1u8"
+        );
+        return filteredArray;
+    } return null;
 }
 
 export async function fetchActiveEventsWithUsername(username) {

@@ -16,7 +16,7 @@ const Dashboard = () => {
         checkDeployment();
     }, []);
 
-    // comment line 18-26 to make this page static
+    // comment line 18 - 26 to make this page static
 
     // useEffect(() => {
     //     if (isDeployed == true) {
@@ -28,13 +28,13 @@ const Dashboard = () => {
     //     window.location.replace("/dashboard/active");
     // }
 
-    async function checkDeployment() {
-        setLoading(true);
-        const data = await fetchIfDeployed();
-        console.log("deploy", data);
-        setIsDeployed(data);
-        setLoading(false);
-    }
+    // async function checkDeployment() {
+    //     setLoading(true);
+    //     const data = await fetchIfDeployed();
+    //     console.log("deploy", data);
+    //     setIsDeployed(data);
+    //     setLoading(false);
+    // }
 
     // if (loading == true) return // <LoadingModal visible={true}/>;
 

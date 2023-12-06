@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { fetchInactiveEvents } from "../../../utils";
 import LoadingModal from "@/components/LoadingModal";
 
+
 const InactiveEvents = () => {
     const [inactiveEvents, setInactiveEvents] = useState<any>([]);
     const [loading, setLoading] = useState(false);
@@ -17,9 +18,11 @@ const InactiveEvents = () => {
     }, []);
 
     async function fetchInactiveEventsData() {
+        // debugger;
         try {
             setLoading(true);
             let data: any = await fetchInactiveEvents();
+            console.log("data inside fetchInactiveEvents => ", data);
             setInactiveEvents(data);
             setLoading(false);
         } catch (error) {
@@ -44,16 +47,16 @@ const InactiveEvents = () => {
         );
     }
 
-    if (loading == true){
+    if (loading == true) {
         return (
             <Layout>
                 {/* <div className="text-white">Fetching..</div> */}
                 {/* // <LoadingModal visible={true}/> */}
             </Layout>
-            );
-        }
+        );
+    }
 
-    if (loading == false && inactiveEvents.length == 0)
+    if (loading == false && (inactiveEvents == undefined || inactiveEvents.length == 0))
         return (
             <Layout>
                 {/* <div className="text-white p-4">No Events</div> */}
@@ -80,12 +83,13 @@ const InactiveEvents = () => {
                         <CardsInactive
                             setInactiveEvents={setInactiveEvents}
                             key={i}
-                            tokenId={nft.tokenId}
+                            event_id={nft.event_id}
                             image={nft.cover}
                             name={nft.name}
                         />
                     );
                 })}
+                {/* {JSON.parse(localStorage.getItem("privateEvents") || "hygy")} */}
                 {/* <CardsMinted tokenId="01" image={"3.png"} name="Lorem Ipsum" />
                         <CardsInactive tokenId="01" image={"3.png"} name="Lorem Ipsum" />
                         <CardsInactive tokenId="01" image={"3.png"} name="Lorem Ipsum" />

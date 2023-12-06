@@ -17,71 +17,69 @@ const ALEO_URL = 'https://api.explorer.aleo.org/v1/testnet3';
 
 const account = new Account({privateKey: PRIVATE_KEY});
 
-// async function execute(program, aleoFunction, inputs) {
-//   console.log("Even this is not getting printed out")
-//   console.log("program name is ",program);
-//   console.log("aleoFunction is ",aleoFunction);
-//   console.log("inputs  is ",inputs);
+async function execute(program, aleoFunction, inputs) {
+  console.log("So, this printst")
+  console.log("program name is ",program);
+  console.log("aleoFunction is ",aleoFunction);
+  console.log("inputs  is ",inputs);
 
-//   const keyProvider = new AleoKeyProvider();
-//   keyProvider.useCache(true);
-
-
-//   const account = new Account({
-//     privateKey: PRIVATE_KEY,
-//   });
+  // const keyProvider = new AleoKeyProvider({
+  //   keyUris:
+  // });
+  const keyProvider = new AleoKeyProvider();
+  keyProvider.useCache(true);
 
 
-//   const local_connection = new AleoNetworkClient(ENDPOINT);
-//   local_connection.setAccount(account);
-//   console.log("local_connection =>", local_connection)
+  const local_connection = new AleoNetworkClient(ENDPOINT);
+  local_connection.setAccount(account);
+  console.log("local_connection =>", local_connection)
 
 
-//   let recordProvider;
-//   try{
-//     recordProvider = await new  NetworkRecordProvider(account, local_connection);
-//     console.log("recordProvider has been processed",recordProvider)
+  let recordProvider;
+  try{
+    recordProvider = new  NetworkRecordProvider(account, local_connection);
+    console.log("recordProvider has been processed",recordProvider)
 
-//   }catch(error){
-//     console.error("Some issue has happened with networkrecordprovider",error)
-//   }
+  }catch(error){
+    console.error("Some issue has happened with networkrecordprovider",error)
+  }
 
 
-//   console.log("keyProvider ",keyProvider);
-//   const programManager =  new ProgramManager(
-//     ENDPOINT,
-//     keyProvider,
-//     recordProvider,
-//   );
-//   console.log("programManager has been processed ",programManager)
-//   programManager.setAccount(account);
-//   console.log("final programManager after processing ",programManager)
+  console.log("keyProvider ",keyProvider);
+  const programManager =  new ProgramManager(
+    ENDPOINT,
+    keyProvider,
+    recordProvider,
+  );
+  console.log("programManager has been processed ",programManager)
+  programManager.setAccount(account);
+  console.log("final programManager after processing ",programManager)
 
-//   let executionResponse;
-//   try{
-//     console.log("Inside executionResponse");
-//     executionResponse = await programManager.execute(
-//       program,
-//       aleoFunction,
-//       10,
-//       false,
-//       inputs
-//     );
-//     const transaction =  local_connection.getTransaction(executionResponse);
-//     console.log("transaction =>",transaction);
-//   }catch(error){
-//     console.error("error with executionResponse ", error);
-//   }
+  let executionResponse;
+  try{
+    console.log("Inside executionResponse");
+    executionResponse = await programManager.execute(
+      program,
+      aleoFunction,
+      5,
+      false,
+      inputs
+    );
+    const transaction = await  local_connection.getTransaction(executionResponse);
+    console.log("transaction =>",transaction);
+  }catch(error){
+    console.error("error with executionResponse ", error);
+  }
 
-//   console.log("executionResponse has been processed ",executionResponse)
+  console.log("executionResponse has been processed ",executionResponse)
 
-//   return executionResponse;
-// }
+  return executionResponse;
+}
 
 async function localProgramExecution(program, aleoFunction, inputs) {
   // await initThreadPool(2);
   console.log("point 2.1");
-  const programManager = new ProgramManager(ALEO_URL);
+  const programManager = new ProgramManager(ENDPOINT);
   console.log("point 2.2");
   // Create a temporary account for the execution of the program
   programManager.setAccount(account);
@@ -103,10 +101,10 @@ async function deployProgram(program) {
   // Create a record provider that will be used to find records and transaction data for Aleo programs
   const networkClient = new AleoNetworkClient(ENDPOINT);
 
-  // Use existing account with funds
-  const account = new Account({
-    privateKey: PRIVATE_KEY,
-  });
+  // // Use existing account with funds
+  // const account = new Account({
+  //   privateKey: PRIVATE_KEY,
+  // });
 
   const recordProvider = new NetworkRecordProvider(account, networkClient);
 
@@ -132,12 +130,27 @@ async function deployProgram(program) {
   return tx_id;
 }
 
+async function getMappingValue(program_name,mapping_name, mapping_key){
+  const keyProvider = new AleoKeyProvider();
+  keyProvider.useCache(true);
+
+  // const account = new Account({
+  //   privateKey: PRIVATE_KEY,
+  // });
+
+  const local_connection = new AleoNetworkClient(ENDPOINT);
+  local_connection.setAccount(account);
+  console.log("local_connection inside aleoworker=>", local_connection)
+  const current_state = await local_connection.getProgramMappingValue(program_name, mapping_name, mapping_key);
+  return current_state;
+}
+
 
 async function decrypt_record(record,private_key=PRIVATE_KEY){
   // console.log("decrypting record",record)
-  const account = new Account({
-    privateKey: private_key,
-  });
+  // const account = new Account({
+  //   privateKey: private_key,
+  // });
   let decryptedRecord = account.decryptRecord(record);
   // console.log("decrypted record",decryptedRecord);
   return decryptedRecord;
@@ -147,10 +160,10 @@ async function executeOffline(program, aleoFunction, inputs) {
   console.log("Reached start of the  executeOffline ");
   const programManager = new ProgramManager();
 
-  // Create a temporary account for the execution of the program
-  const account = new Account({
-    privateKey: PRIVATE_KEY,
-  });
+  // // Create a temporary account for the execution of the program
+  // const account = new Account({
+  //   privateKey: PRIVATE_KEY,
+  // });
   programManager.setAccount(account);
   console.log("AccountSet  executeOffline ");
   const executionResponse = await programManager.run(
@@ -163,5 +176,28 @@ async function executeOffline(program, aleoFunction, inputs) {
   return executionResponse.getOutputs();
 }
 
-const workerMethods = {  deployProgram ,decrypt_record,localProgramExecution};
+/* async function execute(program, aleoFunction, inputs) {
+  const programManager = new ProgramManager(ENDPOINT);
+
+  const account = new Account({
+    privateKey: PRIVATE_KEY,
+  });
+
+  console.log("account => ",account);
+
+  programManager.setAccount(account);
+
+  const executionResponse = await programManager.execute(
+    program,
+    aleoFunction,
+    30000,
+    false,
+    inputs
+  );
+
+  console.log("executionResponse => ",executionResponse);
+  return executionResponse;
+} */
+
+const workerMethods = {  deployProgram ,decrypt_record,localProgramExecution,execute,getMappingValue};
 expose(workerMethods);

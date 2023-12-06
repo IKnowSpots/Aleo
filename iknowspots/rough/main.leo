@@ -1,5 +1,5 @@
-// The 'iknowspots_1' program.
-program iknowspots_1.aleo {
+// The 'iknowspots_2' program.
+program iknowspots_2.aleo {
 
     // mapping eventOwnerMapping: field => address;
 

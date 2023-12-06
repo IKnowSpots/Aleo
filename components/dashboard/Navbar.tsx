@@ -31,7 +31,7 @@ const DashNav = () => {
 
     const handleToggle = () => {
         setIsOpen(!isOpen);
-      };
+    };
 
     function CreateButton() {
         return (
@@ -53,27 +53,27 @@ const DashNav = () => {
     return (
         <div id="dash-navbar" className="flex justify-around items-center gap-4 pt-8 pb-10 px-4 w-full">
             <div className="w-[60%] flex justify-center">
-            <div className="flex justify-center items-center text-white border-white w-[50%] bg-black  rounded-full px-2">
-            <img src="/search.svg" className="w-[10%]" alt="" />
-            <input
-                type="text"
-                placeholder="Search events"
-                className="text-white h-[2.5rem] text-center w-[90%] rounded-full border-white bg-black px-2 "
-            />
-            </div>
+                <div className="flex justify-center items-center text-white border-white w-[50%] bg-black  rounded-full px-2">
+                    <img src="/search.svg" className="w-[10%]" alt="" />
+                    <input
+                        type="text"
+                        placeholder="Search events"
+                        className="text-white h-[2.5rem] text-center w-[90%] rounded-full border-white bg-black px-2 "
+                    />
+                </div>
             </div>
 
             <div>
-                <CreateButton/>
+                <CreateButton />
             </div>
 
             <div>
                 <button
                     className="text-[1rem] flex justify-around w-[7.5rem] mx-auto px-2 py-3 rounded-lg z-[10] ml-3 text-white font-semibold bg-[#070708] hover:bg-[#18181d] hover:border hover:border-black/50"
                     onMouseEnter={handleToggle}
-                    // onClick={handleToggle}
+                // onClick={handleToggle}
                 >
-                    Contract <span className="rotate-180">^</span> 
+                    Contract <span className="rotate-180">^</span>
                 </button>
 
                 {isOpen && (
@@ -82,7 +82,7 @@ const DashNav = () => {
                             <p className="block py-2">{contractAddr}</p>
                             <Link href="/">
                                 <img src="/external-link.svg" alt="" />
-                            </Link>    
+                            </Link>
                         </div>
                     </div>
                 )}
