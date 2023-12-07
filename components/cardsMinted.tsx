@@ -7,13 +7,13 @@ import LoadingModal from "./LoadingModal";
 const CardsMinted = ({
     image,
     name,
-    tokenId,
+    event_id,
     supply,
     setMintedCollection
 }: {
     image: any;
     name: string;
-    tokenId: any;
+    event_id: any;
     supply: any;
     setMintedCollection: any
 }) => {

@@ -18,17 +18,6 @@ const Shortlist = () => {
         fetchShortlistEventsData();
     }, []);
 
-    async function fetchShortlistEvents(event_id: any) {
-        let all_shortlists = JSON.parse(localStorage.getItem("eventIdToShortlistArray") || "[]");
-        if (all_shortlists.length > 0) {
-            const filteredArray = all_shortlists.filter(
-                (subarray: any) =>
-                    subarray.event_id == event_id
-            );
-            return filteredArray;
-        }
-        return null;
-    }
 
     async function fetchShortlistEventsData() {
         console.log(" fetchShortlistEventsData has been called");

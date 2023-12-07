@@ -92,14 +92,7 @@ const EventsByHost = () => {
                     />
                 );
             })}
-            {/* <CardsHostee
-                image={"1.png"}
-                name="Lorem Ipsum"
-                date="01.12.23"
-                username="consentsam"
-                event_id="01"
-                supply="1000"
-            /> */}
+
 
         </Layout>
     );

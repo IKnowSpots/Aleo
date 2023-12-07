@@ -28,33 +28,15 @@ const CardsActive = ({ image, name, event_id, supply, setActiveEvents }: { image
         return null;
     }
 
-    const addRecordToEventRecords = (address: any, dataStr: any) => {
-        const records = JSON.parse(localStorage.getItem('eventsDetail') || "{}");
-        records[address] = records[address] ? [...records[address], dataStr] : [dataStr];
-        localStorage.setItem('eventsDetail', JSON.stringify(records));
-    };
     const addRecordToPrivateRecords = (address: any, dataStr: any) => {
         const records = JSON.parse(localStorage.getItem('privateRecords') || "{}");
         records[address] = records[address] ? [...records[address], dataStr] : [dataStr];
         localStorage.setItem('privateRecords', JSON.stringify(records));
     };
 
-    /* function updateRecordWhilePausing(event_id: any, toggled_state: any) {
-        const old_event_record = getARecordCorrespondingToAnEventCreation(event_id);
-        const modifiedEventId = event_id + "field";
-        console.log("old_event_record => ", old_event_record);
-        old_event_record.status = toggled_state;
-        const updated_event_record = old_event_record;
-        addRecordToEventRecords(old_event_record.owner, updated_event_record);
-    } */
+
     function updateRecordWhilePausing(event_id: any, new_state: any) {
-        /* let old_event_record = getARecordCorrespondingToAnEventCreation(event_id);
-        console.log("old_event_record => ", old_event_record);
-        const old_event_record_with_status = "status: " + old_state;
-        const record_updated_with_status = "status: " + new_state;
-        const updated_event_record = old_event_record.replace(old_event_record_with_status, record_updated_with_status);
-        console.log("New updated record => ", updated_event_record);
-        addRecordToEventRecords(old_event_record.owner, updated_event_record); */
+
         const events = JSON.parse(localStorage.getItem('eventsDetail') || "{}") || {};
         const modifiedEventId = event_id;
 
@@ -71,24 +53,7 @@ const CardsActive = ({ image, name, event_id, supply, setActiveEvents }: { image
 
     }
 
-    /* function searchRecordByEventId(event_id: any) {
-        const records = JSON.parse(localStorage.getItem('privateRecords') || "");
-        for (const address in records) {
-            const matchedRecord = records[address].find((record: any) => getValueOfField(record, 'event_id') === event_id);
-            if (matchedRecord) {
-                return matchedRecord;
-            }
-        }
-        return null;
-    }
 
-    function deleteRecordByEventId(event_id: any) {
-        const records = JSON.parse(localStorage.getItem('privateRecords') || "") || {};
-        Object.keys(records).forEach(address => {
-            records[address] = records[address].filter((record: any) => getValueOfField(record, 'event_id') !== event_id);
-        });
-        localStorage.setItem('privateRecords', JSON.stringify(records));
-    } */
 
     function searchRecordByEventId(records: any, event_id: any) {
         for (const address in records) {
@@ -198,14 +163,7 @@ const CardsActive = ({ image, name, event_id, supply, setActiveEvents }: { image
             console.log("address in executeToggle ", ownerAddress);
 
             updateRecordWhilePausing(event_id, "0u8");
-            /*  const statusField = getValueOfField(decryptedRecord, "status");
-             if (statusField) {
-                 const _status = parseInt(statusField.split('u8')[0]);
-                 console.log("_status => ", _status)
-                 // setEventStatuses({ ...eventStatuses, [formInput.event_id]: { status: _status } });
-             } else {
-                 console.error("Status field is null");
-             } */
+
 
             setActiveEvents((events: any) => events.filter((event: any) => event.event_id !== event_id));
             addRecordToPrivateRecords(ownerAddress, decryptedRecord);
@@ -222,14 +180,7 @@ const CardsActive = ({ image, name, event_id, supply, setActiveEvents }: { image
 
     const handlePausePublicEvent: React.MouseEventHandler<HTMLButtonElement> = async (event_id: any) => {
         const aleoWorker = AleoWorker();
-        // debugger;
-        /* const param_event_id = event_id;
 
-        const event_id_field = event_id + "field";
-        const current_state = await aleoWorker.getMappingValue("iknowspots_2.aleo", "event_id_hash_to_event_struct", event_id_field);
-        console.log("current_state =>", current_state);
-        const final_state = current_state == "0u8";  */
-        // setLoading();
         const toggled_state = "0u8";
         console.log("toggled_state =>", toggled_state);
 
@@ -254,23 +205,7 @@ const CardsActive = ({ image, name, event_id, supply, setActiveEvents }: { image
             console.log("fetched data ", data);
             setActiveEvents((events: any) => events.filter((event: any) => event.event_id !== event_id));
             updateRecordWhilePausing(event_id, "0u8");
-            /* const record = data.execution.transitions[0].outputs[0].value;
-            console.log("record ", record);
-            const decryptedRecord = await aleoWorker.decrypt_record(record);
-            console.log("decryptedRecord => ", decryptedRecord); */
 
-
-            /* let address = getValueOfField(decryptedRecord, "owner");
-            console.log("address in executeToggle ", address);
-            addRecord(address, decryptedRecord, setAddressToEventCreationRecords);
-            const statusField = getValueOfField(decryptedRecord, "status");
-            if (statusField) {
-                const _status = parseInt(statusField.split('u8')[0]);
-                console.log("_status => ", _status)
-                setEventStatuses({ ...eventStatuses, [formInput.event_id]: { status: _status } });
-            } else {
-                console.error("Status field is null");
-            } */
 
         } catch (error) {
             console.error("Error in createEvent function ", error);
@@ -279,13 +214,7 @@ const CardsActive = ({ image, name, event_id, supply, setActiveEvents }: { image
     }
     const handleResumePublicEvent: React.MouseEventHandler<HTMLButtonElement> = async (event_id: any) => {
         const aleoWorker = AleoWorker();
-        // debugger;
-        /* const param_event_id = event_id;
 
-        const event_id_field = event_id + "field";
-        const current_state = await aleoWorker.getMappingValue("iknowspots_2.aleo", "event_id_hash_to_event_struct", event_id_field);
-        console.log("current_state =>", current_state);
-        const final_state = current_state == "0u8";  */
 
         const toggled_state = "1u8";
         console.log("toggled_state =>", toggled_state);
@@ -313,23 +242,6 @@ const CardsActive = ({ image, name, event_id, supply, setActiveEvents }: { image
 
             const data = await fetchDataUntilAvailable(transactionUrl);
             console.log("fetched data ", data);
-            /* const record = data.execution.transitions[0].outputs[0].value;
-            console.log("record ", record);
-            const decryptedRecord = await aleoWorker.decrypt_record(record);
-            console.log("decryptedRecord => ", decryptedRecord); */
-
-
-            /* let address = getValueOfField(decryptedRecord, "owner");
-            console.log("address in executeToggle ", address);
-            addRecord(address, decryptedRecord, setAddressToEventCreationRecords);
-            const statusField = getValueOfField(decryptedRecord, "status");
-            if (statusField) {
-                const _status = parseInt(statusField.split('u8')[0]);
-                console.log("_status => ", _status)
-                setEventStatuses({ ...eventStatuses, [formInput.event_id]: { status: _status } });
-            } else {
-                console.error("Status field is null");
-            } */
 
         } catch (error) {
             console.error("Error in createEvent function ", error);

@@ -50,56 +50,16 @@ const Create = (props: any) => {
 		isStakingEnabled: false,
 		stakePrice: "0",
 		eventPrice: "0",
-		username: "consentsam"
+		username: "consentsam",
+		max_supply: ""
 	});
-	// const { wallet, publicKey, decrypt } = useWallet();
-	// console.log("Wallet => ", wallet);
-	// useEffect(() => {
-	//   console.log("publicKey => ", publicKey);
-	// }, [publicKey]);
+	const { wallet, publicKey, decrypt } = useWallet();
+	console.log("Wallet => ", wallet);
+	useEffect(() => {
+		console.log("publicKey => ", publicKey);
+	}, [publicKey]);
 
-	const [eventStatuses, setEventStatuses] = useState({
-		1: { status: 0 },
-		2: { status: 0 },
-		3: { status: 0 },
-		// ... other event statuses
-	});
-	const keyPairs = {
-		"InActive": 0,
-		"Active": 1,
-		"Completed": 2
-	}
-	// const keyPairs = {
-	// 	"InActive": 0,
-	// 	"Active": 1,
-	// 	"Completed": 2
-	// }
-	const [selectedStatus, setSelectedStatus] = useState(0);
-	// const [addressToEventCreationRecords, setAddressToEventCreationRecords] = useState({
-	// });
-	const [addressToEventCreationRecords, setAddressToEventCreationRecords] = useState({ aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut: ["{owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,event_id: 34field.private,status: 0u8.private,max_supply: 3400u32.private,shortlisted: {addr0: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,addr1: aleo17sv2qntg7duvr3h6fturqrf0qc7srgekcnvdu3nuuwqvtlnpyugsn965t9.private,addr2: aleo1wvdfek6yr6djgr4vu2e85xq9lgly0v6vmxche6crrk99yma86c9q4sra7c.private,addr3: aleo13lt3j3hs74ll0d3u8tlul7lgptr9dglp57kmskacgg2v4y748cxs2h45mp.private},_nonce: 7996605202773627734492103215992442130615360750012941851477857424006860558638group.public}"] });
-	const [addressToEventPassRecords, setAddressToEventPassRecords] = useState({
 
-	});
-
-	/*
-
-	"{
-  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,
-  event_id: 34field.private,
-  status: 0u8.private,
-  max_supply: 3400u32.private,
-  shortlisted: {
-	addr0: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,
-	addr1: aleo17sv2qntg7duvr3h6fturqrf0qc7srgekcnvdu3nuuwqvtlnpyugsn965t9.private,
-	addr2: aleo1wvdfek6yr6djgr4vu2e85xq9lgly0v6vmxche6crrk99yma86c9q4sra7c.private,
-	addr3: aleo13lt3j3hs74ll0d3u8tlul7lgptr9dglp57kmskacgg2v4y748cxs2h45mp.private
-  },
-  _nonce: 7996605202773627734492103215992442130615360750012941851477857424006860558638group.public
-}"
-	*/
-
-	const [shortlistedAddress, setShortlistAddress] = useState(['', '', '', '']);
 
 
 	const toggleSwitch = () => {
@@ -143,87 +103,7 @@ const Create = (props: any) => {
 
 
 
-	/* // does not return anything - undefined
-	const addRecord = (address: any, dataStr: any, setFunction: any) => {
-		setFunction((prevRecords: any) => {
-			// Check if the address already has records
-			if (prevRecords[address]) {
-				// Check if the new data string is a duplicate
-				const isDuplicate = prevRecords[address].includes(dataStr);
 
-				if (!isDuplicate) {
-					// Add the new data string if it's not a duplicate
-					return {
-						...prevRecords,
-						[address]: [...prevRecords[address], dataStr]
-					};
-				} else {
-					console.log('Duplicate record not added.');
-					return prevRecords;
-				}
-			} else {
-				// Address doesn't exist, add the new data string
-				return {
-					...prevRecords,
-					[address]: [dataStr]
-				};
-			}
-		});
-	};
-	// Search for some field in a hook which stores arrays of records corresponding to an address
-	function searchRecordByEventId(_addressToEventRecords: any, event_id_field: any) {
-		// Iterate over all addresses
-		for (const address in _addressToEventRecords) {
-			const records = _addressToEventRecords[address];
-			console.log("records inside for loop => ", records);
-			console.log("records inside 1st for loop")
-			// Iterate over all records for the current address
-			for (const record of records) {
-				console.log("record inside 2nd for loop => ", record);
-				const currentEventId = getValueOfField(record, 'event_id');
-
-				console.log("currentEventID after getValueOfField => ", currentEventId);
-
-				// const event_id_field = event_id_field + "field";
-				// Check if the current record's event_id matches the search query
-				if (currentEventId === event_id_field) {
-					return record; // Return the record if a match is found
-				}
-			}
-		}
-
-		return null; // Return null if no matching record is found
-	}
-
-	function deleteRecordByEventId(addressToEventCreationRecords: any, setFunction: any, eventID: any) {
-		setFunction((prevRecords: any) => {
-			const updatedRecords = { ...prevRecords };
-
-			// Iterate over each address
-			for (const address in updatedRecords) {
-				// Filter out the record that matches the eventID
-				updatedRecords[address] = updatedRecords[address].filter((record: any) => {
-					const currentEventId = getValueOfField(record, 'event_id');
-					return currentEventId !== eventID;
-				});
-			}
-
-			return updatedRecords;
-		});
-	};
-
-	function getARecordCorrespondingToAnEventCreation(event_id: any) {
-		console.log("addressToEventCreationRecords => ", addressToEventCreationRecords);
-		console.log("event_id => ", event_id);
-		const modified_event_id = event_id + "field";
-		const searched_event = searchRecordByEventId(addressToEventCreationRecords, modified_event_id);
-		if (searched_event == null) {
-			throw new Error('Record with that event_id not found');
-		} else {
-			deleteRecordByEventId(addressToEventCreationRecords, setAddressToEventCreationRecords, modified_event_id);
-			return searched_event;
-		}
-	} */
 	async function fetchDataUntilAvailable(url: any, maxAttempts = 6, delay = 8000) {
 		try {
 			const response = await fetch(url);
@@ -262,47 +142,13 @@ const Create = (props: any) => {
 		return null;
 	}
 
-	// [{
-	// 	"address": [{
 
-	// 	}]
-
-	// }, {
-	// 	"address"
-	// }]
 	const addRecord = (local_storage_name: any, address: any, dataStr: any) => {
 		const records = JSON.parse(localStorage.getItem(local_storage_name) || "{}");
 		records[address] = records[address] ? [...records[address], dataStr] : [dataStr];
 		localStorage.setItem(local_storage_name, JSON.stringify(records));
 	};
 
-	/* const addRecord = (address: any, dataStr: any) => {
-		const records = localStorage.getItem('privateRecords') || [];
-		console.log("records => ", records);
-		records[address] = records[address] ? [...records[address], dataStr] : [dataStr];
-		console.log("records[address] => ", records[address]);
-		console.log("JSON.stringify(records) => ", JSON.stringify(records));
-		localStorage.setItem('privateRecords', records);
-	}; */
-
-	/* function searchRecordByEventId(event_id: any) {
-		const records = JSON.parse(localStorage.getItem('privateRecords') || "");
-		for (const address in records) {
-			const matchedRecord = records[address].find((record: any) => getValueOfField(record, 'event_id') === event_id);
-			if (matchedRecord) {
-				return matchedRecord;
-			}
-		}
-		return null;
-	}
-
-	function deleteRecordByEventId(event_id: any) {
-		const records = JSON.parse(localStorage.getItem('privateRecords') || "") || {};
-		Object.keys(records).forEach(address => {
-			records[address] = records[address].filter((record: any) => getValueOfField(record, 'event_id') !== event_id);
-		});
-		localStorage.setItem('privateRecords', JSON.stringify(records));
-	} */
 
 	function searchRecordByEventId(records: any, event_id: any) {
 		for (const address in records) {
@@ -322,71 +168,7 @@ const Create = (props: any) => {
 	}
 
 
-	function getARecordCorrespondingToAnEventCreation(local_storage_name: any, event_id: any) {
-		const records = JSON.parse(localStorage.getItem(local_storage_name) || "") || {};
-		const modifiedEventId = event_id + "field";
-		const searchedEvent = searchRecordByEventId(records, modifiedEventId);
 
-		if (searchedEvent == null) {
-			throw new Error('Record with that event_id not found');
-		} else {
-			deleteRecordByEventId(records, modifiedEventId);
-			localStorage.setItem(local_storage_name, JSON.stringify(records));
-			return searchedEvent;
-		}
-	}
-
-
-
-	/* function getARecordCorrespondingToAnEventPass(event_id: any) {
-		console.log("addressToEventPassRecords => ", addressToEventPassRecords);
-		console.log("event_id => ", event_id);
-		const modified_event_id = event_id + "field";
-		const searched_event = searchRecordByEventId(addressToEventPassRecords, modified_event_id);
-		if (searched_event == null) {
-			throw new Error('Record with that event_id not found');
-		} else {
-			deleteRecordByEventId(addressToEventPassRecords, setAddressToEventPassRecords, event_id);
-			return searched_event;
-		}
-	} */
-
-
-	async function localProgramExecution() {
-		const aleoWorker = AleoWorker();
-		const _program = `
-    program helloworld_3x20drq.aleo;
-
-
-
-    function main:
-        input r0 as u32.public;
-        input r1 as u32.private;
-        add r0 r1 into r2;
-        output r2 as u32.private;`
-		console.log("point 1");
-		let executionResponse: any;
-		async function getResponse() {
-			executionResponse = await aleoWorker.localProgramExecution(
-				_program,
-				"main",
-				["2u32", "3u32"],
-				false,
-				true,
-			)
-		}
-		getResponse();
-
-		setTimeout(() => {
-			// console.log("point 7.1")
-			if (!executionResponse) {
-				getResponse();
-				// console.log("point 7.2");
-			}
-		}, 800)
-		// console.log("point 7.3");
-		console.log("executionResponse => ", executionResponse);
-	}
 
 	const handleCreatePrivateEvent: React.MouseEventHandler<HTMLButtonElement> = async (event) => {
 		event.preventDefault;
@@ -464,21 +246,7 @@ const Create = (props: any) => {
 		return null;
 	}
 
-	function formatJSONString(jsonObject: any) {
-		try {
-			// Check if input is a string, parse it; if it's an object, use it directly
-			const jsonObj = (typeof jsonObject === 'string') ? JSON.parse(jsonObject) : jsonObject;
 
-			// Convert the object back into a string with indentation
-			const formattedString = JSON.stringify(jsonObj, null, 2);
-
-			// Replace occurrences as earlier
-			return formattedString.replace(/{\n\s+/g, '{\n\n  ');
-		} catch (e) {
-			console.error('Error formatting:', e);
-			return jsonObject; // Return the original object if there's an issue
-		}
-	}
 
 
 
@@ -487,31 +255,18 @@ const Create = (props: any) => {
 		const aleoWorker = AleoWorker();
 		console.log(`Create Public Event for ${formInput.event_id} with maxSupply ${formInput.supply}`);
 
-
+		const event_id_field = formInput.event_id + "field"
+		const max_supply_u32 = formInput.supply + "u32"
+		const claim_code_field = formInput.claim_code + "field"
+		let program_name = "iknowspots_2.aleo";
+		let function_name = "create_public_event";
+		console.log("program_name ", program_name);
+		console.log("function_name ", function_name);
+		console.log("event_id_field ", event_id_field);
+		console.log("max_supply_u32 ", max_supply_u32);
+		console.log("claim_code_field ", claim_code_field);
 		try {
-			const event_id_field = formInput.event_id + "field"
-			const max_supply_u32 = formInput.supply + "u32"
-			const claim_code_field = formInput.claim_code + "field"
-			let program_name = "iknowspots_2.aleo";
-			let function_name = "create_public_event";
-			console.log("program_name ", program_name);
-			console.log("function_name ", function_name);
-			console.log("event_id_field ", event_id_field);
-			console.log("max_supply_u32 ", max_supply_u32);
-			console.log("claim_code_field ", claim_code_field);
 
-
-			/* aleoWorker.execute(program_name, function_name, [event_id_field, max_supply_u32, claim_code_u32])
-				.then((tx_id: any) => {
-					console.log("This transaction was completed");
-					transaction_id = tx_id;
-					// tx_id now holds the transaction ID and you can use it here
-					console.log("Transaction ID:", tx_id);
-				})
-				.catch((error: any) => {
-					// Handle any errors here
-					console.error("Error during execution:", error);
-				}); */
 
 			const transaction_id = await aleoWorker.execute(program_name, function_name, [event_id_field, max_supply_u32, claim_code_field]);
 
@@ -519,12 +274,6 @@ const Create = (props: any) => {
 			console.log("transactionUrl => ", transactionUrl)
 			const data = await fetchDataUntilAvailable(transactionUrl);
 			console.log("fetched data =>", data);
-			/* const record = data.execution.transition[0].outputs[0].value;
-			console.log("record ", record);
-			const decryptedRecord = await aleoWorker.decrypt_record(record);
-			console.log("decryptedRecord => ", decryptedRecord);
-			console.log("haha"); */
-			// addRecord("eventsDetail", address,)
 
 			let new_local_storage = [];
 			if (!localStorage.getItem("eventsDetail")) {
@@ -534,6 +283,7 @@ const Create = (props: any) => {
 			}
 
 			localStorage.setItem("eventsDetail", JSON.stringify(new_local_storage))
+
 			toast.success("Public Event Created!", {
 				position: "bottom-left",
 				autoClose: 5000,
@@ -551,81 +301,6 @@ const Create = (props: any) => {
 	}
 
 
-
-
-	/* const handleSetShortlist: React.MouseEventHandler<HTMLButtonElement> = async (event) => {
-		const aleoWorker = AleoWorker();
-		// debugger;
-		const param_event_id = formInput.event_id;
-		let eventRecord;
-		try {
-			console.log("Before extracting the addressToEventCreationRecords =>", addressToEventCreationRecords);
-			eventRecord = getARecordCorrespondingToAnEventCreation(param_event_id);
-			console.log("After extracting => ", eventRecord);
-			console.log("eventRecord corresponding to a event_id ", param_event_id, " => ", eventRecord);
-		} catch (e) {
-			console.error("Couldn't find a record corresponding to this eventID");
-		}
-
-
-		console.log(`Create shortlist for ${formInput.event_id} with maxSupply ${formInput.supply}`);
-		// debugger;
-		try {
-			const event_id_field = formInput.event_id + "field"
-			const max_supply_u32 = formInput.supply + "u32"
-			let program_name = "iknowspots_2.aleo";
-			let function_name = "set_shortlist";
-			let transaction_id;
-			console.log("program_name ", program_name);
-			console.log("function_name ", function_name);
-			console.log("event_id_field ", event_id_field);
-			console.log("max_supply_u32 ", max_supply_u32);
-
-			await aleoWorker.execute(program_name, function_name, [event_id_field, max_supply_u32])
-				.then((tx_id: any) => {
-					console.log("This transaction was completed");
-					transaction_id = tx_id;
-					// tx_id now holds the transaction ID and you can use it here
-					console.log("Transaction ID:", tx_id);
-				})
-				.catch((error: any) => {
-					// Handle any errors here
-					console.error("Error during execution:", error);
-				});
-
-			const transactionUrl = "http://localhost:3030/testnet3/transaction/" + transaction_id;
-			console.log("transactionUrl => ", transactionUrl)
-			const data = await fetchDataUntilAvailable(transactionUrl);
-			console.log("data => ", data);
-			console.log("type of data is => ", typeof (data));
-			const record = data.execution.transitions[0].outputs[0].value;
-			console.log("record ", record);
-			const decryptedRecord = await aleoWorker.decrypt_record(record);
-			console.log("decryptedRecord => ", decryptedRecord);
-			// console.log("haha");
-			let address = getValueOfField(decryptedRecord, "owner");
-
-			let dummy_variable = addRecord(address, decryptedRecord, setAddressToEventCreationRecords);
-			console.log("dummy variable =>", dummy_variable);
-			const statusField = getValueOfField(decryptedRecord, "status");
-			if (statusField) {
-				const _status = parseInt(statusField.split('u8')[0]);
-				console.log("_status => ", _status)
-				setEventStatuses({ ...eventStatuses, [formInput.event_id]: { status: _status } });
-			} else {
-				console.error("Status field is null");
-			}
-			console.log("addressToEventCreationRecords => ", addressToEventCreationRecords);
-			console.log("eventStatuses => ", eventStatuses);
-
-		} catch (error) {
-			console.error("Error in createEvent function ", error);
-		}
-		return null;
-	} */
-	/* useEffect(() => {
-		console.log("Mounted.....", props)
-	}, []); */
 
 	return (
 		<>
@@ -852,11 +527,14 @@ const Create = (props: any) => {
 									id="event-name"
 									placeholder="2000"
 									className="bg-[#1E1E1E] bg-opacity-75 border border-[#989898] border-opacity-30 w-full rounded-lg p-2 "
-									onChange={(e) =>
+									onChange={(e) => {
 										setFormInput({
 											...formInput,
 											supply: e.target.value,
+											max_supply: e.target.value
 										})
+									}
+
 									}
 									disabled={imgLoading}
 								/>
@@ -922,26 +600,7 @@ const Create = (props: any) => {
 							<button className="px-4 py-2 border rounded-lg" onClick={formInput.isShortlistEnabled ? handleCreatePrivateEvent : handleCreatePublicEvent}>
 								Create New {formInput.isShortlistEnabled ? `Private ` : `Public `}Event
 							</button>
-							{/* <button className="px-4 py-2 border rounded-lg" onClick={handleCreatePrivateEvent}>
-								handleCreatePrivateEvent
-							</button> */}
-							{/* <button className="px-4 py-2 border rounded-lg" onClick={handleCreatePublicEvent}>
-								handleCreatePublicEvent
-							</button> */}
-							{/* <button className="px-4 py-2 border rounded-lg" onClick={handleTogglePrivateEvent}>
-								handleTogglePrivateEvent
-							</button> */}
-							{/* <button className="px-4 py-2 border rounded-lg" onClick={handleTogglePublicEvent}>
-								handleTogglePublicEvent
-							</button> */}
 
-							{/* <PopUp/> */}
-							{/* <button className="px-4 py-2 border rounded-lg" onClick={onClickButton}>
-								onClickButton
-							</button> */}
-							{/* <button className="px-4 py-2 border rounded-lg" onClick={handleCreatePublicEvent}>
-								handleCreatePublicEvent
-							</button> */}
 						</div>
 					</div>
 				</div>

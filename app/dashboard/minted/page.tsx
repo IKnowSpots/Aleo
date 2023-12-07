@@ -4,7 +4,7 @@ import Image from "next/image";
 import CardsMinted from "@/components/cardsMinted";
 import DashNav from "@/components/dashboard/Navbar";
 import { useEffect, useState } from "react";
-import { fetchMintedCollection } from "../../../utils";
+// import { fetchMintedCollection } from "../../../utils";
 import LoadingModal from "@/components/LoadingModal";
 
 const MintedCollections = () => {
@@ -15,11 +15,26 @@ const MintedCollections = () => {
         fetchMintedCollectionData();
     }, []);
 
+    async function fetchMintedCollection() {
+        let allEvents = JSON.parse(localStorage.getItem("NFTs") || "[]");
+        console.log("allEvents inside fetchMintedCollection => ", allEvents);
+        console.log("allEvents[0] =>  ", allEvents[Object.keys(allEvents)[0]]);
+        // allEvents
+        return allEvents[Object.keys(allEvents)[0]];// hardcoded as first key is my address
+
+    }
+
+
     async function fetchMintedCollectionData() {
         try {
             setLoading(true);
             let data: any = await fetchMintedCollection();
+            console.log("data inside fetchMintedCollectionData => ", data);
+            console.log("Before setMintedCollection on data", mintedCollection);
+
             setMintedCollection(data);
+            console.log("After setMintedCollection on data", mintedCollection);
+
             setLoading(false);
         } catch (error) {
             console.log(error);
@@ -51,7 +66,7 @@ const MintedCollections = () => {
             </Layout>
         );
 
-    if (loading == false && mintedCollection.length == 0)
+    if (loading == false && mintedCollection != undefined && mintedCollection.length == 0)
         return (
             <Layout>
                 {/* <div className="text-white p-4">No Events</div> */}
@@ -73,14 +88,14 @@ const MintedCollections = () => {
     return (
         <Layout>
             <div className="flex gap-x-6 gap-y-5 flex-wrap pt-4 px-6">
-                {mintedCollection.map((nft: any, i: any) => {
+                {Array.isArray(mintedCollection) && mintedCollection.map((nft: any, i: any) => {
                     return (
                         <CardsMinted
                             setMintedCollection={setMintedCollection}
                             key={i}
                             image={nft.cover}
                             name={nft.name}
-                            tokenId={nft.tokenId}
+                            event_id={nft.event_id}
                             supply={nft.supply}
                         />
                     );

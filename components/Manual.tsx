@@ -64,12 +64,6 @@ export default function Manual(event_id: any) {
         localStorage.setItem(local_storage_name, JSON.stringify(records));
     }
 
-    function addRecordToLocalStorageEventPasses(addressKey: any, newRecord: any) {
-
-        const records = JSON.parse(localStorage.getItem("eventPasses") || "{}");
-        records[addressKey] = records[addressKey] ? [...records[addressKey], newRecord] : [newRecord];
-        localStorage.setItem("eventPasses", JSON.stringify(records));
-    }
 
     function getAndDeleteRecordByField(local_storage_name: any, eventId: any, userAddress: any) {
         // Fetch records from local storage
@@ -116,13 +110,7 @@ export default function Manual(event_id: any) {
         return foundRecord;
     }
     function updateRecordWhileShortlisting(event_id: any, new_state: any) {
-        /* let old_event_record = getARecordCorrespondingToAnEventCreation(event_id);
-        console.log("old_event_record => ", old_event_record);
-        const old_event_record_with_status = "status: " + old_state;
-        const record_updated_with_status = "status: " + new_state;
-        const updated_event_record = old_event_record.replace(old_event_record_with_status, record_updated_with_status);
-        console.log("New updated record => ", updated_event_record);
-        addRecordToEventRecords(old_event_record.owner, updated_event_record); */
+
         const events = JSON.parse(localStorage.getItem('eventsDetail') || "{}") || {};
         const modifiedEventId = event_id;
         console.log("events inside updateRecordWhileShortlisting=> ", events);
@@ -157,7 +145,7 @@ export default function Manual(event_id: any) {
         console.log("function_name ", function_name);
         console.log("event_id_field ", event_id_field);
 
-        const eventRecord = getAndDeleteRecordByField("privateRecords", event_id_from_event_id_object, "aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut")
+        const eventRecord = getAndDeleteRecordByField("privateRecords", event_id_from_event_id_object, "aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut") // hardcoded address
         console.log("eventRecord => ", eventRecord);
         // debugger;
         if (!eventRecord) {
@@ -192,18 +180,14 @@ export default function Manual(event_id: any) {
             console.log("decryptedEventRecord => ", decryptedEventRecord);
             const decryptedEventPassRecord = await aleoWorker.decrypt_record(eventpass_record);
             console.log("decryptedEventPassRecord => ", decryptedEventPassRecord);
-            // console.log("haha");
             let address = getValueOfField(decryptedEventRecord, "owner");
 
 
-            // const extracted_record =
             console.log("address => ", address);
             addRecordToLocalStorage("privateRecords", address, decryptedEventRecord);
-            // addRecordToLocalStorage("eventsDetail", address, decryptedEventRecord);
             searchAndDeleteRecord(JSON.parse(localStorage.getItem("eventPasses") || "{}"), address, event_id);
             addRecordToLocalStorage("eventPasses", address, decryptedEventPassRecord);
             updateRecordWhileShortlisting(event_id_from_event_id_object, whiteListAddresses);
-            // localStorage.setItem("privateRecords", ))
 
             toast.success("Shortlisted updated!", {
                 position: "bottom-left",
