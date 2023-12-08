@@ -285,3 +285,90 @@ const Create = () => {
 };
 
 export default Create;
+
+
+
+
+
+
+------
+
+program iknowspots_2.aleo {
+
+    struct AddressStruct{
+        addr0:address,
+        addr1:address,
+        addr2:address,
+        addr3:address
+    }
+
+  	struct EventStruct{
+        is_private: bool,
+        event_owner: address,
+        event_id: field,
+        status: u8,
+        max_supply: u32,
+        claim_code_hash: field,
+    }
+
+    record Event{
+        owner: address,
+        event_id:field,
+        status:u8,
+        max_supply: u32,
+        shortlisted: AddressStruct
+    }
+
+    record EventPass{
+        owner: address,
+        event_id: field,
+        max_supply:u32
+    }
+
+    record EventNFT{
+        owner: address,
+        event_id: field,
+        max_supply:u32,
+        is_private_event: bool
+    }
+
+    mapping event_id_to_event_struct : field => EventStruct;
+    mapping event_id_to_claim_count : field => u32;
+    mapping hoho_event_id_plus_self_caller : address => bool;
+
+	// --------------------------------------------------
+  	// Helper function
+  	// --------------------------------------------------
+    function hash_of_two_into_address(event_id_hash: field, caller_public_key: address ) -> address{}
+
+  	// --------------------------------------------------
+  	// Event Creation functions
+  	// --------------------------------------------------
+    transition create_private_event(event_id: field,max_supply:u32)-> Event{}
+    finalize create_private_event (event_id: field,hash_of_event_id_hash_and_owner_public_address_hash: address){}
+
+    transition create_public_event(event_id: field,max_supply:u32, claim_code : field)->bool{}
+    finalize create_public_event(public_event: EventStruct){}
+
+  	// --------------------------------------------------
+  	// Event Status Toggle functions
+  	// --------------------------------------------------
+    transition toggle_private_event(event: Event,toggle_value:u8) -> Event{}
+
+    transition toggle_public_event(event_id: field,toggle_value: u8)-> public bool{}
+    finalize toggle_public_event(event_id: field,toggle_value : u8,caller_public_key: address){}
+
+    // --------------------------------------------------
+  	// Shortlist function
+  	// --------------------------------------------------
+    transition set_shortlist(event: Event, addr0: address,addr1: address,addr2: address,addr3: address) -> (Event, EventPass,EventPass,EventPass,EventPass){}
+
+	// --------------------------------------------------
+  	// Claim NFT functions
+  	// --------------------------------------------------
+    transition claim_private_event(event_pass: EventPass)-> EventNFT{}
+
+    transition claim_public_event(event_id: field,claim_code: field)-> bool{}
+    finalize claim_public_event (event_id: field, hash_of_hash_of_event_id_self_caller:address,claim_code_hash:field){}
+
+}

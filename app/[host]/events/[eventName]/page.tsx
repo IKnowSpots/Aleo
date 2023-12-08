@@ -315,7 +315,19 @@ const Event = () => {
 
             addRecordToLocalStorage("NFTs", address, decryptedRecord);
             // localStorage.setItem("privateRecords", ))
-
+            /*
+            const data = await fetchDataUntilAvailable(transactionUrl);
+            console.log("data => ", data);
+            const old_supply = getValueInEventsDetailByEventId(event_id, "supply");
+            const max_supply = getValueInEventsDetailByEventId(event_id, "max_supply");
+            // const fetchedRecord = getAndDeleteRecordByField("eventsDetail", event_id, user_address);
+            updateSingleEventField(event_id, "supply", old_supply - 1);
+            const event_name = getValueInEventsDetailByEventId(event_id, "name");
+            console.log("event_name => ", event_name);
+            const false_string = "false";
+            const newRecord = `{owner: ${user_address}.private,  event_id: ${event_id_field}.private,  max_supply: ${max_supply}u32.private, name: ${event_name}.private, isShortlistEnabled: ${false_string}.private }`;
+            saveToLocalStorage("NFTs", user_address, newRecord);
+             */
             toast.success("Private Event NFT Claimed!", {
                 position: "bottom-left",
                 autoClose: false,
@@ -460,7 +472,7 @@ const Event = () => {
             const event_name = getValueInEventsDetailByEventId(event_id, "name");
             console.log("event_name => ", event_name);
             const false_string = "false";
-            const newRecord = `{owner: ${user_address}.private,  event_id: ${event_id_field}.private,  max_supply: ${max_supply}u32.private, name: ${event_name}.private, isShortlistEnabled: ${false_string}.private }`;
+            const newRecord = `{owner: ${user_address}.private,  event_id: ${event_id_field}.private,  max_supply: ${max_supply}u32.private, name: ${event_name}, isShortlistEnabled: ${false_string} }`;
             saveToLocalStorage("NFTs", user_address, newRecord);
 
 
@@ -525,6 +537,7 @@ const Event = () => {
         // await buyTicket(username, event_id);
         const allEventDetails = JSON.parse(localStorage.getItem("eventsDetail") || "[]");
         console.log("allEventDetails => ", allEventDetails);
+        console.log("")
         getIsShortlistEnabled(allEventDetails, event_id) ? handleClaimPrivateNFT(event_id, user_address).then(() => console.log("Private Event NFT Minted")) : handleClaimPublicNFT(event_id, claim_code, user_address).then(() => console.log("Public Event NFT Minted"));
         // console.log("NFT Minted");
     }
@@ -628,7 +641,7 @@ const Event = () => {
                             getIsShortlistEnabled(JSON.parse(localStorage.getItem("eventsDetail") || "[]"), event_id) == false && (<input
                                 type="text"
                                 id="event-name"
-                                placeholder="Enter the invite code for this event NFT mint"
+                                placeholder="Enter the claim code for this event NFT mint"
                                 className="bg-[#1E1E1E] bg-opacity-75 border border-[#989898] border-opacity-30 rounded-lg p-2"
                                 onChange={(e) => setClaimCode(e.target.value)}
                             />)

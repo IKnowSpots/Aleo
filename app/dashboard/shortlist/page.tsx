@@ -93,6 +93,7 @@ const Shortlist = () => {
                 {Array.isArray(activeEvents) && activeEvents.map((nft: any, i: any) => {
                     return (
                         <CardsShortlist
+                            isShortlistEnabled={nft?.isShortlistEnabled}
                             key={i}
                             event_id={nft?.event_id}
                             image={nft?.cover}

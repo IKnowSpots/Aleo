@@ -46,7 +46,7 @@ const CardsMinted = ({
                     />
                     <div className="flex gap-2 text-[0.85rem] flex-col">
                         <div className="flex justify-between items-center">
-                            <p>{name}</p>
+                            <p>{name.split('.private')}</p>
                             <p>{isShortlistEnabled ? "Private" : "Public"}</p>
                         </div>
                         <div className="h-[2px] rounded-full bg-white"></div>

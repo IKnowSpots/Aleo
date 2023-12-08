@@ -69,7 +69,7 @@ const MintedCollections = () => {
         } catch (error) {
             console.error('Error parsing record:', error);
         }
-        return null;
+        return "";
     }
 
 
@@ -191,7 +191,7 @@ const MintedCollections = () => {
                             setMintedCollection={setMintedCollection}
                             key={i}
                             image={nft?.cover}
-                            name={nft?.name}
+                            name={nft.name}
                             event_id={nft?.event_id}
                             max_supply={nft?.max_supply}
                         />

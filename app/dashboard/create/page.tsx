@@ -820,11 +820,11 @@ const Create = (props: any) => {
 						</div>
 						{!formInput.isShortlistEnabled &&
 							<div className="flex flex-col w-3/4 mx-auto my-4">
-								<label className="pb-2">Invite Code To Claim NFT</label>
+								<label className="pb-2">Claim Code To Claim NFT</label>
 								<input
 									type="text"
 									id="event-id"
-									placeholder="invite code"
+									placeholder="claim code"
 									className="bg-[#1E1E1E] bg-opacity-75 border border-[#989898] border-opacity-30 rounded-lg p-2"
 									onChange={(e) => {
 										setFormInput({
