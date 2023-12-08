@@ -12,23 +12,36 @@ const MintedCollections = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        fetchMintedCollectionData();
+        // fetchMintedCollectionData();
+        console.log("Updated mintedCollection: ", mintedCollection);
+        console.log("isArray => ", Array.isArray(mintedCollection));
+    }, [mintedCollection]);
+
+
+
+
+    useEffect(() => {
+        // Function to read data from local storage
+        const loadData = () => {
+            const storedData = localStorage.getItem('NFTs');
+            if (storedData) {
+                // Parse the stored data back into an array/object
+                const parsedData = JSON.parse(storedData);
+                // Set the data to state
+                const key = "aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut";
+                const array_of_nfts = parsedData[key];
+                console.log("Parsed data inside load effect ", array_of_nfts);
+                setMintedCollection(array_of_nfts.map((recordString: any) => transformRecord(recordString)));
+                // setMintedCollection(array_of_nfts);
+
+            }
+        };
+
+        // Call the function
+        loadData();
     }, []);
 
-    const addRecord = (local_storage_name: any, address: any, dataStr: any) => {
-        const records = JSON.parse(localStorage.getItem(local_storage_name) || "{}");
-        records[address] = records[address] ? [...records[address], dataStr] : [dataStr];
-        localStorage.setItem(local_storage_name, JSON.stringify(records));
-    };
-    function searchRecordByEventId(records: any, event_id: any) {
-        for (const address in records) {
-            const matchedRecord = records[address].find((record: any) => getValueOfField(record, 'event_id') === event_id);
-            if (matchedRecord) {
-                return matchedRecord;
-            }
-        }
-        return null;
-    }
+
     function getValueOfField(recordString: string, fieldName: string) {
         try {
             // Look for the field in the string using a regular expression
@@ -44,10 +57,61 @@ const MintedCollections = () => {
         return null;
     }
 
-    async function fetchMintedCollection() {
+    function modifiedGetValueOfField(recordString: any, fieldName: any) {
+        try {
+            // Modified regular expression to capture the field value including spaces
+            const regex = new RegExp(fieldName + "\\s*:\\s*([\\w\\s\\.]+)", "i");
+            const match = recordString.match(regex);
+
+            if (match && match[1]) {
+                return match[1].trim(); // Return the captured field value, trimming any leading/trailing whitespace
+            }
+        } catch (error) {
+            console.error('Error parsing record:', error);
+        }
+        return null;
+    }
+
+
+    /* // Function to transform the data
+    function transformData(dataArray: any) {
+        return dataArray.map((recordString: any) => {
+            return {
+                owner: getValueOfField(recordString, "owner"),
+                event_id: getValueOfField(recordString, "event_id"),
+                max_supply: getValueOfField(recordString, "max_supply"),
+                is_private_event: getValueOfField(recordString, "is_private_event"),
+                // You might need to adjust these fields based on how you want to use them
+                // and what data is available in your original string
+                date: "", // Date needs to be provided or parsed if available in the data
+                name: modifiedGetValueOfField(recordString, "name"), // Name needs to be provided or parsed if available in the data
+                cover: "", // Cover image URL needs to be provided or parsed if available in the data
+                isShortlistEnabled: getValueOfField(recordString, "is_private_event") == "false" ? false : true,
+            };
+        });
+    } */
+
+    function transformRecord(recordString: string) {
+        return {
+            owner: getValueOfField(recordString, "owner"),
+            event_id: getValueOfField(recordString, "event_id")?.split('u32')[0],
+            max_supply: getValueOfField(recordString, "max_supply")?.split('u32')[0],
+            isShortlistEnabled: getValueOfField(recordString, "isShortlistEnabled") === "true",
+            name: modifiedGetValueOfField(recordString, "name"),
+            date: "", // Assuming date is not available in the string, you need to provide it
+            cover: "", // Assuming cover is not available in the string, you need to provide it
+        };
+    }
+
+
+
+
+    /* async function fetchMintedCollection() {
         let allEvents = JSON.parse(localStorage.getItem("NFTs") || "[]");
+        console.log("allEvents => ", allEvents);
         console.log("allEvents inside fetchMintedCollection => ", allEvents);
         console.log("allEvents[0] =>  ", allEvents[Object.keys(allEvents)[0]]);
+
         // allEvents
         return allEvents[Object.keys(allEvents)[0]];// hardcoded as first key is my address
 
@@ -59,17 +123,19 @@ const MintedCollections = () => {
             setLoading(true);
             let data: any = await fetchMintedCollection();
             console.log("data inside fetchMintedCollectionData => ", data);
+            const transformed_data = transformData(data);
+            console.log("transformed_data => ", transformed_data);
+            // console.log("type of transformed_data => ", (transformed_data));
             console.log("Before setMintedCollection on data", mintedCollection);
-
-            setMintedCollection(data);
-            console.log("After setMintedCollection on data", mintedCollection);
+            setMintedCollection(transformed_data);
+            // console.log("After setMintedCollection on data", mintedCollection);
 
             setLoading(false);
         } catch (error) {
             console.log(error);
         }
     }
-
+ */
     function CreateButton() {
         return (
             <a href="/dashboard/create">
@@ -117,18 +183,20 @@ const MintedCollections = () => {
     return (
         <Layout>
             <div className="flex gap-x-6 gap-y-5 flex-wrap pt-4 px-6">
-                {Array.isArray(mintedCollection) && mintedCollection.map((nft: any, i: any) => {
+                {Array.isArray(mintedCollection) ? mintedCollection.map((nft: any, i: any) => {
                     return (
                         <CardsMinted
+                            isShortlistEnabled={nft?.isShortlistEnabled}
+                            date={nft?.date}
                             setMintedCollection={setMintedCollection}
                             key={i}
-                            image={nft.cover}
-                            name={nft.name}
-                            event_id={nft.event_id}
-                            supply={nft.supply}
+                            image={nft?.cover}
+                            name={nft?.name}
+                            event_id={nft?.event_id}
+                            max_supply={nft?.max_supply}
                         />
                     );
-                })}
+                }) : ""}
                 {/* <CardsMinted tokenId="01" image={"3.png"} name="Lorem Ipsum" />
                         <CardsMinted tokenId="01" image={"3.png"} name="Lorem Ipsum" />
                         <CardsMinted tokenId="01" image={"3.png"} name="Lorem Ipsum" />
@@ -152,7 +220,7 @@ const MintedCollections = () => {
                     <div className="px-12 ">
                         <div className="bg-createEvent blur-[220px] absolute w-[70%] h-[75vh] z-[-1]" />
                         <p className="text-white font-semibold pl-4 pt-2">
-                            MINTED COLLECTIONS
+                            MINTED NFTs
                         </p>
                     </div>
                     {children}

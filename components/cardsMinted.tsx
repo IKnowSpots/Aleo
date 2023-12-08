@@ -9,7 +9,7 @@ const CardsMinted = ({
     date,
     name,
     event_id,
-    supply,
+    max_supply,
     setMintedCollection,
     isShortlistEnabled
 }: {
@@ -17,19 +17,20 @@ const CardsMinted = ({
     date: any;
     name: string;
     event_id: any;
-    supply: any;
+    max_supply: any;
     setMintedCollection: any;
     isShortlistEnabled: any
 }) => {
     const [loading, setLoading] = useState(false);
 
-    async function publishTicketsCall(tokenId: any) {
+    async function publishTicketsCall(event_id: any) {
         setLoading(true);
-        await publishTickets(tokenId);
-        setMintedCollection((events: any) => events.filter((event: any) => event.tokenId !== tokenId));
+        await publishTickets(event_id);
+        setMintedCollection((events: any) => events.filter((event: any) => event.event_id !== event_id));
         // Event id is similar to tokenId
         setLoading(false);
     }
+    // publishTicketsCall(event_id);
 
     return (
         <>
@@ -50,8 +51,8 @@ const CardsMinted = ({
                         </div>
                         <div className="h-[2px] rounded-full bg-white"></div>
                         <div className="flex justify-between items-center">
-                            <p>Max Supply: {supply}</p>
-                            <p>{date}</p>
+                            <p>Max Supply: {max_supply?.split('u32')[0]}</p>
+                            {/* <p>{date}</p> */}
                         </div>
                         {/* <p>{remaining}/{supply}</p> */}
                         {/* <p>1.20 Weth</p> */}
@@ -63,10 +64,10 @@ const CardsMinted = ({
 
                     </div>
                     <div className="flex text-base flex-col justify-center items-center w-full gap-2">
-                        <div className="flex justify-between w-full">
+                        {/* <div className="flex justify-between w-full">
                             <p>{name}</p>
-                            <p>supply: {supply}</p>
-                        </div>
+                            <p>supply: {max_supply.split('')[0]}</p>
+                        </div> */}
                         {/* <p>1.20 Weth</p> */}
                         {/* <button
                             className="view-btn px-4 py-0.5 outline rounded-lg"

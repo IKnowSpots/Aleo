@@ -12,7 +12,7 @@ const CardsHostee = ({
     date,
     username,
     event_id,
-    supply,
+    max_supply,
     isShortlistEnabled
 
 }: {
@@ -21,7 +21,7 @@ const CardsHostee = ({
     date: any;
     username: string;
     event_id: any;
-    supply: any;
+    max_supply: any;
     isShortlistEnabled: any;
 
 }) => {
@@ -50,7 +50,7 @@ const CardsHostee = ({
                     <div className="h-[2px] rounded-full bg-white"></div>
                     <div className="flex justify-between items-center">
                         <p>
-                            Max Supply: {supply}
+                            Max Supply: {max_supply}
                         </p>
                         <p>{date}</p>
                     </div>

@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { AleoWorker } from "@/src/workers/AleoWorker";
 import { AleoNetworkClient } from "@aleohq/sdk";
 
-const CardsActive = ({ image, isShortlistEnabled, date, name, event_id, supply, setActiveEvents }: { image: any; isShortlistEnabled: any, date: any, name: string; event_id: any; supply: any, setActiveEvents: any }) => {
+const CardsActive = ({ image, isShortlistEnabled, date, name, event_id, max_supply, setActiveEvents }: { image: any; isShortlistEnabled: any, date: any, name: string; event_id: any; max_supply: any, setActiveEvents: any }) => {
 
     const [loading, setLoading] = useState(false)
 
@@ -335,7 +335,7 @@ const CardsActive = ({ image, isShortlistEnabled, date, name, event_id, supply, 
                         </div>
                         <div className="h-[2px] rounded-full bg-white"></div>
                         <div className="flex justify-between items-center">
-                            <p>Max Supply: {supply}</p>
+                            <p>Max Supply: {max_supply}</p>
                             <p>{date}</p>
                         </div>
                         {/* <p>{remaining}/{supply}</p> */}

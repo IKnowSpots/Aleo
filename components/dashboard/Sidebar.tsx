@@ -83,7 +83,7 @@ const Sidebar = () => {
                 >
                     <SidebarItems
                         icon_name="Fire_fill"
-                        section_name="Minted Collections"
+                        section_name="Minted NFTs"
                         page_name="minted"
                     />
                 </Link>

@@ -43,7 +43,8 @@ const Event = () => {
         stakePrice: "0",
         eventPrice: "0",
         hostName: username,
-        username: username
+        username: username,
+        max_supply: ""
     });
     const [loading, setLoading] = useState(false);
     const [claimCode, setClaimCode] = useState("");
@@ -312,7 +313,7 @@ const Event = () => {
             let address = getValueOfField(decryptedRecord, "owner");
 
 
-            addRecordToLocalStorage("privateEventNFTs", address, decryptedRecord);
+            addRecordToLocalStorage("NFTs", address, decryptedRecord);
             // localStorage.setItem("privateRecords", ))
 
             toast.success("Private Event NFT Claimed!", {
@@ -412,6 +413,19 @@ const Event = () => {
 
 
 
+    function getEventName(event_id: any) {
+        const allEvents = JSON.parse(localStorage.getItem("eventsDetail") || "[]");
+        if (allEvents.length > 0) {
+            const filteredArray = allEvents.filter(
+                (subarray: any) =>
+                    // subarray.status =="1u8" &&
+                    subarray.event_id == event_id
+            );
+            console.log("filteredArray => ", filteredArray);
+            return filteredArray.name;
+        }
+        return null;
+    }
 
     async function handleClaimPublicNFT(event_id: any, claim_code: any, user_address: any) {
 
@@ -443,11 +457,31 @@ const Event = () => {
             const max_supply = getValueInEventsDetailByEventId(event_id, "max_supply");
             // const fetchedRecord = getAndDeleteRecordByField("eventsDetail", event_id, user_address);
             updateSingleEventField(event_id, "supply", old_supply - 1);
-            const newRecord = `{owner: ${user_address}.private  event_id: ${event_id_field}.private,\n  max_supply: ${max_supply}u32.private}`;
+            const event_name = getValueInEventsDetailByEventId(event_id, "name");
+            console.log("event_name => ", event_name);
+            const false_string = "false";
+            const newRecord = `{owner: ${user_address}.private,  event_id: ${event_id_field}.private,  max_supply: ${max_supply}u32.private, name: ${event_name}.private, isShortlistEnabled: ${false_string}.private }`;
             saveToLocalStorage("NFTs", user_address, newRecord);
 
 
+            /*
 
+
+            {
+            owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,
+            event_id: 11u32.private,
+            status: 1u32.private,
+            max_supply: 111u32.private,
+            shortlisted: {
+                addr0: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,
+                addr1: aleo17sv2qntg7duvr3h6fturqrf0qc7srgekcnvdu3nuuwqvtlnpyugsn965t9.private,
+                addr2: aleo1wvdfek6yr6djgr4vu2e85xq9lgly0v6vmxche6crrk99yma86c9q4sra7c.private,
+                addr3: aleo13lt3j3hs74ll0d3u8tlul7lgptr9dglp57kmskacgg2v4y748cxs2h45mp.private
+            },
+            _nonce: 6824693696704378489474296855031414529416577986306679321674021009829907431876group.public
+            }
+
+            */
 
             toast.success("Public Event NFT Minted!", {
                 position: "bottom-left",
@@ -503,8 +537,11 @@ const Event = () => {
             </div>
             <Navbar />
             <div className="w-full h-full min-h-screen mb-16">
+
                 <div className="md:flex-row flex flex-col py-4 justify-center w-full">
+
                     <div className="w-[40%] h-fit flex justify-center items-center rounded-2xl border-red">
+
                         <img
                             src={eventData?.cover ? "" : "/sample-img.png"}
                             alt="event img"
@@ -528,7 +565,7 @@ const Event = () => {
                         </div>
                         <div className="gap-2 flex flex-col">
                             <p>
-                                Max Supply {eventData.supply}
+                                Max Supply {eventData.max_supply}
                             </p>
                             {/*  <p>
                                 {eventData?.price} {currency}
@@ -591,7 +628,7 @@ const Event = () => {
                             getIsShortlistEnabled(JSON.parse(localStorage.getItem("eventsDetail") || "[]"), event_id) == false && (<input
                                 type="text"
                                 id="event-name"
-                                placeholder="Enter the claim code for this event NFT mint"
+                                placeholder="Enter the invite code for this event NFT mint"
                                 className="bg-[#1E1E1E] bg-opacity-75 border border-[#989898] border-opacity-30 rounded-lg p-2"
                                 onChange={(e) => setClaimCode(e.target.value)}
                             />)
@@ -612,6 +649,18 @@ const Event = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer
+                position="bottom-left"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
             <FooterSection />
         </div >
     );

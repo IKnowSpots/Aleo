@@ -89,7 +89,7 @@ const EventsByHost = () => {
                         name={nft.name}
                         date={nft.date}
                         username={id}
-                        supply={nft.supply}
+                        max_supply={nft.max_supply}
                     />
                 );
             })}

@@ -307,7 +307,7 @@ const CardsInactive = ({ isShortlistEnabled, image, date, name, supply, event_id
         setLoading(true)
         console.log("event_id => ", event_id)
         const program_name = "iknowspots_2.aleo";
-        const mapping_name = "event_id_hash_to_event_struct";
+        const mapping_name = "event_id_to_event_struct";
         const mapping_key = event_id.endsWith() == "field" ? event_id : event_id + "field";
         console.log("mapping_key => ", mapping_key);
         const mapping_value = await aleoWorker.getMappingValue(program_name, mapping_name, mapping_key);

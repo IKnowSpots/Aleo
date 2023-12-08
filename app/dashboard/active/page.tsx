@@ -90,7 +90,7 @@ const ActiveEvents = () => {
                             event_id={nft?.event_id}
                             image={nft?.cover}
                             name={nft?.name}
-                            supply={nft?.supply}
+                            max_supply={nft?.max_supply}
                         />
                     );
                 }) : ""}

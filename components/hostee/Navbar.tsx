@@ -4,6 +4,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 // import { useWallet } from "@solana/wallet-adapter-react";
 import WalletProvider from "../wallets";
+import { fetchCurrentUsername } from "@/utils";
 // const WalletsProvider = dynamic(
 //     () => import("../wallets"),
 //     {
@@ -15,7 +16,7 @@ const Navbar = () => {
     // const { wallets } = useWallet();
 
     // console.log("check", wallets);
-
+    const username = fetchCurrentUsername();
     return (
         <nav className=" flex gap-[20rem] justify-center items-center py-8">
             <Link href="/">
@@ -56,11 +57,18 @@ const Navbar = () => {
                 /> */}
 
                 <div className="flex gap-6">
-                    <Link href="/inventory">
-                        <p className="hoverUnderline text-xl">Inventory</p>
+
+                    <Link href="/dashboard/active">
+                        <p className="hoverUnderline text-xl">Dashboard</p>
                     </Link>
                     <Link href="/support">
                         <p className="hoverUnderline text-xl">Support</p>
+                    </Link>
+                    <Link href={`/consentsam/events`}>
+                        <div className="text-white bg-[#070708] py-2 text-base font-semibold flex items-center gap-2 pl-5 pr-3 border border-transparent rounded-full hover:bg-white hover:text-black">
+                            <p className="">Hii, @consentsam</p>
+                            <div className="h-[1.5rem] w-[1.5rem] grad1 rounded-full"></div>
+                        </div>
                     </Link>
                 </div>
             </div>
