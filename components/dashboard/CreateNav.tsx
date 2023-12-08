@@ -4,9 +4,10 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { fetchCurrentUsername } from "@/utils";
 import WalletsProvider from "../wallets";
+import { WalletMultiButton } from "@demox-labs/aleo-wallet-adapter-reactui";
 
 const CreateNav = () => {
-    const [username, setUsername] = useState();
+    const [username, setUsername] = useState<string | undefined>();
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -17,7 +18,7 @@ const CreateNav = () => {
         setLoading(true);
         let user = await fetchCurrentUsername();
         setUsername(user);
-        // setUsername("@iamacid");
+        // setUsername("consentsam");
         setLoading(false);
     }
 
@@ -31,7 +32,9 @@ const CreateNav = () => {
                     alt="iks logo"
                 />
             </Link>
+            <WalletMultiButton className="bg-[#1253fa]  top-75-left" />
             <div className="flex items-center ">
+
                 <Link href={`/${username}/events`}>
                     <div className="text-white bg-[#070708] py-2 text-base font-semibold flex items-center gap-2 pl-5 pr-3 border border-transparent rounded-full hover:bg-white hover:text-black">
                         <p className="">Hii, @{username}</p>

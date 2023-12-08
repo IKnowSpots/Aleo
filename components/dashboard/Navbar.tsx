@@ -3,9 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { fetchCurrentUsername, getIKSContractAddress } from "@/utils";
+import { WalletMultiButton } from "@demox-labs/aleo-wallet-adapter-reactui";
 
 const DashNav = () => {
-    const [username, setUsername] = useState();
+    const [username, setUsername] = useState<string | undefined>();
     const [loading, setLoading] = useState(false);
     const [contractAddr, setContractAddr] = useState("")
 
@@ -22,7 +23,7 @@ const DashNav = () => {
         setLoading(true);
         let user = await fetchCurrentUsername();
         setUsername(user);
-        await getIKSContractAddressCall(user)
+        // await getIKSContractAddressCall(user)
         // setUsername("iamacid");
         setLoading(false);
     }
@@ -68,13 +69,13 @@ const DashNav = () => {
             </div>
 
             <div>
-                <button
+                {/* <button
                     className="text-[1rem] flex justify-around w-[7.5rem] mx-auto px-2 py-3 rounded-lg z-[10] ml-3 text-white font-semibold bg-[#070708] hover:bg-[#18181d] hover:border hover:border-black/50"
                     onMouseEnter={handleToggle}
                 // onClick={handleToggle}
                 >
                     Contract <span className="rotate-180">^</span>
-                </button>
+                </button> */}
 
                 {isOpen && (
                     <div className="fixed text-[0.8rem] left-[70%] mr-8 z-10 mt-2 py-2 bg-[#18181d] text-white rounded-xl border border-black/50 shadow-lg ">
@@ -90,6 +91,7 @@ const DashNav = () => {
 
             <div className="flex gap-2 w-[22%] justify-center items-center">
                 {/* <Link href="/test/events"> */}
+                <WalletMultiButton className="bg-[#1253fa] top-75-left" />
                 <Link href={`/${username}/events`}>
                     <div className="text-white bg-[#070708] py-3 text-sm font-semibold flex items-center gap-2 pl-5 pr-3 border border-transparent rounded-full hover:bg-white hover:text-black">
                         <p className="">Hii, @{username}</p>

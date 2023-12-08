@@ -39,38 +39,27 @@ aleo1xykf5gvr0sjw94hzey6zc6wec9zldwa09zy5rdlrkxlus8hr659qkfwvz6
 
 
 // Node Blocks in case of credit crunch
-snarkos developer scan -v AViewKey1mSnpFFC8Mj4fXbK5YiWgZ3mjiV8CxA79bYNa8ymUpTrw --start 0 --endpoint "http://localhost:3030" > a.txt
-
+snarkos developer scan -v AViewKey1mSnpFFC8Mj4fXbK5YiWgZ3mjiV8CxA79bYNa8ymUpTrw --start 0 --endpoint "http://localhost:3030"
 
 // Scan for Senior developer records
 snarkos developer scan --private-key APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc --last 2000 --endpoint "http://localhost:3030"
 
 
-snarkos developer execute credits.aleo transfer_private "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 1000000000000u64.private,  _nonce: 6429435772147272815911423722545141230795407962075161002383518367393673642743group.public}" "aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut" 1000000000000u64 --private-key "APrivateKey1zkp8CZNn3yeCseEtxuVPbDCwSyhGW6yZKUYKfgXmcpoGPWH" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 10000000000 --record "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 1000000000000u64.private,  _nonce: 7167548570416370992660419783534955522916027654549387115860521522018029780145group.public}"
-
-
-
 snarkos developer execute credits.aleo transfer_private "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 1000000000000u64.private,  _nonce: 6429435772147272815911423722545141230795407962075161002383518367393673642743group.public}" "aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut" 1000000000000u64 --private-key "APrivateKey1zkp8CZNn3yeCseEtxuVPbDCwSyhGW6yZKUYKfgXmcpoGPWH" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 10000000000 --record "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 1000000000000u64.private,  _nonce: 1870384227717108990812464071079401090030090200169646008180314689517851502548group.public}"
 
 
+
 // Aleo Credit transfer from node to address
-snarkos developer execute credits.aleo transfer_private_to_public "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 1000000000000u64.private,  _nonce: 2147544859188173635598614390014841094843475220987598413361363655799329122784group.public}" "aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut"  1000000000000u64 --private-key "APrivateKey1zkp8CZNn3yeCseEtxuVPbDCwSyhGW6yZKUYKfgXmcpoGPWH" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 10000000000 --record "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 1000000000000u64.private,  _nonce: 1870384227717108990812464071079401090030090200169646008180314689517851502548group.public}"
-
-
-snarkos developer execute credits.aleo transfer_private_to_public "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 1000000000000u64.private,  _nonce: 2147544859188173635598614390014841094843475220987598413361363655799329122784group.public}" "aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut"  1000000000000u64 --private-key "APrivateKey1zkp8CZNn3yeCseEtxuVPbDCwSyhGW6yZKUYKfgXmcpoGPWH" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 10000000000 --record "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 989999997790u64.private,  _nonce: 2883426532247556633507618116518785807531646371697843641113276623127891094822group.public}"
+snarkos developer execute credits.aleo transfer_private_to_public "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 1000000000000u64.private,  _nonce: 2147544859188173635598614390014841094843475220987598413361363655799329122784group.public}" "aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut"  1000000000000u64 --private-key "APrivateKey1zkp8CZNn3yeCseEtxuVPbDCwSyhGW6yZKUYKfgXmcpoGPWH" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 10000000000 --record "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 989999997790u64.private,  _nonce: 6859732850750209638876312869345133768529242533364767097070201691241359290565group.public}"
 
 
 
-snarkos developer execute credits.aleo transfer_private_to_public "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 93750000000000u64.private,  _nonce: 239342958985106763708738609678182549854111744243820417353521050114416207606group.public}" "aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut" 837500000000u64 --private-key "APrivateKey1zkp8CZNn3yeCseEtxuVPbDCwSyhGW6yZKUYKfgXmcpoGPWH" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 10000000000 --record "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 93750000000000u64.private,  _nonce: 6943652577720031695852320528779080923424298438422299389212028025252409913592group.public}"
 
-
-
-snarkos developer execute credits.aleo transfer_private_to_public "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 93750000000000u64.private,  _nonce: 239342958985106763708738609678182549854111744243820417353521050114416207606group.public}" "aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut" 837500000000u64 --private-key "APrivateKey1zkp8CZNn3yeCseEtxuVPbDCwSyhGW6yZKUYKfgXmcpoGPWH" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 10000000000 --record "{  owner: aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px.private,  microcredits: 93750000000000u64.private,  _nonce: 6943652577720031695852320528779080923424298438422299389212028025252409913592group.public}"
 
 
 
 // Deploy
-snarkos developer deploy iknowspots_2.aleo --private-key APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc --query "http://localhost:3030" --path "./build/" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 600000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 837479731000u64.private,  _nonce: 4292393654384711680071256063834865910129031443496172025756230662500356227836group.public}"
+snarkos developer deploy iknowspots_2.aleo --private-key APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc --query "http://localhost:3030" --path "./build/" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 600000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 999989947000u64.private,  _nonce: 3081842660384990884181749516150012134375055161559240172512114034037939115357group.public}"
 
 
 snarkos developer deploy iknowspots_2.aleo --private-key APrivateKey1zkpHVhTAJiZPrDeVo6nDyvq2LDRhP2ZgECvr8zqtcefpgsc --query "http://localhost:3030" --path "./build/" --broadcast "http://localhost:3030/testnet3/transaction/broadcast" --priority-fee 600000 --record "{  owner: aleo1fu0k2qfytzs5fhesgfgjuax6wsh9xx4ftpdapnhzrtruy0tx3urqx3p0ut.private,  microcredits: 1000000000000u64.private,  _nonce: 7999209595059648632327881890849083406811801987376841841523850240790997637598group.public}"

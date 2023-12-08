@@ -41,7 +41,7 @@ const ActiveEvents = () => {
                         alt="qr code svg"
                         className=""
                     />
-                    <p className="z-[10] text-white">ssss</p>
+                    <p className="z-[10] text-white">Create an Event</p>
                 </div>
             </a>
         );
@@ -82,8 +82,11 @@ const ActiveEvents = () => {
                 {Array.isArray(activeEvents) ? activeEvents.map((nft: any, i: any) => {
                     return (
                         <CardsActive
+
                             setActiveEvents={setActiveEvents}
+                            isShortlistEnabled={nft.isShortlistEnabled}
                             key={i}
+                            date={nft?.date}
                             event_id={nft?.event_id}
                             image={nft?.cover}
                             name={nft?.name}

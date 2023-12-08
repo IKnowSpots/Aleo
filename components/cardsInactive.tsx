@@ -6,7 +6,7 @@ import LoadingModal from "./LoadingModal";
 import { AleoWorker } from "@/src/workers/AleoWorker";
 import { ToastContainer, toast } from "react-toastify";
 
-const CardsInactive = ({ image, name, event_id, setInactiveEvents }: { image: any, name: string, event_id: any, setInactiveEvents: any }) => {
+const CardsInactive = ({ isShortlistEnabled, image, date, name, supply, event_id, setInactiveEvents }: { isShortlistEnabled: any, image: any, date: any, name: string, supply: any, event_id: any, setInactiveEvents: any }) => {
 
     const [loading, setLoading] = useState(false)
 
@@ -220,6 +220,27 @@ const CardsInactive = ({ image, name, event_id, setInactiveEvents }: { image: an
         }
         // setMsg("");
     }
+
+    function updateSingleEventField(eventId: any, fieldName: any, newValue: any) {
+        console.log("eventId => ", eventId);
+        // Retrieve the current events from local storage
+        const events = JSON.parse(localStorage.getItem('eventsDetail') || '[]');
+
+        // Find the event with the matching event_id
+        const eventIndex = events.findIndex((event: any) => event.event_id === eventId);
+
+        // Check if the event is found
+        if (eventIndex !== -1) {
+            // Update the specific field of the event
+            events[eventIndex][fieldName] = newValue;
+
+            // Save the updated events array back to local storage
+            localStorage.setItem('eventsDetail', JSON.stringify(events));
+        } else {
+            console.error('Event not found');
+        }
+    }
+
     const handleResumePublicEvent: React.MouseEventHandler<HTMLButtonElement> = async (event_id: any) => {
         const aleoWorker = AleoWorker();
         // debugger;
@@ -231,10 +252,9 @@ const CardsInactive = ({ image, name, event_id, setInactiveEvents }: { image: an
         const final_state = current_state == "0u8";  */
 
         const toggled_state = "1u8";
+
+
         console.log("toggled_state =>", toggled_state);
-
-
-        console.log("final_state =>", toggled_state);
 
         try {
             let program_name = "iknowspots_2.aleo";
@@ -256,6 +276,7 @@ const CardsInactive = ({ image, name, event_id, setInactiveEvents }: { image: an
 
             const data = await fetchDataUntilAvailable(transactionUrl);
             console.log("fetched data ", data);
+            updateSingleEventField(event_id, "status", "1u8");
             // updateRecordWhileResuming(event_id, "1u8");
             /* const record = data.execution.transitions[0].outputs[0].value;
             console.log("record ", record);
@@ -291,15 +312,19 @@ const CardsInactive = ({ image, name, event_id, setInactiveEvents }: { image: an
         console.log("mapping_key => ", mapping_key);
         const mapping_value = await aleoWorker.getMappingValue(program_name, mapping_name, mapping_key);
         console.log("mapping_value => ", mapping_value);
-        const is_private_event = getValueOfField(mapping_value, "is_private");
+        const is_private_event = getValueOfField(mapping_value, 'is_private');
         console.log("is_private_event => ", is_private_event);
+        if (is_private_event === 'false') {
+            handleResumePublicEvent(event_id);
+        } else {
+            handleResumePrivateEvent(event_id);
+        }
 
-        is_private_event ? handleResumePrivateEvent(event_id) : handleResumePublicEvent(event_id);
         setInactiveEvents((events: any) => events.filter((event: any) => event.event_id !== event_id));
         // if (function_to_call == true) {
         toast.success("Event Paused!", {
             position: "top-center",
-            autoClose: 5000,
+            autoClose: false,
             hideProgressBar: true,
             closeOnClick: true,
             pauseOnHover: true,
@@ -315,18 +340,27 @@ const CardsInactive = ({ image, name, event_id, setInactiveEvents }: { image: an
             <div className="text-white w-[23%] px-4 box-background pt-4 pb-5 rounded-xl">
                 <div className="flex flex-col gap-4">
                     <img
-                        src={image}
+                        src="/sample-img.png"
                         className="h-[250px] rounded-xl"
                         // width="195"
                         // height="200"
                         alt="Event&apos;s Image"
                     />
-                    <div className="flex text-[0.85rem] justify-between items-center gap-2">
-                        <p>{name}</p>
-                        {/* <p>1.20 Weth</p> */}
-                        <button className="view-btn px-4 py-0.5 outline rounded-lg" onClick={() => runEventCall(event_id)}>
-                            Run
-                        </button>
+                    <div className="flex gap-2 text-[0.85rem] flex-col">
+                        <div className="flex justify-between items-center">
+                            <p>{name}</p>
+                            <p>{isShortlistEnabled ? "Private" : "Public"}</p>
+                        </div>
+                        <div className="h-[2px] rounded-full bg-white"></div>
+                        <div className="flex justify-between items-center">
+                            <p>Max Supply: {supply}</p>
+                            <p>{date}</p>
+                        </div>
+                        <div className="flex justify-center items-center">
+                            <button className="view-btn px-4 py-0.5 outline rounded-lg" onClick={() => runEventCall(event_id)}>
+                                Run
+                            </button>
+                        </div>
                     </div>
                     {/* <hr />
                 <div className="flex justify-between my-6">
@@ -335,6 +369,31 @@ const CardsInactive = ({ image, name, event_id, setInactiveEvents }: { image: an
                     Run
                     </button>
                 </div> */}
+                    <ToastContainer
+                        position="top-center"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="dark"
+                    />
+
+                    <ToastContainer
+                        position="top-center"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="dark"
+                    />
                 </div>
             </div>
         </>

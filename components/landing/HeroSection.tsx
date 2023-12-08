@@ -6,30 +6,30 @@ import { fetchIfDeployed, deploy } from "@/utils";
 
 const HeroSection = () => {
   const [isDeployed, setIsDeployed] = useState<Boolean>();
-    const [loading, setLoading] = useState<Boolean>(false);
+  const [loading, setLoading] = useState<Boolean>(false);
 
-    // comment line 18-26 to make this page static
+  // comment line 18-26 to make this page static
 
-    // useEffect(() => {
-    //     if (isDeployed == true) {
-    //         pushPage();
-    //     }
-    // }, [isDeployed]);
+  // useEffect(() => {
+  //     if (isDeployed == true) {
+  //         pushPage();
+  //     }
+  // }, [isDeployed]);
 
-    // function pushPage() {
-    //     window.location.replace("/dashboard/active");
-    // }
-    useEffect(() => {
-          checkDeployment();
-      }, []);
+  // function pushPage() {
+  //     window.location.replace("/dashboard/active");
+  // }
+  useEffect(() => {
+    checkDeployment();
+  }, []);
 
-    async function checkDeployment() {
-        setLoading(true);
-        const data = await fetchIfDeployed();
-        console.log("deploy", data);
-        setIsDeployed(data);
-        setLoading(false);
-    }
+  async function checkDeployment() {
+    setLoading(true);
+    const data = await fetchIfDeployed();
+    console.log("deploy", data);
+    setIsDeployed(data);
+    setLoading(false);
+  }
 
   return (
     <div className="w-full h-[625px] md:h-[650px] lg:h-[800px] xl:h-auto">
@@ -53,7 +53,7 @@ const HeroSection = () => {
           <Link className="" target="_blank" href="https://www.loom.com/share/5cee5fd7ee6d477e976f246fbda9ac21?sid=666d8812-f4a4-4d07-ab34-4310cdd08c4b">
             <button className="cta-button w-48 px-4 py-1 text-[0.8rem] sm:text-[1rem]">Demo Video</button>
           </Link>
-          <Link className="" href={true ? "/dashboard/active" : "/dashboard"}>
+          <Link className="" href={"/dashboard"}>
             <button className="btn-bg w-48 flex justify-center items-center gap-2 px-4 py-1 text-[0.8rem] sm:text-[1rem]">
               Launch dApp
               <Image

@@ -8,8 +8,9 @@ import LoadingModal from "./LoadingModal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AleoWorker } from "@/src/workers/AleoWorker";
+import { AleoNetworkClient } from "@aleohq/sdk";
 
-const CardsActive = ({ image, name, event_id, supply, setActiveEvents }: { image: any; name: string; event_id: any; supply: any, setActiveEvents: any }) => {
+const CardsActive = ({ image, isShortlistEnabled, date, name, event_id, supply, setActiveEvents }: { image: any; isShortlistEnabled: any, date: any, name: string; event_id: any; supply: any, setActiveEvents: any }) => {
 
     const [loading, setLoading] = useState(false)
 
@@ -232,7 +233,7 @@ const CardsActive = ({ image, name, event_id, supply, setActiveEvents }: { image
         // setLoading();
         const toggled_state = "0u8";
         console.log("toggled_state =>", toggled_state);
-
+        console.log("event_id => ", event_id);
         try {
             let program_name = "iknowspots_2.aleo";
             let function_name = "toggle_public_event";
@@ -277,85 +278,34 @@ const CardsActive = ({ image, name, event_id, supply, setActiveEvents }: { image
         }
         // setMsg("");
     }
-    const handleResumePublicEvent: React.MouseEventHandler<HTMLButtonElement> = async (event_id: any) => {
-        const aleoWorker = AleoWorker();
-        // debugger;
-        /* const param_event_id = event_id;
-
-        const event_id_field = event_id + "field";
-        const current_state = await aleoWorker.getMappingValue("iknowspots_2.aleo", "event_id_hash_to_event_struct", event_id_field);
-        console.log("current_state =>", current_state);
-        const final_state = current_state == "0u8";  */
-
-        const toggled_state = "1u8";
-        console.log("toggled_state =>", toggled_state);
 
 
-        console.log("final_state =>", toggled_state);
-
-        try {
-            let program_name = "iknowspots_2.aleo";
-            let function_name = "toggle_public_event";
-            let statusu8;
-
-            let tx_id;
-
-            try {
-
-                tx_id = await aleoWorker.execute(program_name, function_name, [event_id + "field", toggled_state]);
-                // const transactionUrl = "http://localhost:3030/testnet3/transaction/" + tx_id;
-            } catch (e) {
-                console.error("something bad happened ", e);
-            }
-
-            const transactionUrl = "http://localhost:3030/testnet3/transaction/" + tx_id;
-            console.log("transactionUrl => ", transactionUrl)
-
-            const data = await fetchDataUntilAvailable(transactionUrl);
-            console.log("fetched data ", data);
-            /* const record = data.execution.transitions[0].outputs[0].value;
-            console.log("record ", record);
-            const decryptedRecord = await aleoWorker.decrypt_record(record);
-            console.log("decryptedRecord => ", decryptedRecord); */
-
-
-            /* let address = getValueOfField(decryptedRecord, "owner");
-            console.log("address in executeToggle ", address);
-            addRecord(address, decryptedRecord, setAddressToEventCreationRecords);
-            const statusField = getValueOfField(decryptedRecord, "status");
-            if (statusField) {
-                const _status = parseInt(statusField.split('u8')[0]);
-                console.log("_status => ", _status)
-                setEventStatuses({ ...eventStatuses, [formInput.event_id]: { status: _status } });
-            } else {
-                console.error("Status field is null");
-            } */
-
-        } catch (error) {
-            console.error("Error in createEvent function ", error);
-        }
-        // setMsg("");
-    }
-
+    // function getMappingValueCorrespondingTo
 
     async function pauseEventCall(event_id: any) {
         const aleoWorker = AleoWorker();
+        // const aleoNetworkClient = new AleoNetworkClient();
         setLoading(true)
         console.log("event_id => ", event_id)
         const program_name = "iknowspots_2.aleo";
-        const mapping_name = "event_id_hash_to_event_struct";
+        const mapping_name = "event_id_to_event_struct";
         const mapping_key = event_id.endsWith() == "field" ? event_id : event_id + "field";
+        const random_mk = event_id;
         console.log("mapping_key => ", mapping_key);
         const mapping_value = await aleoWorker.getMappingValue(program_name, mapping_name, mapping_key);
         console.log("mapping_value => ", mapping_value);
-        const is_private_event = getValueOfField(mapping_value, "is_private");
+        const is_private_event = getValueOfField(mapping_value, 'is_private');
         console.log("is_private_event => ", is_private_event);
-        is_private_event ? handlePausePrivateEvent(event_id) : handlePausePublicEvent(event_id);
+        if (is_private_event === 'false') {
+            handlePausePublicEvent(event_id);
+        } else {
+            handlePausePrivateEvent(event_id);
+        }
         setActiveEvents((events: any) => events.filter((event: any) => event.event_id !== event_id));
         // if (function_to_call == true) {
         toast.success("Event Paused!", {
             position: "top-center",
-            autoClose: 5000,
+            autoClose: false,
             hideProgressBar: true,
             closeOnClick: true,
             pauseOnHover: true,
@@ -372,22 +322,22 @@ const CardsActive = ({ image, name, event_id, supply, setActiveEvents }: { image
             <div className="text-white w-[23%] px-4 box-background pt-4 pb-5 rounded-xl">
                 <div className="flex flex-col gap-6">
                     <img
-                        src={image}
+                        src="/sample-img.png"
                         className="h-[250px] rounded-xl"
                         // width="195"
                         // height="200"
                         alt="Event&apos;s Image"
                     />
                     <div className="flex gap-2 text-[0.85rem] flex-col">
-                        {/* <div className="flex justify-between items-center">
+                        <div className="flex justify-between items-center">
                             <p>{name}</p>
-                            <p>{price} {currency}</p>
-                        </div> */}
+                            <p>{isShortlistEnabled ? "Private" : "Public"}</p>
+                        </div>
                         <div className="h-[2px] rounded-full bg-white"></div>
-                        {/* <div className="flex justify-between items-center">
-                            <p>Bought: {supply - remaining}</p>
+                        <div className="flex justify-between items-center">
+                            <p>Max Supply: {supply}</p>
                             <p>{date}</p>
-                        </div> */}
+                        </div>
                         {/* <p>{remaining}/{supply}</p> */}
                         {/* <p>1.20 Weth</p> */}
                         <div className="flex justify-center items-center">
@@ -417,18 +367,18 @@ const CardsActive = ({ image, name, event_id, supply, setActiveEvents }: { image
                         theme="dark"
                     />
                 </div>
-                {/* <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="dark"
-            /> */}
+                <ToastContainer
+                    position="top-center"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="dark"
+                />
             </div>
         </>
     );

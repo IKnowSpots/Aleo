@@ -81,6 +81,9 @@ const InactiveEvents = () => {
                 {inactiveEvents.map((nft: any, i: any) => {
                     return (
                         <CardsInactive
+                            isShortlistEnabled={nft?.isShortlistEnabled}
+                            date={nft?.date}
+                            supply={nft?.supply}
                             setInactiveEvents={setInactiveEvents}
                             key={i}
                             event_id={nft.event_id}

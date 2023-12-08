@@ -41,21 +41,20 @@ program iknowspots_2.aleo {
     record EventNFT{
         owner: address,
         event_id: field,
-        max_supply:u32
+        max_supply:u32,
+        is_private_event: bool
     }
 
-    mapping event_id_hash_to_event_struct : field => EventStruct;
-    mapping event_id_hash_to_claim_count : field => u32;
-    mapping hoho_event_plus_id_self_caller : address => bool;
+    mapping event_id_to_event_struct : field => EventStruct;
+    mapping event_id_to_claim_count : field => u32;
+    mapping hoho_event_id_plus_self_caller : address => bool;
 
 
-    function hello_world(num1: u32, num2: u32)-> u32{
-        return num1+num2;
-    }
+
     function hash_of_two_into_address(event_id_hash: field, caller_public_key: address ) -> address{
         let caller_public_key_in_field :  field = caller_public_key as field;
-        let hash_of_event_id_hash_and_owner_public_address_hash : address = BHP256::hash_to_address(event_id_hash + caller_public_key_in_field);
-        return hash_of_event_id_hash_and_owner_public_address_hash;
+        let event_id_and_owner_public_address_hash : address = BHP256::hash_to_address(event_id_hash + caller_public_key_in_field);
+        return event_id_and_owner_public_address_hash;
     }
 
     // This eventID will be the hash of the eventName and will be converted to eventId
@@ -81,7 +80,7 @@ program iknowspots_2.aleo {
         // Creation of events only if the event doesn't exists already
         // If assert fails then transition will revert as well
         // We won't count claim number for the private events
-        assert(!Mapping::contains(event_id_hash_to_event_struct,event_id));
+        assert(!Mapping::contains(event_id_to_event_struct,event_id));
         let private_event_struct : EventStruct = EventStruct{
             is_private:true,
             event_owner: hash_of_event_id_hash_and_owner_public_address_hash, // Need to check again - what should I enter
@@ -90,13 +89,13 @@ program iknowspots_2.aleo {
             max_supply: 0u32, // Private event's max_supply won't be revealed
             claim_code_hash: 0field  // keeping both the max_supply and claim_code_hash same in case of private_events
         };
-        Mapping::set(event_id_hash_to_event_struct,event_id,private_event_struct);
+        Mapping::set(event_id_to_event_struct,event_id,private_event_struct);
     }
 
     transition create_public_event(event_id: field,max_supply:u32, claim_code : field)->bool{
 
         let claim_code_hash : field = BHP256::hash_to_field(claim_code);
-        let event_id_hash_to_event : EventStruct = EventStruct {
+        let event_id_to_event_struct_entry : EventStruct = EventStruct {
             is_private:false,
             event_owner: self.caller,
             event_id: event_id,
@@ -104,13 +103,13 @@ program iknowspots_2.aleo {
             max_supply: max_supply,
             claim_code_hash: claim_code_hash
         };
-        return true then finalize(event_id_hash_to_event);
+        return true then finalize(event_id_to_event_struct_entry);
     }
 
     finalize create_public_event(public_event: EventStruct){
-        assert(!Mapping::contains(event_id_hash_to_event_struct, public_event.event_id));
-        Mapping::set(event_id_hash_to_event_struct, public_event.event_id, public_event);
-        Mapping::set(event_id_hash_to_claim_count,public_event.event_id,0u32);
+        assert(!Mapping::contains(event_id_to_event_struct, public_event.event_id));
+        Mapping::set(event_id_to_event_struct, public_event.event_id, public_event);
+        Mapping::set(event_id_to_claim_count,public_event.event_id,0u32);
     }
 
     // 0u32 -> turned off
@@ -138,8 +137,8 @@ program iknowspots_2.aleo {
 
     finalize toggle_public_event(event_id: field,toggle_value : u8,caller_public_key: address){
         // TODO : Need to check how to catch the error at frontend
-        assert(Mapping::contains(event_id_hash_to_event_struct, event_id));
-        let value_stored : EventStruct = Mapping::get(event_id_hash_to_event_struct,event_id);
+        assert(Mapping::contains(event_id_to_event_struct, event_id));
+        let value_stored : EventStruct = Mapping::get(event_id_to_event_struct,event_id);
         let status_value_stored : u8 = value_stored.status;
 
         // Make sure no completed event can be toggled
@@ -153,7 +152,7 @@ program iknowspots_2.aleo {
             max_supply: value_stored.max_supply,
             claim_code_hash: value_stored.claim_code_hash
         };
-        Mapping::set(event_id_hash_to_event_struct,event_id,updatedStruct);
+        Mapping::set(event_id_to_event_struct,event_id,updatedStruct);
     }
 
     // only for private functions
@@ -212,40 +211,41 @@ program iknowspots_2.aleo {
         return EventNFT {
             owner: self.caller,
             event_id: event_pass.event_id,
-            max_supply:event_pass.max_supply
+            max_supply:event_pass.max_supply,
+            is_private_event: false
         };
     }
 
     transition claim_public_event(event_id: field,claim_code: field)-> bool{
-        let hash_of_hash_of_event_id_hash_self_caller : address = hash_of_two_into_address(event_id,self.caller);
+        let hash_of_hash_of_event_id_self_caller : address = hash_of_two_into_address(event_id,self.caller);
         let claim_code_hash : field = BHP256::hash_to_field(claim_code);
-        return true then finalize(event_id,hash_of_hash_of_event_id_hash_self_caller,claim_code_hash);
+        return true then finalize(event_id,hash_of_hash_of_event_id_self_caller,claim_code_hash);
     }
 
-    finalize claim_public_event (event_id: field, hash_of_hash_of_event_id_hash_self_caller:address,claim_code_hash:field) {
+    finalize claim_public_event (event_id: field, hash_of_hash_of_event_id_self_caller:address,claim_code_hash:field) {
         // Check whether the specific event exists
-        assert(Mapping::contains(event_id_hash_to_event_struct, event_id));
+        assert(Mapping::contains(event_id_to_event_struct, event_id));
 
         // Check if the event has not completed
-        assert(Mapping::get(event_id_hash_to_event_struct, event_id).status<2u8);
+        assert(Mapping::get(event_id_to_event_struct, event_id).status<2u8);
 
 
         // Check if the user has already claimed
-        assert(!Mapping::contains(hoho_event_plus_id_self_caller,hash_of_hash_of_event_id_hash_self_caller));
+        assert(!Mapping::contains(hoho_event_id_plus_self_caller,hash_of_hash_of_event_id_self_caller));
 
         // Check that it hasn't been claimed all
-        let claim_count : u32 = Mapping::get(event_id_hash_to_claim_count,event_id);
+        let claim_count : u32 = Mapping::get_or_use(event_id_to_claim_count,event_id,0u32);
 
-        let fetch_max_supply : u32 = Mapping::get(event_id_hash_to_event_struct, event_id).max_supply;
+        let fetch_max_supply : u32 = Mapping::get(event_id_to_event_struct, event_id).max_supply;
         assert(claim_count<fetch_max_supply);
 
-        let fetch_claim_hash_code : field = Mapping::get(event_id_hash_to_event_struct,event_id).claim_code_hash;
+        let fetch_claim_hash_code : field = Mapping::get(event_id_to_event_struct,event_id).claim_code_hash;
         assert_eq(claim_code_hash,fetch_claim_hash_code );
         // If not, set the user's claim status to be true
-        Mapping::set(hoho_event_plus_id_self_caller,hash_of_hash_of_event_id_hash_self_caller,true);
+        Mapping::set(hoho_event_id_plus_self_caller,hash_of_hash_of_event_id_self_caller,true);
 
         // Now increase the claim count by 1 corresponding to that event hash
-        Mapping::set(event_id_hash_to_claim_count,event_id ,claim_count+1u32 );
+        Mapping::set(event_id_to_claim_count,event_id ,claim_count+1u32 );
     }
 
 }

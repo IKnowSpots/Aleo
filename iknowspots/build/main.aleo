@@ -34,28 +34,22 @@ record EventNFT:
     owner as address.private;
     event_id as field.private;
     max_supply as u32.private;
+    is_private_event as boolean.private;
 
 
-mapping event_id_hash_to_event_struct:
+mapping event_id_to_event_struct:
 	key as field.public;
 	value as EventStruct.public;
 
 
-mapping event_id_hash_to_claim_count:
+mapping event_id_to_claim_count:
 	key as field.public;
 	value as u32.public;
 
 
-mapping hoho_event_plus_id_self_caller:
+mapping hoho_event_id_plus_self_caller:
 	key as address.public;
 	value as boolean.public;
-
-closure hello_world:
-    input r0 as u32;
-    input r1 as u32;
-    add r0 r1 into r2;
-    output r2 as u32;
-
 
 closure hash_of_two_into_address:
     input r0 as field;
@@ -79,11 +73,11 @@ function create_private_event:
 finalize create_private_event:
     input r0 as field.public;
     input r1 as address.public;
-    contains event_id_hash_to_event_struct[r0] into r2;
+    contains event_id_to_event_struct[r0] into r2;
     not r2 into r3;
     assert.eq r3 true;
     cast true r1 r0 1u8 0u32 0field into r4 as EventStruct;
-    set r4 into event_id_hash_to_event_struct[r0];
+    set r4 into event_id_to_event_struct[r0];
 
 
 function create_public_event:
@@ -98,11 +92,11 @@ function create_public_event:
 
 finalize create_public_event:
     input r0 as EventStruct.public;
-    contains event_id_hash_to_event_struct[r0.event_id] into r1;
+    contains event_id_to_event_struct[r0.event_id] into r1;
     not r1 into r2;
     assert.eq r2 true;
-    set r0 into event_id_hash_to_event_struct[r0.event_id];
-    set 0u32 into event_id_hash_to_claim_count[r0.event_id];
+    set r0 into event_id_to_event_struct[r0.event_id];
+    set 0u32 into event_id_to_claim_count[r0.event_id];
 
 
 function toggle_private_event:
@@ -126,14 +120,14 @@ finalize toggle_public_event:
     input r0 as field.public;
     input r1 as u8.public;
     input r2 as address.public;
-    contains event_id_hash_to_event_struct[r0] into r3;
+    contains event_id_to_event_struct[r0] into r3;
     assert.eq r3 true;
-    get event_id_hash_to_event_struct[r0] into r4;
+    get event_id_to_event_struct[r0] into r4;
     lt r4.status 2u8 into r5;
     assert.eq r5 true;
     assert.eq r4.event_owner r2;
     cast false r4.event_owner r4.event_id r1 r4.max_supply r4.claim_code_hash into r6 as EventStruct;
-    set r6 into event_id_hash_to_event_struct[r0];
+    set r6 into event_id_to_event_struct[r0];
 
 
 function set_shortlist:
@@ -165,7 +159,7 @@ function set_shortlist:
 function claim_private_event:
     input r0 as EventPass.record;
     assert.eq r0.owner self.caller;
-    cast self.caller r0.event_id r0.max_supply into r1 as EventNFT.record;
+    cast self.caller r0.event_id r0.max_supply false into r1 as EventNFT.record;
     output r1 as EventNFT.record;
 
 
@@ -182,20 +176,20 @@ finalize claim_public_event:
     input r0 as field.public;
     input r1 as address.public;
     input r2 as field.public;
-    contains event_id_hash_to_event_struct[r0] into r3;
+    contains event_id_to_event_struct[r0] into r3;
     assert.eq r3 true;
-    get event_id_hash_to_event_struct[r0] into r4;
+    get event_id_to_event_struct[r0] into r4;
     lt r4.status 2u8 into r5;
     assert.eq r5 true;
-    contains hoho_event_plus_id_self_caller[r1] into r6;
+    contains hoho_event_id_plus_self_caller[r1] into r6;
     not r6 into r7;
     assert.eq r7 true;
-    get event_id_hash_to_claim_count[r0] into r8;
-    get event_id_hash_to_event_struct[r0] into r9;
+    get.or_use event_id_to_claim_count[r0] 0u32 into r8;
+    get event_id_to_event_struct[r0] into r9;
     lt r8 r9.max_supply into r10;
     assert.eq r10 true;
-    get event_id_hash_to_event_struct[r0] into r11;
+    get event_id_to_event_struct[r0] into r11;
     assert.eq r2 r11.claim_code_hash;
-    set true into hoho_event_plus_id_self_caller[r1];
+    set true into hoho_event_id_plus_self_caller[r1];
     add r8 1u32 into r12;
-    set r12 into event_id_hash_to_claim_count[r0];
+    set r12 into event_id_to_claim_count[r0];

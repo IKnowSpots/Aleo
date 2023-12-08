@@ -4,6 +4,7 @@ import { useWallet } from "@demox-labs/aleo-wallet-adapter-react";
 import { LeoWalletAdapter } from "@demox-labs/aleo-wallet-adapter-leo";
 import React, { FC, useCallback, useEffect } from "react";
 import "@demox-labs/aleo-wallet-adapter-reactui/styles.css"
+import { WalletMultiButton } from "@demox-labs/aleo-wallet-adapter-reactui";
 
 const WalletProvider: FC = () => {
     const { wallet, publicKey } = useWallet();
@@ -11,7 +12,7 @@ const WalletProvider: FC = () => {
     useEffect(() => {
         console.log("pk", publicKey, wallet)
 
-    },[publicKey, wallet]);
+    }, [publicKey, wallet]);
 
     const onClick = useCallback(async () => {
         console.log("pk", publicKey)
@@ -29,9 +30,10 @@ const WalletProvider: FC = () => {
 
 
     return (
-        <button onClick={ () => {console.log("something clicked"); onClick()}}  disabled={!publicKey}>
-            Sign message
+
+        <button onClick={() => { console.log("something clicked"); onClick() }} disabled={!publicKey}>
         </button>
+        // <WalletMultiButton></WalletMultiButton>
     );
 };
 

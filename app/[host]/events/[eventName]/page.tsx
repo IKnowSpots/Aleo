@@ -21,16 +21,18 @@ const paragraphStyles = {
 const Event = () => {
     const pathName = usePathname();
     const username = pathName?.split("/")[1];
+    console.log("username => ", username);
     const event_id = pathName?.split("/")[3];
+    console.log("event_id => ", event_id);
 
 
     const [eventData, setEventData] = useState({
         event_id: "",
-        status: "0u8",
+        status: "1u8",
         supply: "",
         isShortlistEnabled: true,
         shortlisted_accounts: [],
-        cover: "",
+        cover: "/sample-img.png",
         uri: "",
         claim_code: "",
         name: "",
@@ -40,15 +42,32 @@ const Event = () => {
         isStakingEnabled: false,
         stakePrice: "0",
         eventPrice: "0",
-        hostName: "naval",
+        hostName: username,
         username: username
     });
     const [loading, setLoading] = useState(false);
     const [claimCode, setClaimCode] = useState("");
 
+    /* useEffect(() => {
+        fetchActiveEventsData();
+        // console.log("fetchActiveEventsData => ", fetchActiveEventsData);
+    }, []); */
+
     useEffect(() => {
         fetchActiveEventsData();
-        console.log("fetchActiveEventsData => ", fetchActiveEventsData);
+        // Function to read data from local storage
+        const loadData = () => {
+            const storedData = localStorage.getItem('eventsDetail');
+            if (storedData) {
+                // Parse the stored data back into an array/object
+                const parsedData = JSON.parse(storedData);
+                // Set the data to state
+                setEventData(parsedData);
+            }
+        };
+
+        // Call the function
+        loadData();
     }, []);
 
 
@@ -62,8 +81,27 @@ const Event = () => {
         setLoading(true);
         let fetchedEvents: any = await fetchAllEventsWithUsername(username);
         console.log("fetchedEvents => ", fetchedEvents);
-        const event = fetchedEvents.find((obj: any) => obj.event_id == event_id);
-        setEventData(event);
+        let event;
+        const loadData = () => {
+            const storedData = localStorage.getItem('eventsDetail');
+            if (storedData) {
+                // Parse the stored data back into an array/object
+                const parsedData = JSON.parse(storedData);
+                if (parsedData) {
+                    event = parsedData.find((obj: any) => obj.event_id == event_id);
+                    setEventData(event);
+                }
+
+                // Set the data to state
+
+            }
+        };
+
+        // Call the function
+        loadData();
+        // if (fetchedEvents)
+        //     event = fetchedEvents.find((obj: any) => obj.event_id == event_id);
+        // setEventData(event);
         console.log("event", event);
         if (event) {
         }
@@ -148,20 +186,21 @@ const Event = () => {
             return value === fieldValue;
         });
     }
-    function searchEventStateFromLocalStorage(addressKey: any, fieldName: any, fieldValue: any) {
-        const records = JSON.parse(localStorage.getItem("eventsDetail") || "{}");
-        /* const recordEntry = records[addressKey];
 
-        if (!recordEntry) {
-            return []; // Address not found, return empty array
-        }
+    // function searchEventStateFromLocalStorage(addressKey: any, fieldName: any, fieldValue: any) {
+    //     const records = JSON.parse(localStorage.getItem("eventsDetail") || "{}");
+    //     /* const recordEntry = records[addressKey];
 
-        return recordEntry.filter((recordString: any) => {
-            const value = getValueOfField(recordString, fieldName);
-            return value === fieldValue;
-        }); */
+    //     if (!recordEntry) {
+    //         return []; // Address not found, return empty array
+    //     }
 
-    }
+    //     return recordEntry.filter((recordString: any) => {
+    //         const value = getValueOfField(recordString, fieldName);
+    //         return value === fieldValue;
+    //     });
+
+    // }
 
     function deleteRecordFromLocalStorage(local_storage_name: any, addressKey: any, fieldName: any, fieldValueToDelete: any) {
         const records = JSON.parse(localStorage.getItem(local_storage_name) || "{}");
@@ -242,6 +281,8 @@ const Event = () => {
         console.log("function_name ", function_name);
         console.log("event_id_field ", event_id_field);
         console.log("eventPasses in local storage as => ", JSON.parse(localStorage.getItem('eventPasses') || "{}"));
+
+
         const eventPass = getAndDeleteRecordByField("eventPasses", event_id, user_address);
         console.log("eventPass => ", eventPass);
         if (!eventPass) {
@@ -276,7 +317,7 @@ const Event = () => {
 
             toast.success("Private Event NFT Claimed!", {
                 position: "bottom-left",
-                autoClose: 5000,
+                autoClose: false,
                 hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -292,6 +333,86 @@ const Event = () => {
         return null;
     }
 
+    /* function getAndDeleteRecordByField(local_storage_name: any, eventId: any, userAddress: any) {
+        // Fetch records from local storage
+        const records = JSON.parse(localStorage.getItem(local_storage_name) || "{}");
+        console.log("records inside getAndDeleteRecordByField => ", records);
+        const modifiedEventId = eventId.endsWith() == "field" ? eventId : eventId + "field";
+        console.log("modifiedEventId => ", modifiedEventId);
+        console.log("eventId => ", eventId);
+        // Search for the record
+        const searchedEvent = searchAndDeleteRecord(records, userAddress, modifiedEventId);
+        console.log("searchedEvent => ", searchedEvent);
+        // Update local storage
+        const new_records = JSON.parse(localStorage.getItem(local_storage_name) || "{}");
+        localStorage.setItem(local_storage_name, JSON.stringify(new_records));
+
+        if (!searchedEvent) {
+            throw new Error('Record with that event_id not found');
+        }
+
+        return searchedEvent;
+    } */
+
+    function updateSingleEventField(eventId: any, fieldName: any, newValue: any) {
+        console.log("eventId => ", eventId);
+        // Retrieve the current events from local storage
+        const events = JSON.parse(localStorage.getItem('eventsDetail') || '[]');
+
+        // Find the event with the matching event_id
+        const eventIndex = events.findIndex((event: any) => event.event_id === eventId);
+
+        // Check if the event is found
+        if (eventIndex !== -1) {
+            // Update the specific field of the event
+            events[eventIndex][fieldName] = newValue;
+
+            // Save the updated events array back to local storage
+            localStorage.setItem('eventsDetail', JSON.stringify(events));
+        } else {
+            console.error('Event not found');
+        }
+    }
+
+    function getValueInEventsDetailByEventId(eventId: any, fieldName: any) {
+        // Retrieve the events array from local storage
+        const events = JSON.parse(localStorage.getItem('eventsDetail') || '[]');
+
+        // Find the event with the matching event_id
+        const event = events.find((event: any) => event.event_id === eventId);
+
+        // Check if the event is found and the field exists
+        if (event && fieldName in event) {
+            // Return the value of the specified field
+            return event[fieldName];
+        } else {
+            // Return null or throw an error if event is not found or field does not exist
+            console.error('Event not found or field does not exist');
+            return null;
+        }
+    }
+
+
+    function saveToLocalStorage(local_storage_name: any, address: any, record: any) {
+        // Retrieve existing data from local storage or initialize an empty object
+        const existingData = JSON.parse(localStorage.getItem(local_storage_name) || "{}");
+
+        // Check if the address already exists in the data
+        if (existingData[address]) {
+            // If it exists, append the new record to the array for that address
+            existingData[address].push(record);
+        } else {
+            // If it doesn't exist, create a new array with the record
+            existingData[address] = [record];
+        }
+
+        // Save the updated data back to local storage
+        localStorage.setItem(local_storage_name, JSON.stringify(existingData));
+    }
+
+
+
+
     async function handleClaimPublicNFT(event_id: any, claim_code: any, user_address: any) {
 
 
@@ -300,7 +421,7 @@ const Event = () => {
         // debugger;
 
         const event_id_field = event_id.endsWith() == "field" ? event_id : event_id + "field";
-        claim_code = claim_code.endsWith() == "field" ? claim_code : claim_code + "field";
+        const claim_code_field = claim_code.endsWith() == "field" ? claim_code : claim_code + "field";
         // const max_supply_u32 = formInput.supply + "u32"
         let program_name = "iknowspots_2.aleo";
         let function_name = "claim_public_event";
@@ -311,33 +432,26 @@ const Event = () => {
         // debugger;
         try {
 
-            const transaction_id = await aleoWorker.execute(program_name, function_name, [event_id_field, claim_code]);
+            const transaction_id = await aleoWorker.execute(program_name, function_name, [event_id_field, claim_code_field]);
 
             const transactionUrl = "http://localhost:3030/testnet3/transaction/" + transaction_id;
             console.log("transactionUrl => ", transactionUrl)
+
             const data = await fetchDataUntilAvailable(transactionUrl);
             console.log("data => ", data);
-            // console.log("type of data is => ", typeof (data));
-            let record;
-            try {
-                record = data.execution.transitions[0].outputs[0].value;
-                console.log("record ", record);
-            } catch (error) {
-                console.error("Record cannot be extracted from the fetched response")
-            }
-
-            const decryptedRecord = await aleoWorker.decrypt_record(record);
-            console.log("decryptedRecord => ", decryptedRecord);
-            // console.log("haha");
-            const address = getValueOfField(decryptedRecord, "owner");
+            const old_supply = getValueInEventsDetailByEventId(event_id, "supply");
+            const max_supply = getValueInEventsDetailByEventId(event_id, "max_supply");
+            // const fetchedRecord = getAndDeleteRecordByField("eventsDetail", event_id, user_address);
+            updateSingleEventField(event_id, "supply", old_supply - 1);
+            const newRecord = `{owner: ${user_address}.private  event_id: ${event_id_field}.private,\n  max_supply: ${max_supply}u32.private}`;
+            saveToLocalStorage("NFTs", user_address, newRecord);
 
 
-            addRecordToLocalStorage("publicEventNFTs", address, decryptedRecord);
-            // localStorage.setItem("privateRecords", ))
 
-            toast.success("Private Event Created!", {
+
+            toast.success("Public Event NFT Minted!", {
                 position: "bottom-left",
-                autoClose: 5000,
+                autoClose: false,
                 hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -360,9 +474,10 @@ const Event = () => {
     function getIsShortlistEnabled(arr: any, eventId: any) {
         // Find the element in the array where the event_id matches the provided eventId
         const event = arr.find((item: any) => item.event_id === eventId);
-
+        console.log("Event inside getIsShortlistEnabled => ", event);
         // If the event is found, return the value of isShortlistEnabled
         if (event) {
+            console.log("event.isShortlistEnabled => ", event.isShortlistEnabled);
             return event.isShortlistEnabled;
         } else {
             // Handle the case where no matching event_id is found
@@ -374,7 +489,9 @@ const Event = () => {
     async function claim(event_id: any, user_address: any, claim_code: any) {
         // if (claim_code == "") { }
         // await buyTicket(username, event_id);
-        getIsShortlistEnabled(JSON.parse(localStorage.getItem("eventsDetail") || "[]"), event_id) ? handleClaimPrivateNFT(event_id, user_address).then(() => console.log("Private Event NFT Minted")) : handleClaimPublicNFT(event_id, claim_code, user_address).then(() => console.log("Public Event NFT Minted"));
+        const allEventDetails = JSON.parse(localStorage.getItem("eventsDetail") || "[]");
+        console.log("allEventDetails => ", allEventDetails);
+        getIsShortlistEnabled(allEventDetails, event_id) ? handleClaimPrivateNFT(event_id, user_address).then(() => console.log("Private Event NFT Minted")) : handleClaimPublicNFT(event_id, claim_code, user_address).then(() => console.log("Public Event NFT Minted"));
         // console.log("NFT Minted");
     }
 
@@ -389,13 +506,13 @@ const Event = () => {
                 <div className="md:flex-row flex flex-col py-4 justify-center w-full">
                     <div className="w-[40%] h-fit flex justify-center items-center rounded-2xl border-red">
                         <img
-                            src={eventData?.cover}
+                            src={eventData?.cover ? "" : "/sample-img.png"}
                             alt="event img"
                             className="w-[90%] h-fit rounded-xl flex justify-center items-center mx-auto "
                         />
                     </div>
                     <div className="flex flex-col px-24 w-[60%] ">
-                        <div className="flex items-center py-2  ">
+                        {/*  <div className="flex items-center py-2  ">
                             <Image
                                 src={"/icons/dollar.svg"}
                                 width={20}
@@ -403,43 +520,43 @@ const Event = () => {
                                 alt="dollar svg"
                             />
                             <p className="font-lg pl-2">RSVP Escrow</p>
-                        </div>
+                        </div> */}
                         <div>
                             <h1 className="text-2xl font-bold py-2">
                                 {eventData?.name} #{eventData?.event_id}
                             </h1>
                         </div>
-                        {/* <div className="gap-2 flex flex-col">
+                        <div className="gap-2 flex flex-col">
                             <p>
-                                {eventData.remaining} / {eventData.supply}
+                                Max Supply {eventData.supply}
                             </p>
-                            <p>
+                            {/*  <p>
                                 {eventData?.price} {currency}
-                            </p>
-                        </div> */}
+                            </p> */}
+                        </div>
                         <div className="flex flex-col py-4">
                             <div className="flex items-center mb-6">
-                                {/* <Image
+                                <Image
                                     src={"/icons/person_avatar.png"}
                                     width={50}
                                     height={30}
                                     alt="person avatar"
-                                /> */}
+                                />
                                 <div className="h-[3rem] w-[3rem] grad1 rounded-full"></div>
                                 <div className="pl-4">
                                     <p className="text-[rgba(255,255,255,0.65)] text-lg">
-                                        Host
+                                        Host {eventData.hostName}
                                     </p>
                                     <p className="text-white text-lg font-semibold">
                                         {eventData.username}
                                     </p>
                                     <h3 className="text-xl">
-                                        {eventData?.hostName}
+                                        {eventData.hostName}
                                     </h3>
                                 </div>
                             </div>
                             <div className="flex text-lg font-semibold gap-2 text-white/60"> Event Type:
-                                {eventData?.isShortlistEnabled ? (
+                                {eventData?.isShortlistEnabled === true ? (
                                     <p className="text-white text-xl font-bold">Private Event</p>
                                 ) : (
                                     <p className="text-white text-xl font-bold">Public Event</p>

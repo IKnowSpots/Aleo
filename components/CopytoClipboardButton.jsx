@@ -13,7 +13,7 @@ const CopyToClipboardButton = ({ textToCopy }) => {
       await copy(textToCopy);
       // toast.success("Copied to clipboard!", {
       //   position: "top-right",
-      //   autoClose: 5000,
+      //   autoClose: false,
       //   hideProgressBar: true,
       //   closeOnClick: true,
       //   pauseOnHover: true,

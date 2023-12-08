@@ -50,7 +50,9 @@ const Create = (props: any) => {
 		isStakingEnabled: false,
 		stakePrice: "0",
 		eventPrice: "0",
-		username: "consentsam"
+		username: "consentsam",
+		max_supply: "",
+		hostName: "consentsam"
 	});
 	// const { wallet, publicKey, decrypt } = useWallet();
 	// console.log("Wallet => ", wallet);
@@ -139,7 +141,34 @@ const Create = (props: any) => {
 		}
 	};
 
+	async function formURI() {
+		let { name, description, venue, date, supply, cover } = formInput;
+		if (!name || !description || !venue || !date || !supply) return;
+		console.log(cover);
+		if (cover == "") {
+			cover =
+				"https://ipfs.io/ipfs/bafybeiheek47zlbg5kklzdz572mm7pu7men2xo5pra3cslbqplkda2qphq/cat.jpeg";
+		}
+		const data = JSON.stringify({ name, description, venue, date, cover });
+		const files = [new File([data], "data.json")];
+		const metaCID = await uploadToIPFS(files);
+		const url = `https://ipfs.io/ipfs/${metaCID}/data.json`;
+		setFormInput({ ...formInput, uri: url });
+		console.log(url);
+		return url;
+	}
 
+	async function changeImage(e: any) {
+		setImgLoading(true);
+		const inputFile = e.target.files[0];
+		const inputFileName = e.target.files[0].name;
+		const files = [new File([inputFile], inputFileName)];
+		const metaCID = await uploadToIPFS(files);
+		const url = `https://ipfs.io/ipfs/${metaCID}/${inputFileName}`;
+		console.log(url);
+		setFormInput({ ...formInput, cover: url });
+		setImgLoading(false);
+	}
 
 
 
@@ -411,7 +440,6 @@ const Create = (props: any) => {
 			console.log("max_supply_u32 ", max_supply_u32);
 
 			const transaction_id = await aleoWorker.execute(program_name, function_name, [event_id_field, max_supply_u32]);
-
 			const transactionUrl = "http://localhost:3030/testnet3/transaction/" + transaction_id;
 			console.log("transactionUrl => ", transactionUrl)
 			const data = await fetchDataUntilAvailable(transactionUrl);
@@ -450,7 +478,7 @@ const Create = (props: any) => {
 
 			toast.success("Private Event Created!", {
 				position: "bottom-left",
-				autoClose: 5000,
+				autoClose: false,
 				hideProgressBar: true,
 				closeOnClick: true,
 				pauseOnHover: true,
@@ -464,7 +492,7 @@ const Create = (props: any) => {
 		return null;
 	}
 
-	function formatJSONString(jsonObject: any) {
+	/* function formatJSONString(jsonObject: any) {
 		try {
 			// Check if input is a string, parse it; if it's an object, use it directly
 			const jsonObj = (typeof jsonObject === 'string') ? JSON.parse(jsonObject) : jsonObject;
@@ -478,7 +506,7 @@ const Create = (props: any) => {
 			console.error('Error formatting:', e);
 			return jsonObject; // Return the original object if there's an issue
 		}
-	}
+	} */
 
 
 
@@ -487,31 +515,18 @@ const Create = (props: any) => {
 		const aleoWorker = AleoWorker();
 		console.log(`Create Public Event for ${formInput.event_id} with maxSupply ${formInput.supply}`);
 
-
+		const event_id_field = formInput.event_id + "field"
+		const max_supply_u32 = formInput.supply + "u32"
+		const claim_code_field = formInput.claim_code + "field"
+		let program_name = "iknowspots_2.aleo";
+		let function_name = "create_public_event";
+		console.log("program_name ", program_name);
+		console.log("function_name ", function_name);
+		console.log("event_id_field ", event_id_field);
+		console.log("max_supply_u32 ", max_supply_u32);
+		console.log("claim_code_field ", claim_code_field);
 		try {
-			const event_id_field = formInput.event_id + "field"
-			const max_supply_u32 = formInput.supply + "u32"
-			const claim_code_field = formInput.claim_code + "field"
-			let program_name = "iknowspots_2.aleo";
-			let function_name = "create_public_event";
-			console.log("program_name ", program_name);
-			console.log("function_name ", function_name);
-			console.log("event_id_field ", event_id_field);
-			console.log("max_supply_u32 ", max_supply_u32);
-			console.log("claim_code_field ", claim_code_field);
 
-
-			/* aleoWorker.execute(program_name, function_name, [event_id_field, max_supply_u32, claim_code_u32])
-				.then((tx_id: any) => {
-					console.log("This transaction was completed");
-					transaction_id = tx_id;
-					// tx_id now holds the transaction ID and you can use it here
-					console.log("Transaction ID:", tx_id);
-				})
-				.catch((error: any) => {
-					// Handle any errors here
-					console.error("Error during execution:", error);
-				}); */
 
 			const transaction_id = await aleoWorker.execute(program_name, function_name, [event_id_field, max_supply_u32, claim_code_field]);
 
@@ -519,12 +534,6 @@ const Create = (props: any) => {
 			console.log("transactionUrl => ", transactionUrl)
 			const data = await fetchDataUntilAvailable(transactionUrl);
 			console.log("fetched data =>", data);
-			/* const record = data.execution.transition[0].outputs[0].value;
-			console.log("record ", record);
-			const decryptedRecord = await aleoWorker.decrypt_record(record);
-			console.log("decryptedRecord => ", decryptedRecord);
-			console.log("haha"); */
-			// addRecord("eventsDetail", address,)
 
 			let new_local_storage = [];
 			if (!localStorage.getItem("eventsDetail")) {
@@ -534,9 +543,10 @@ const Create = (props: any) => {
 			}
 
 			localStorage.setItem("eventsDetail", JSON.stringify(new_local_storage))
+
 			toast.success("Public Event Created!", {
 				position: "bottom-left",
-				autoClose: 5000,
+				autoClose: false,
 				hideProgressBar: true,
 				closeOnClick: true,
 				pauseOnHover: true,
@@ -633,7 +643,7 @@ const Create = (props: any) => {
 			<div className="bg-createEvent text-white  px-8">
 				<CreateNav />
 				<div className="relative order-last flex shrink-0 items-center gap-3 sm:gap-6 lg:gap-8">
-					<WalletMultiButton className="bg-[#1253fa]" />
+					{/* <WalletMultiButton className="bg-[#1253fa] top-right" /> */}
 				</div>
 				<div className="grid grid-cols-2">
 					<div className="">
@@ -668,11 +678,11 @@ const Create = (props: any) => {
 											fill="none"
 											viewBox="0 0 24 24"
 											stroke="currentColor"
-											strokeWidth="2"
+											stroke-width="2"
 										>
 											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
+												stroke-linecap="round"
+												stroke-linejoin="round"
 												d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
 											/>
 										</svg>
@@ -702,7 +712,7 @@ const Create = (props: any) => {
 										type="file"
 										name="file_upload"
 										className="hidden"
-										onChange={() => { }}
+										onChange={changeImage}
 										disabled={imgLoading}
 									/>
 								</label>
@@ -715,28 +725,28 @@ const Create = (props: any) => {
 										className="rounded-lg"
 									/>
 									<Image
-										src={"/dash-1.jpg"}
+										src={"/cattt.jpeg"}
 										width={60}
 										height={60}
 										alt="cat"
 										className="rounded-lg"
 									/>
 									<Image
-										src={"/dash-2.jpg"}
+										src={"/cattt.jpeg"}
 										width={60}
 										height={60}
 										alt="cat"
 										className="rounded-lg"
 									/>
 									<Image
-										src={"/dash-3.jpg"}
+										src={"/cattt.jpeg"}
 										width={60}
 										height={60}
 										alt="cat"
 										className="rounded-lg"
 									/>
 									<Image
-										src={"/dash-4.jpg"}
+										src={"/cattt.jpeg"}
 										width={60}
 										height={60}
 										alt="cat"
@@ -810,11 +820,11 @@ const Create = (props: any) => {
 						</div>
 						{!formInput.isShortlistEnabled &&
 							<div className="flex flex-col w-3/4 mx-auto my-4">
-								<label className="pb-2">Claim Code To Claim NFTs</label>
+								<label className="pb-2">Invite Code To Claim NFT</label>
 								<input
 									type="text"
 									id="event-id"
-									placeholder="eg. name of the event"
+									placeholder="invite code"
 									className="bg-[#1E1E1E] bg-opacity-75 border border-[#989898] border-opacity-30 rounded-lg p-2"
 									onChange={(e) => {
 										setFormInput({
@@ -852,11 +862,14 @@ const Create = (props: any) => {
 									id="event-name"
 									placeholder="2000"
 									className="bg-[#1E1E1E] bg-opacity-75 border border-[#989898] border-opacity-30 w-full rounded-lg p-2 "
-									onChange={(e) =>
+									onChange={(e) => {
 										setFormInput({
 											...formInput,
 											supply: e.target.value,
+											max_supply: e.target.value
 										})
+									}
+
 									}
 									disabled={imgLoading}
 								/>

@@ -11,7 +11,7 @@ body {
   background-color: #090312;
 }
 
-/* 
+/*
 .Toastify__toast-container {
     z-index: 999;
 }
@@ -46,6 +46,11 @@ body {
   border-width: 1px;
   border-color: #c584f5;
   transition: 0.5s;
+}
+.top-75-left {
+  position: fixed;
+  top: 3%;
+  left: 60%;
 }
 
 .get-started-btn:hover {

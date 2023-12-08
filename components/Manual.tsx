@@ -192,7 +192,6 @@ export default function Manual(event_id: any) {
             console.log("decryptedEventRecord => ", decryptedEventRecord);
             const decryptedEventPassRecord = await aleoWorker.decrypt_record(eventpass_record);
             console.log("decryptedEventPassRecord => ", decryptedEventPassRecord);
-            // console.log("haha");
             let address = getValueOfField(decryptedEventRecord, "owner");
 
 
@@ -205,9 +204,9 @@ export default function Manual(event_id: any) {
             updateRecordWhileShortlisting(event_id_from_event_id_object, whiteListAddresses);
             // localStorage.setItem("privateRecords", ))
 
-            toast.success("Shortlisted updated!", {
+            toast.success("Shortlisted Account updated!", {
                 position: "bottom-left",
-                autoClose: 5000,
+                autoClose: false,
                 hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,

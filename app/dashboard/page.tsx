@@ -12,9 +12,9 @@ const Dashboard = () => {
     const [isDeployed, setIsDeployed] = useState<Boolean>();
     const [loading, setLoading] = useState<Boolean>(false);
 
-    useEffect(() => {
+    /* useEffect(() => {
         checkDeployment();
-    }, []);
+    }, []); */
 
     // comment line 18 - 26 to make this page static
 
@@ -24,9 +24,9 @@ const Dashboard = () => {
     //     }
     // }, [isDeployed]);
 
-    // function pushPage() {
-    //     window.location.replace("/dashboard/active");
-    // }
+    function pushPage() {
+        window.location.replace("/dashboard/active");
+    }
 
     // async function checkDeployment() {
     //     setLoading(true);
@@ -40,7 +40,7 @@ const Dashboard = () => {
 
     return (
         <div>
-            {/* // <LoadingModal visible={loading?true:false}/> */}
+            <LoadingModal visible={loading ? true : false} />
             <RenderSetUsername />
         </div>
     );
@@ -50,12 +50,12 @@ const Dashboard = () => {
 
         // if deployed is true then change button to Move forward
 
-        async function setUsernameCall() {
+        /* async function setUsernameCall() {
             setLoading(true)
             await deploy(username);
             setIsDeployed(true);
             setLoading(false);
-        }
+        } */
 
         function pushPage() {
             window.location.replace("/dashboard/active");
@@ -115,20 +115,16 @@ const Dashboard = () => {
                                         setUsernameHook(e.target.value)
                                     }
                                 />
-                                {isDeployed ? (
-                                    <button
-                                        className="get-started-btn py-3 rounded-xl bg-[#162D3A] my-2"
-                                        onClick={pushPage}
-                                    >
-                                        Move Forward
-                                    </button>
-                                ) : (
-                                    <button
-                                        className="get-started-btn py-3 rounded-xl bg-[#162D3A] my-2"
-                                        onClick={setUsernameCall}
-                                    >
-                                        Set Username
-                                    </button>
+                                {(
+                                    <Link href={"/dashboard/active"}>
+                                        <button
+                                            className="get-started-btn py-3 rounded-xl bg-[#162D3A] my-2"
+                                            onClick={() => { pushPage }}
+                                        >
+                                            Set Username
+                                        </button>
+                                    </Link>
+
                                 )}
                             </div>
                         </div>

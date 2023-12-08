@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { fetchCurrentUsername } from "@/utils";
 
 const Navbar = () => {
-    const [username, setUsername] = useState();
+    const [username, setUsername] = useState<string | undefined>();
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -35,7 +35,7 @@ const Navbar = () => {
             <div className="flex items-center ">
                 <Link href={`/${username}/events`}>
                     <button className="rounded-full px-8 py-2 mr-8 flex items-center bg-gradient-to-r from-[#9000FF] to-[#1D102700] hover:bg-gradient-to-r hover:from-white hover:to-white hover:text-black ">
-                    {/* <Image
+                        {/* <Image
                     src={"/bored_ape_image.png"}
                     width={30}
                     height={50}

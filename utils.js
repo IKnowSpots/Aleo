@@ -156,7 +156,7 @@ export async function fetchCurrentUsername() {
         const data = await contract.addressToUsername(address.toString());
         // return data;
     } */
-    return "consentsam"
+    return "consentsam";
 }
 
 export async function fetchAddressFromUsername(username) {

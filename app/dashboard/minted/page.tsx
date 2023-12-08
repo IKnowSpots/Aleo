@@ -4,7 +4,7 @@ import Image from "next/image";
 import CardsMinted from "@/components/cardsMinted";
 import DashNav from "@/components/dashboard/Navbar";
 import { useEffect, useState } from "react";
-import { fetchMintedCollection } from "../../../utils";
+// import { fetchMintedCollection } from "../../../utils";
 import LoadingModal from "@/components/LoadingModal";
 
 const MintedCollections = () => {
@@ -15,11 +15,55 @@ const MintedCollections = () => {
         fetchMintedCollectionData();
     }, []);
 
+    const addRecord = (local_storage_name: any, address: any, dataStr: any) => {
+        const records = JSON.parse(localStorage.getItem(local_storage_name) || "{}");
+        records[address] = records[address] ? [...records[address], dataStr] : [dataStr];
+        localStorage.setItem(local_storage_name, JSON.stringify(records));
+    };
+    function searchRecordByEventId(records: any, event_id: any) {
+        for (const address in records) {
+            const matchedRecord = records[address].find((record: any) => getValueOfField(record, 'event_id') === event_id);
+            if (matchedRecord) {
+                return matchedRecord;
+            }
+        }
+        return null;
+    }
+    function getValueOfField(recordString: string, fieldName: string) {
+        try {
+            // Look for the field in the string using a regular expression
+            const regex = new RegExp(fieldName + "\\s*:\\s*([\\w\\.]+)");
+            const match = regex.exec(recordString);
+
+            if (match && match[1]) {
+                return match[1].split('.')[0]; // Split at '.' and return the first part
+            }
+        } catch (error) {
+            console.error('Error parsing record:', error);
+        }
+        return null;
+    }
+
+    async function fetchMintedCollection() {
+        let allEvents = JSON.parse(localStorage.getItem("NFTs") || "[]");
+        console.log("allEvents inside fetchMintedCollection => ", allEvents);
+        console.log("allEvents[0] =>  ", allEvents[Object.keys(allEvents)[0]]);
+        // allEvents
+        return allEvents[Object.keys(allEvents)[0]];// hardcoded as first key is my address
+
+    }
+
+
     async function fetchMintedCollectionData() {
         try {
             setLoading(true);
             let data: any = await fetchMintedCollection();
+            console.log("data inside fetchMintedCollectionData => ", data);
+            console.log("Before setMintedCollection on data", mintedCollection);
+
             setMintedCollection(data);
+            console.log("After setMintedCollection on data", mintedCollection);
+
             setLoading(false);
         } catch (error) {
             console.log(error);
@@ -51,7 +95,7 @@ const MintedCollections = () => {
             </Layout>
         );
 
-    if (loading == false && mintedCollection.length == 0)
+    if (loading == false && mintedCollection != undefined && mintedCollection.length == 0)
         return (
             <Layout>
                 {/* <div className="text-white p-4">No Events</div> */}
@@ -73,14 +117,14 @@ const MintedCollections = () => {
     return (
         <Layout>
             <div className="flex gap-x-6 gap-y-5 flex-wrap pt-4 px-6">
-                {mintedCollection.map((nft: any, i: any) => {
+                {Array.isArray(mintedCollection) && mintedCollection.map((nft: any, i: any) => {
                     return (
                         <CardsMinted
                             setMintedCollection={setMintedCollection}
                             key={i}
                             image={nft.cover}
                             name={nft.name}
-                            tokenId={nft.tokenId}
+                            event_id={nft.event_id}
                             supply={nft.supply}
                         />
                     );

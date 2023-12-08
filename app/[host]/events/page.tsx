@@ -82,6 +82,7 @@ const EventsByHost = () => {
             {Array.isArray(activeEvents) && activeEvents.map((nft: any, i: any) => {
                 return (
                     <CardsHostee
+                        isShortlistEnabled={nft.isShortlistEnabled}
                         key={i}
                         event_id={nft.event_id}
                         image={nft.cover}
@@ -92,14 +93,6 @@ const EventsByHost = () => {
                     />
                 );
             })}
-            {/* <CardsHostee
-                image={"1.png"}
-                name="Lorem Ipsum"
-                date="01.12.23"
-                username="consentsam"
-                event_id="01"
-                supply="1000"
-            /> */}
 
         </Layout>
     );

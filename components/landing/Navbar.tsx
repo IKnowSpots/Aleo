@@ -11,7 +11,7 @@ import { isWallet } from "@/utils";
 const Navbar = () => {
     const [Toggle, setToggle] = useState(true);
 
-    useEffect(() => {}, []);
+    useEffect(() => { }, []);
 
     const handleClick = () => {
         setToggle(!Toggle);
@@ -21,7 +21,7 @@ const Navbar = () => {
         if (!isWallet) {
             toast.warn("Connect your wallet to proceed further!", {
                 position: "bottom-left",
-                autoClose: 5000,
+                autoClose: false,
                 hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -39,7 +39,7 @@ const Navbar = () => {
         if (!isWallet) {
             toast.warn("Connect your wallet to proceed further!", {
                 position: "bottom-left",
-                autoClose: 5000,
+                autoClose: false,
                 hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -125,9 +125,8 @@ const Navbar = () => {
                 )}
 
                 <div
-                    className={`delay-300 md:hidden flex text-center gap-8 p-12 h-screen bg-black/90 w-full fixed top-[80px] text-white text-left  flex-col ${
-                        Toggle ? "right-[100%]" : "left-[100%]}"
-                    }`}
+                    className={`delay-300 md:hidden flex text-center gap-8 p-12 h-screen bg-black/90 w-full fixed top-[80px] text-white text-left  flex-col ${Toggle ? "right-[100%]" : "left-[100%]}"
+                        }`}
                 >
                     <button onClick={pushingDashboard}>
                         <p className="hoverUnderline">Dashboard</p>

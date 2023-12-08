@@ -22,11 +22,11 @@ const Navbar = () => {
                 />
             </Link>
 
-            {/* <button className="bg-white px-4 py-2 rounded-2xl text-black font-semibold">Select Wallet</button> */}
+            <button className="bg-white px-4 py-2 rounded-2xl text-black font-semibold">Select Wallet</button>
 
             <p className=" md:w-[30%] lg:w-[20%] text-black rounded-[1.5rem] ">
                 {/* Connect Wallet */}
-                <WalletsProvider/>
+                <WalletsProvider />
             </p>
         </nav>
     );

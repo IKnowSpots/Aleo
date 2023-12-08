@@ -100,7 +100,7 @@ const Sidebar = () => {
                     <SidebarItems icon_name="CPU" section_name="Shortlist" page_name="shortlist" />
                 </Link>
 
-                <Link
+                {/*  <Link
                     href="/dashboard/rewards"
                     className="opacity-75 sidebar-btn"
                 >
@@ -109,7 +109,7 @@ const Sidebar = () => {
                         section_name="Rewards"
                         page_name="rewards"
                     />
-                </Link>
+                </Link> */}
             </div>
             <div className="text-base pl-10 text-white">
                 <Link target="_blank" href="/support">

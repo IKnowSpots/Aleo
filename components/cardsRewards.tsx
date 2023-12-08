@@ -32,7 +32,7 @@ const CardsReward = ({
         setUsername(data)
     }
 
-    console.log("fds",rewardId)
+    console.log("fds", rewardId)
 
     const textToCopy = 'This is the text to be copied.';
 
@@ -40,7 +40,7 @@ const CardsReward = ({
         <div className="text-white w-[23%] px-4 box-background pt-4 pb-5 rounded-xl">
             <div className="flex flex-col gap-6">
                 <img
-                    src={image}
+                    src="/sample-img.png"
                     className="h-[250px] rounded-xl"
                     // width="195"
                     // height="200"
@@ -61,7 +61,7 @@ const CardsReward = ({
                     </div>
                     <div className="h-[2px] rounded-full bg-white"></div>
                     <div className="flex justify-between items-center">
-                        
+
                     </div>
                     {/* <p>{remaining}/{supply}</p> */}
                     {/* <p>1.20 Weth</p> */}

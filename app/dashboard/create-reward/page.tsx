@@ -167,7 +167,7 @@ const Create = () => {
     if (isMinted == true) {
       toast.success("Reward Created!", {
         position: "bottom-left",
-        autoClose: 5000,
+        autoClose: false,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
@@ -182,7 +182,7 @@ const Create = () => {
     // } catch (error) {
     //     toast.warn("Error occurred, try again in a while!", {
     //         position: "top-center",
-    //         autoClose: 5000,
+    //         autoClose: false,
     //         hideProgressBar: true,
     //         closeOnClick: true,
     //         pauseOnHover: true,
@@ -221,16 +221,14 @@ const Create = () => {
                 </p>
               </div>
               <label
-                className={`flex justify-center mx-auto w-[120%] border-2 bg-[rgb(30,30,30)] bg-opacity-75 border-[#E0E0E0] border-opacity-40 border-dashed  rounded-md  cursor-pointer ${
-                  formInput.cover ? "py-8 px-8" : "py-36 px-0"
-                } `}
+                className={`flex justify-center mx-auto w-[120%] border-2 bg-[rgb(30,30,30)] bg-opacity-75 border-[#E0E0E0] border-opacity-40 border-dashed  rounded-md  cursor-pointer ${formInput.cover ? "py-8 px-8" : "py-36 px-0"
+                  } `}
               >
                 <span className="flex items-center ">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className={`w-6 h-6 text-gray ${
-                      formInput.cover ? "hidden" : "flex"
-                    } `}
+                    className={`w-6 h-6 text-gray ${formInput.cover ? "hidden" : "flex"
+                      } `}
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -296,24 +294,21 @@ const Create = () => {
                   </label>
                   <input
                     type="text"
-                    className={`bg-[#1E1E1E] bg-opacity-75 border border-[#989898] border-opacity-30 rounded-lg p-2 mb-6 ${
-                      !isInputEnabled ? "hidden" : ""
-                    }`}
+                    className={`bg-[#1E1E1E] bg-opacity-75 border border-[#989898] border-opacity-30 rounded-lg p-2 mb-6 ${!isInputEnabled ? "hidden" : ""
+                      }`}
                     placeholder="Dropping some tokens along makes it more engaging :)"
                     disabled={!isInputEnabled}
                   />
                 </div>
                 <div className={`flex items-center justify-end cursor-pointer`}>
                   <div
-                    className={`w-12 h-6 bg-[#1E1E1E] rounded-full p-1 duration-300 ease-in-out ${
-                      isInputEnabled ? "bg-green-500" : "bg-[#1E1E1E]"
-                    }`}
+                    className={`w-12 h-6 bg-[#1E1E1E] rounded-full p-1 duration-300 ease-in-out ${isInputEnabled ? "bg-green-500" : "bg-[#1E1E1E]"
+                      }`}
                     onClick={handleToggle}
                   >
                     <div
-                      className={`bg-white w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out ${
-                        isInputEnabled ? "translate-x-6" : ""
-                      }`}
+                      className={`bg-white w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out ${isInputEnabled ? "translate-x-6" : ""
+                        }`}
                     ></div>
                   </div>
                 </div>

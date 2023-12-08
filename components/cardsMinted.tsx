@@ -6,16 +6,20 @@ import LoadingModal from "./LoadingModal";
 
 const CardsMinted = ({
     image,
+    date,
     name,
-    tokenId,
+    event_id,
     supply,
-    setMintedCollection
+    setMintedCollection,
+    isShortlistEnabled
 }: {
     image: any;
+    date: any;
     name: string;
-    tokenId: any;
+    event_id: any;
     supply: any;
-    setMintedCollection: any
+    setMintedCollection: any;
+    isShortlistEnabled: any
 }) => {
     const [loading, setLoading] = useState(false);
 
@@ -33,24 +37,43 @@ const CardsMinted = ({
             <div className="text-white w-[23%] px-4 box-background pt-4 pb-5 rounded-xl">
                 <div className="flex flex-col gap-4">
                     <img
-                        src={image}
+                        src="/sample-img.png"
                         className="h-[250px] rounded-xl"
                         // width="195"
                         // height="200"
                         alt="Event's Image"
                     />
+                    <div className="flex gap-2 text-[0.85rem] flex-col">
+                        <div className="flex justify-between items-center">
+                            <p>{name}</p>
+                            <p>{isShortlistEnabled ? "Private" : "Public"}</p>
+                        </div>
+                        <div className="h-[2px] rounded-full bg-white"></div>
+                        <div className="flex justify-between items-center">
+                            <p>Max Supply: {supply}</p>
+                            <p>{date}</p>
+                        </div>
+                        {/* <p>{remaining}/{supply}</p> */}
+                        {/* <p>1.20 Weth</p> */}
+                        <div className="flex justify-center items-center">
+                            {/*  <button className="view-btn px-4 py-0.5 outline rounded-lg" onClick={() => pauseEventCall(event_id)}>
+                                Pause
+                            </button> */}
+                        </div>
+
+                    </div>
                     <div className="flex text-base flex-col justify-center items-center w-full gap-2">
                         <div className="flex justify-between w-full">
                             <p>{name}</p>
                             <p>supply: {supply}</p>
                         </div>
                         {/* <p>1.20 Weth</p> */}
-                        <button
+                        {/* <button
                             className="view-btn px-4 py-0.5 outline rounded-lg"
                             onClick={() => publishTicketsCall(tokenId)}
                         >
                             Publish
-                        </button>
+                        </button> */}
                     </div>
                     {/* <hr />
                 <div className="flex justify-between my-6">

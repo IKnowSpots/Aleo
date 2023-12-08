@@ -41,7 +41,7 @@ async function execute(program, aleoFunction, inputs) {
     console.log("recordProvider has been processed",recordProvider)
 
   }catch(error){
-    console.error("Some issue has happened with networkrecordprovider",error)
+    console.error("Some issue has happened with networkrecord provider",error)
   }
 
 
@@ -78,19 +78,15 @@ async function execute(program, aleoFunction, inputs) {
 
 async function localProgramExecution(program, aleoFunction, inputs) {
   // await initThreadPool(2);
-  console.log("point 2.1");
   const programManager = new ProgramManager(ENDPOINT);
-  console.log("point 2.2");
   // Create a temporary account for the execution of the program
   programManager.setAccount(account);
-  console.log("point 3");
   const executionResponse = await programManager.run(
     program,
     aleoFunction,
     inputs,
     false,
   );
-  console.log("point 4");
   return executionResponse.getOutputs();
 }
 
@@ -140,13 +136,14 @@ async function getMappingValue(program_name,mapping_name, mapping_key){
 
   const local_connection = new AleoNetworkClient(ENDPOINT);
   local_connection.setAccount(account);
-  console.log("local_connection inside aleoworker=>", local_connection)
-  const current_state = await local_connection.getProgramMappingValue(program_name, mapping_name, mapping_key);
+  // console.log("local_connection inside aleoworker=>", local_connection)
+  let current_state = false;
+  current_state = await local_connection.getProgramMappingValue(program_name,mapping_name,mapping_key);
   return current_state;
 }
 
 
-async function decrypt_record(record,private_key=PRIVATE_KEY){
+async function decrypt_record(record){
   // console.log("decrypting record",record)
   // const account = new Account({
   //   privateKey: private_key,
