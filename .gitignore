@@ -33,3 +33,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+rough
+iknowspots/rough.md
+iknowspots/node_block.md
